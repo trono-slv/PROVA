@@ -339,41 +339,37 @@
         </div>
     </div>
 
-    <script>
+   <script>
         // ===== CONFIGURATION =====
         const QUIZ_CONFIG = {
             totalQuestions: 15,
-            timeLimit: 30 * 60, 
+            timeLimit: 30 * 60,
             questionsPerTest: 15
         };
-
-        // ===== STATE =====
-        let currentQuestion = 0;
-        let score = 0;
-        let timeRemaining = QUIZ_CONFIG.timeLimit;
-        let timerInterval = null;
-        let userAnswers = [];
-        let selectedQuestions = [];
 
         // ===== DOM ELEMENTS =====
         const homeScreen = document.getElementById('homeScreen');
         const quizScreen = document.getElementById('quizScreen');
         const summaryScreen = document.getElementById('summaryScreen');
-        const legalModal = document.getElementById('legalModal');
         const questionText = document.getElementById('questionText');
         const answersContainer = document.getElementById('answersContainer');
-        const questionNumber = document.getElementById('questionNumber');
-        const questionCounter = document.getElementById('questionCounter');
-        const progressBar = document.getElementById('progressBar');
-        const timer = document.getElementById('timer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const finishBtn = document.getElementById('finishBtn');
+        const timerDisplay = document.getElementById('timer');
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
 
-    <script>
-        // Database domande
-        const quizData = [
-            {
+        // ===== STATE =====
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        let selectedQuestions = [];
+        let timeRemaining;
+        let timerInterval;
+
+        // ===== QUESTIONS DATABASE =====
+        const questions = [            {
                 question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
                 options: ["D.Lgs. 81/2008", "Legge 626/94", "D.Lgs. 152/2006", "Legge 300/70"],
                 correct: 0,
@@ -1412,46 +1408,35 @@
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
-// ===== LEGAL MODAL =====
-        function showLegalModal() {
-            legalModal.classList.remove('hidden');
-            legalModal.classList.add('flex');
+ // ===== UTILITY: SHUFFLE ARRAY =====
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
         }
 
-        function closeLegalModal() {
-            legalModal.classList.add('hidden');
-            legalModal.classList.remove('flex');
-        }
-
-        function acceptLegal() {
-            closeLegalModal();
-            startQuiz();
-        }
-
-               // ===== START TEST =====
+        // ===== START TEST =====
         function startTest() {
-            console.log('startTest() chiamata'); // DEBUG
+            console.log('🚀 startTest() chiamata');
             
-            // Verifica che ci siano domande
             if (!questions || questions.length === 0) {
-                alert('⚠️ ERRORE: Nessuna domanda trovata nel paniere!');
+                alert('⚠️ Errore: Nessuna domanda disponibile!');
                 return;
             }
             
-            console.log(`Paniere: ${questions.length} domande`); // DEBUG
-            
-            // Reset variabili
+            // Reset
             currentQuestion = 0;
             score = 0;
             userAnswers = [];
             timeRemaining = QUIZ_CONFIG.timeLimit;
             
-            // Estrai 15 domande casuali
+            // Estrai e mescola 15 domande
             selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
             
-            console.log(`Estratte: ${selectedQuestions.length} domande`); // DEBUG
-            
-            // Rimescola opzioni per ogni domanda
+            // Mescola risposte
             selectedQuestions = selectedQuestions.map(q => {
                 const correctAnswer = q.answers[q.correct];
                 const shuffledAnswers = shuffleArray([...q.answers]);
@@ -1464,28 +1449,26 @@
                 };
             });
             
-            // Nascondi home, mostra quiz
+            console.log(`✅ ${selectedQuestions.length} domande estratte`);
+            
+            // Cambia schermata
             homeScreen.classList.add('hidden');
             quizScreen.classList.remove('hidden');
             
-            console.log('Schermate cambiate'); // DEBUG
-            
-            // Avvia quiz
             displayQuestion();
             startTimer();
-            
-            console.log('Quiz avviato'); // DEBUG
         }
 
         // ===== TIMER =====
         function startTimer() {
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 updateTimerDisplay();
-
+                
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    finishQuiz();
+                    finishTest();
                 }
             }, 1000);
         }
@@ -1493,279 +1476,228 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(timeRemaining / 60);
             const seconds = timeRemaining % 60;
-            timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             
-            if (timeRemaining <= 60) {
-                timer.classList.add('timer-warning', 'text-red-500');
+            if (timeRemaining < 300) {
+                timerDisplay.classList.add('text-red-500');
             }
         }
 
-        // ===== SHOW QUESTION =====
-        function showQuestion() {
-            const question = selectedQuestions[currentQuestion];
+        // ===== DISPLAY QUESTION =====
+        function displayQuestion() {
+            const q = selectedQuestions[currentQuestion];
+            questionText.textContent = q.question;
             
-            questionNumber.textContent = currentQuestion + 1;
-            questionCounter.textContent = `${currentQuestion + 1}/${QUIZ_CONFIG.questionsPerTest}`;
-            questionText.textContent = question.question;
-            
-            // Update progress bar
-            const progress = ((currentQuestion + 1) / QUIZ_CONFIG.questionsPerTest) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Render answers
-            answersContainer.innerHTML = question.answers.map((answer, index) => `
-                <div class="answer-option glass-card rounded-xl p-4 border-2 border-slate-600 ${userAnswers[currentQuestion] === index ? 'selected' : ''}" 
-                     onclick="selectAnswer(${index})">
-                    <div class="flex items-center gap-3">
-                        <span class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-slate-500 flex items-center justify-center font-bold text-white">
-                            ${String.fromCharCode(65 + index)}
-                        </span>
-                        <span class="text-white font-medium">${answer}</span>
-                    </div>
-                </div>
+            answersContainer.innerHTML = q.answers.map((answer, index) => `
+                <label class="answer-option ${userAnswers[currentQuestion] === index ? 'selected' : ''}" data-index="${index}">
+                    <input type="radio" name="answer" value="${index}" ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
+                    <span class="answer-text">${answer}</span>
+                </label>
             `).join('');
+            
+            // Event listeners
+            document.querySelectorAll('.answer-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    selectAnswer(index);
+                });
+            });
+            
+            updateProgress();
+            updateNavigationButtons();
+        }
 
-            // Update buttons
+        function selectAnswer(index) {
+            userAnswers[currentQuestion] = index;
+            displayQuestion();
+        }
+
+        function updateProgress() {
+            progressText.textContent = `${currentQuestion + 1}/${QUIZ_CONFIG.questionsPerTest}`;
+            const percentage = ((currentQuestion + 1) / QUIZ_CONFIG.questionsPerTest) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function updateNavigationButtons() {
             prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = currentQuestion === QUIZ_CONFIG.questionsPerTest - 1;
             
             if (currentQuestion === QUIZ_CONFIG.questionsPerTest - 1) {
-                nextBtn.classList.add('hidden');
                 finishBtn.classList.remove('hidden');
             } else {
-                nextBtn.classList.remove('hidden');
                 finishBtn.classList.add('hidden');
             }
         }
 
-        // ===== SELECT ANSWER =====
-        function selectAnswer(index) {
-            userAnswers[currentQuestion] = index;
-            showQuestion();
-        }
-
         // ===== NAVIGATION =====
-        function nextQuestion() {
-            if (currentQuestion < QUIZ_CONFIG.questionsPerTest - 1) {
-                currentQuestion++;
-                showQuestion();
-            }
-        }
-
         function previousQuestion() {
             if (currentQuestion > 0) {
                 currentQuestion--;
-                showQuestion();
+                displayQuestion();
             }
         }
 
-        // ===== FINISH QUIZ =====
-        function finishQuiz() {
-            // Calculate score
+        function nextQuestion() {
+            if (currentQuestion < QUIZ_CONFIG.questionsPerTest - 1) {
+                currentQuestion++;
+                displayQuestion();
+            }
+        }
+
+        // ===== FINISH TEST =====
+        function finishTest() {
+            clearInterval(timerInterval);
+            
+            // Calcola punteggio
             score = 0;
-            selectedQuestions.forEach((question, index) => {
-                if (userAnswers[index] === question.correct) {
+            selectedQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
                     score++;
                 }
             });
-
+            
             showSummary();
         }
 
         // ===== SHOW SUMMARY =====
         function showSummary() {
-            clearInterval(timerInterval);
-            quizScreen.classList.add('hidden');
-            summaryScreen.classList.remove('hidden');
+            const percentage = Math.round((score / QUIZ_CONFIG.questionsPerTest) * 100);
+            const passed = percentage >= 60;
             
-            const percentage = (score / QUIZ_CONFIG.totalQuestions) * 100;
-            let level = '';
-            let levelClass = '';
-            
-            if (percentage >= 90) {
-                level = '🏆 ECCELLENTE';
-                levelClass = 'text-green-400';
-            } else if (percentage >= 70) {
-                level = '✅ BUONO';
-                levelClass = 'text-blue-400';
-            } else {
-                level = '⚠️ DA MIGLIORARE';
-                levelClass = 'text-red-400';
-            }
-            
-            summaryScreen.innerHTML = `
-                <div class="glass-card rounded-2xl p-8 max-w-4xl mx-auto fade-in">
-                    <!-- Header -->
-                    <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold text-white mb-2">📊 Riepilogo Test</h2>
-                        <p class="text-slate-300">Ecco i risultati del tuo test</p>
-                    </div>
-
-                    <!-- Score -->
-                    <div class="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-xl p-6 mb-8 text-center">
-                        <div class="text-6xl font-bold text-white mb-2">${score}/${QUIZ_CONFIG.totalQuestions}</div>
-                        <div class="text-2xl ${levelClass} font-semibold mb-2">${level}</div>
-                        <div class="text-lg text-slate-300">${percentage.toFixed(1)}% di risposte corrette</div>
-                    </div>
-
-                    <!-- Answers Review -->
-                    <div class="space-y-4 mb-8">
-                        <h3 class="text-xl font-semibold text-white mb-4">📋 Riepilogo Risposte</h3>
-                        ${selectedQuestions.map((q, index) => {
-                            const userAnswer = userAnswers[index];
-                            const isCorrect = userAnswer === q.correct;
-                            
-                            return `
-                                <div class="glass-card rounded-lg p-4 ${isCorrect ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'}">
-                                    <div class="flex items-start gap-3 mb-3">
-                                        <span class="flex-shrink-0 w-8 h-8 rounded-full ${isCorrect ? 'bg-green-500' : 'bg-red-500'} flex items-center justify-center text-white font-bold">
-                                            ${index + 1}
-                                        </span>
-                                        <p class="text-white font-medium flex-1">${q.question}</p>
-                                    </div>
-                                    
-                                    <div class="ml-11 space-y-2">
-                                        ${q.answers.map((answer, i) => {
-                                            let bgClass = 'bg-slate-700/30';
-                                            let textClass = 'text-slate-300';
-                                            let icon = '';
-                                            
-                                            if (i === q.correct) {
-                                                bgClass = 'bg-green-500/20 border border-green-500/50';
-                                                textClass = 'text-green-400 font-semibold';
-                                                icon = '✓';
-                                            }
-                                            
-                                            if (i === userAnswer && !isCorrect) {
-                                                bgClass = 'bg-red-500/20 border border-red-500/50';
-                                                textClass = 'text-red-400';
-                                                icon = '✗';
-                                            }
-                                            
-                                            return `
-                                                <div class="${bgClass} rounded-lg px-4 py-2 ${textClass}">
-                                                    <span class="font-bold mr-2">${icon}</span>${answer}
-                                                </div>
-                                            `;
-                                        }).join('')}
+            const summaryHTML = `
+                <div class="summary-header ${passed ? 'bg-gradient-to-r from-green-500 to-emerald-600' : 'bg-gradient-to-r from-red-500 to-rose-600'}">
+                    <div class="text-6xl mb-4">${passed ? '🎉' : '😔'}</div>
+                    <h2 class="text-4xl font-bold mb-2">${passed ? 'TEST SUPERATO!' : 'TEST NON SUPERATO'}</h2>
+                    <p class="text-xl">Punteggio: ${score}/${QUIZ_CONFIG.questionsPerTest} (${percentage}%)</p>
+                </div>
+                
+                <div class="p-8">
+                    ${selectedQuestions.map((q, index) => {
+                        const userAnswer = userAnswers[index];
+                        const isCorrect = userAnswer === q.correct;
+                        
+                        return `
+                            <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
+                                <div class="flex items-start gap-3 mb-3">
+                                    <span class="text-2xl">${isCorrect ? '✅' : '❌'}</span>
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-lg mb-2">Domanda ${index + 1}</h3>
+                                        <p class="text-gray-300">${q.question}</p>
                                     </div>
                                 </div>
-                            `;
-                        }).join('')}
+                                
+                                <div class="ml-11 space-y-2">
+                                    ${userAnswer !== undefined ? `
+                                        <p class="text-sm">
+                                            <span class="font-semibold">La tua risposta:</span>
+                                            <span class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${q.answers[userAnswer]}</span>
+                                        </p>
+                                    ` : '<p class="text-yellow-400 text-sm">⚠️ Non hai risposto</p>'}
+                                    
+                                    ${!isCorrect ? `
+                                        <p class="text-sm">
+                                            <span class="font-semibold">Risposta corretta:</span>
+                                            <span class="text-green-400">${q.answers[q.correct]}</span>
+                                        </p>
+                                    ` : ''}
+                                    
+                                    <p class="text-sm text-gray-400 italic">💡 ${q.explanation}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                        <button onclick="retakeTest()" class="btn-primary">
+                            🔄 RIPETI TEST
+                        </button>
+                        <button onclick="generateNewTest()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                            🎲 NUOVO TEST
+                        </button>
+                        <button onclick="backToHome()" class="btn-secondary">
+                            🏠 HOME
+                        </button>
                     </div>
-
-                    <!-- Action Buttons -->
-                                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-                    <!-- Ripeti Test (stesse domande) -->
-                    <button onclick="retakeTest()" 
-                            class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                        🔄 RIPETI TEST
-                    </button>
-                    
-                    <!-- Genera Nuovo Test (nuove domande) -->
-                    <button onclick="generateNewTest()" 
-                            class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2">
-                        🎲 NUOVO TEST
-                    </button>
-                    
-                    <!-- Torna Home -->
-                    <button onclick="backToHome()" 
-                            class="btn-secondary text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                        🏠 HOME
-                    </button>
                 </div>
             `;
+            
+            document.getElementById('summaryContent').innerHTML = summaryHTML;
+            quizScreen.classList.add('hidden');
+            summaryScreen.classList.remove('hidden');
         }
 
-        // ===== BACK TO HOME =====
+        // ===== ACTIONS =====
+        function retakeTest() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            timeRemaining = QUIZ_CONFIG.timeLimit;
+            
+            // Rimescola solo le risposte
+            selectedQuestions = selectedQuestions.map(q => {
+                const correctAnswer = q.answers[q.correct];
+                const shuffledAnswers = shuffleArray([...q.answers]);
+                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+                
+                return {
+                    ...q,
+                    answers: shuffledAnswers,
+                    correct: newCorrectIndex
+                };
+            });
+            
+            summaryScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            displayQuestion();
+            startTimer();
+        }
+
+        function generateNewTest() {
+            startTest();
+            summaryScreen.classList.add('hidden');
+        }
+
         function backToHome() {
             location.reload();
         }
-// ===== RETAKE TEST (stesse domande, solo opzioni rimescolate) =====
-        function retakeTest() {
-            // Reset variabili
-            currentQuestion = 0;
-            score = 0;
-            userAnswers = [];
-            timeRemaining = QUIZ_CONFIG.timeLimit;
-            
-            // Rimescola solo le opzioni delle domande esistenti
-            selectedQuestions = selectedQuestions.map(q => {
-                const correctAnswer = q.answers[q.correct];
-                const shuffledAnswers = shuffleArray([...q.answers]);
-                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
-                
-                return {
-                    ...q,
-                    answers: shuffledAnswers,
-                    correct: newCorrectIndex
-                };
-            });
-            
-            // Riavvia quiz
-            summaryScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            displayQuestion();
-            startTimer();
-        }
 
-        // ===== GENERATE NEW TEST (15 nuove domande casuali) =====
-        function generateNewTest() {
-            // Reset variabili
-            currentQuestion = 0;
-            score = 0;
-            userAnswers = [];
-            timeRemaining = QUIZ_CONFIG.timeLimit;
+        // ===== INITIALIZE =====
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ DOM caricato');
             
-            // Estrai 15 nuove domande casuali
-            selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
+            // Pulsante Start
+            const startBtn = document.getElementById('startTestBtn');
+            if (startBtn) {
+                startBtn.addEventListener('click', startTest);
+                console.log('✅ Event listener aggiunto');
+            } else {
+                console.error('❌ Pulsante Start non trovato!');
+            }
             
-            // Rimescola opzioni per ogni domanda
-            selectedQuestions = selectedQuestions.map(q => {
-                const correctAnswer = q.answers[q.correct];
-                const shuffledAnswers = shuffleArray([...q.answers]);
-                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
-                
-                return {
-                    ...q,
-                    answers: shuffledAnswers,
-                    correct: newCorrectIndex
-                };
-            });
+            // Disclaimer
+            const closeDisclaimer = document.getElementById('closeDisclaimer');
+            const acceptDisclaimer = document.getElementById('acceptDisclaimer');
+            const disclaimerModal = document.getElementById('disclaimerModal');
             
-            // Riavvia quiz
-            summaryScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            displayQuestion();
-            startTimer();
-        }
-
-        // ===== UTILITY: SHUFFLE ARRAY =====
-        function shuffleArray(array) {
-            const newArray = [...array];
-            for (let i = newArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            if (closeDisclaimer) {
+                closeDisclaimer.addEventListener('click', () => {
+                    disclaimerModal.classList.add('hidden');
+                });
             }
-            return newArray;
-        }
-        // ===== UTILITY: SHUFFLE ARRAY =====
-        function shuffleArray(array) {
-            const newArray = [...array];
-            for (let i = newArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            
+            if (acceptDisclaimer) {
+                acceptDisclaimer.addEventListener('click', () => {
+                    disclaimerModal.classList.add('hidden');
+                });
             }
-            return newArray;
-        }
-
-        // ===== PREVENT ACCIDENTAL CLOSE =====
-        window.addEventListener('beforeunload', (e) => {
-            if (!quizScreen.classList.contains('hidden')) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
+            
+            // Mostra disclaimer
+            setTimeout(() => {
+                disclaimerModal.classList.remove('hidden');
+            }, 500);
         });
     </script>
+
 </body>
 </html>
         
