@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Sicurezza sul Lavoro - 15 Domande</title>
+    <title>Test Rischi Specifici in Magazzino - Dott. Salvatore Trono</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes slideIn {
@@ -12,157 +12,251 @@
         }
         .animate-slide-in { animation: slideIn 0.3s ease-out; }
         
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse-slow { animation: pulse 2s infinite; }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
         .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .animate-scale-in { animation: scaleIn 0.3s ease-out; }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-white">
 
-    <!-- HOME SCREEN -->
-    <div id="homeScreen" class="container mx-auto px-4 py-8 max-w-4xl">
-        <div class="bg-white rounded-2xl shadow-xl p-8 animate-slide-in">
-            <!-- Header -->
+    <!-- ========== WELCOME SCREEN ========== -->
+    <div id="welcomeScreen" class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 border-orange-500/30 animate-slide-in">
+            
+            <!-- PRESENTAZIONE AUTORE -->
+            <div class="text-center mb-8 pb-6 border-b border-orange-500/30">
+                <div class="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text">
+                    <h2 class="text-2xl font-bold">👤 Dott. Salvatore Trono</h2>
+                </div>
+                <p class="text-gray-300 mt-2">Esperto in SSL - Docente Formatore</p>
+            </div>
+
+            <!-- TITOLO QUIZ -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">Quiz Sicurezza sul Lavoro</h1>
-                <p class="text-gray-600 text-lg">Test di preparazione - 15 Domande</p>
-                <div class="mt-4 text-sm text-gray-500">
-                    <p><strong>Creato da:</strong> [IL TUO NOME]</p>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-orange-400 to-yellow-400 text-transparent bg-clip-text mb-3">
+                    Test Rischi Specifici in Magazzino
+                </h1>
+                <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" 
+                   target="_blank"
+                   class="inline-block mt-4 px-6 py-2 bg-green-600 hover:bg-green-500 rounded-lg transition-all hover:translate-y-[-2px] shadow-lg">
+                    📚 Vai al Materiale Didattico
+                </a>
+            </div>
+
+            <!-- CARATTERISTICHE TEST -->
+            <div class="grid md:grid-cols-2 gap-4 mb-8">
+                <div class="glass-effect p-4 rounded-lg border border-orange-500/20">
+                    <div class="text-orange-400 text-3xl mb-2">📝</div>
+                    <div class="font-semibold text-lg">15 Domande</div>
+                    <div class="text-sm text-gray-400">Estratte casualmente dal paniere completo</div>
+                </div>
+                <div class="glass-effect p-4 rounded-lg border border-orange-500/20">
+                    <div class="text-orange-400 text-3xl mb-2">⏱️</div>
+                    <div class="font-semibold text-lg">30 Minuti</div>
+                    <div class="text-sm text-gray-400">Tempo massimo per completare il test</div>
+                </div>
+                <div class="glass-effect p-4 rounded-lg border border-orange-500/20">
+                    <div class="text-orange-400 text-3xl mb-2">🎯</div>
+                    <div class="font-semibold text-lg">70% Superamento</div>
+                    <div class="text-sm text-gray-400">Punteggio minimo richiesto</div>
+                </div>
+                <div class="glass-effect p-4 rounded-lg border border-orange-500/20">
+                    <div class="text-orange-400 text-3xl mb-2">🔀</div>
+                    <div class="font-semibold text-lg">Ordine Casuale</div>
+                    <div class="text-sm text-gray-400">Domande e risposte randomizzate</div>
                 </div>
             </div>
 
-            <!-- Istruzioni -->
-            <div class="bg-blue-50 rounded-xl p-6 mb-6">
-                <h2 class="text-xl font-semibold text-blue-900 mb-4">📋 Istruzioni</h2>
-                <ul class="space-y-3 text-gray-700">
-                    <li class="flex items-start">
-                        <span class="text-blue-600 mr-2">•</span>
-                        <span>Il test contiene <strong>15 domande casuali</strong> estratte dal paniere ufficiale</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-blue-600 mr-2">•</span>
-                        <span>Tempo disponibile: <strong>30 minuti</strong></span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-blue-600 mr-2">•</span>
-                        <span>Ogni domanda ha <strong>4 opzioni</strong>, di cui <strong>solo 1 corretta</strong></span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-blue-600 mr-2">•</span>
-                        <span>Cliccando su una risposta, il quiz <strong>avanza automaticamente</strong> alla domanda successiva</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-blue-600 mr-2">•</span>
-                        <span>Al termine vedrai il <strong>riepilogo dettagliato</strong> con spiegazioni</span>
-                    </li>
+            <!-- DISCLAIMER LEGALE -->
+            <div class="bg-yellow-900/30 border-2 border-yellow-500/50 rounded-lg p-6 mb-6">
+                <h3 class="text-xl font-bold text-yellow-400 mb-3 flex items-center gap-2">
+                    ⚠️ Disclaimer Legale
+                </h3>
+                <p class="text-gray-200 leading-relaxed">
+                    Questo quiz è uno <strong>strumento didattico autoprodotto</strong>. 
+                    Non sostituisce la formazione ufficiale prevista dal <strong>D.Lgs. 81/2008</strong>. 
+                    Per informazioni vincolanti consultare la normativa vigente e gli enti preposti.
+                </p>
+            </div>
+
+            <!-- CREDITS -->
+            <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-bold text-orange-400 mb-3">📋 Credits</h3>
+                <ul class="text-sm text-gray-300 space-y-2">
+                    <li><strong>Autore:</strong> Dott. Salvatore Trono</li>
+                    <li><strong>Fonte normativa:</strong> D.Lgs. 81/2008 e s.m.i.</li>
+                    <li><strong>Database domande:</strong> Autoprodotto</li>
+                    <li><strong>Sviluppo:</strong> HTML5, Tailwind CSS, JavaScript Vanilla</li>
+                    <li><strong>Licenza:</strong> ⚖️ Vietato l'uso non autorizzato - Tutti i diritti riservati</li>
                 </ul>
             </div>
 
-            <!-- Pulsante Start -->
+            <!-- PULSANTE AVVIO -->
             <div class="text-center">
-                <button id="startTestBtn" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-12 py-4 rounded-xl text-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg">
+                <button id="startTestBtn"
+                        class="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-400 hover:to-yellow-400 text-white font-bold text-xl px-12 py-4 rounded-full shadow-2xl shadow-orange-500/50 transition-all animate-pulse-slow hover:scale-105">
                     🚀 AVVIA TEST
                 </button>
+                <p class="mt-4 text-gray-400 text-sm italic">Buon divertimento! 🎯</p>
             </div>
 
-            <!-- Credits -->
-            <div class="mt-8 text-center text-sm text-gray-500 border-t pt-4">
-                <p><strong>Disclaimer:</strong> Questo quiz è uno strumento di studio. Per informazioni ufficiali consultare la normativa vigente.</p>
-                <p class="mt-2">📚 <strong>Credits:</strong> Quiz sviluppato per scopi didattici</p>
-            </div>
         </div>
     </div>
 
-    <!-- DISCLAIMER MODAL (ora appare DOPO click AVVIA TEST) -->
-    <div id="disclaimerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 animate-slide-in">
-            <div class="text-center mb-6">
-                <div class="text-6xl mb-4">⚠️</div>
-                <h2 class="text-3xl font-bold text-gray-800">Informativa Prima dell'Avvio</h2>
-            </div>
-            
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-6">
-                <p class="text-gray-700 leading-relaxed mb-4">
-                    <strong class="text-yellow-800">ATTENZIONE:</strong> Questo è un test simulato a scopo didattico.
-                </p>
-                <ul class="space-y-2 text-gray-700 text-sm">
-                    <li>✓ Le domande sono estratte casualmente</li>
-                    <li>✓ Hai 30 minuti per completare il test</li>
-                    <li>✓ Non puoi tornare indietro sulle domande</li>
-                    <li>✓ Il timer parte automaticamente</li>
-                </ul>
-            </div>
+    <!-- ========== POP-UP DISCLAIMER (NASCOSTO) ========== -->
+    <div id="disclaimerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in"></div>
+        
+        <!-- Modale -->
+        <div class="relative glass-effect bg-gray-900/90 border-2 border-orange-500 rounded-2xl shadow-2xl shadow-orange-500/50 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
+            <div class="p-8">
+                <!-- Titolo -->
+                <h2 class="text-3xl font-bold text-orange-400 mb-2 flex items-center gap-3">
+                    ⚠️ ATTENZIONE
+                </h2>
+                <div class="h-1 bg-gradient-to-r from-orange-500 to-transparent mb-6"></div>
 
-            <div class="flex gap-4">
-                <button id="closeDisclaimer" class="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-400 transition-all">
-                    ❌ ANNULLA
-                </button>
-                <button id="acceptDisclaimer" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all">
-                    ✅ ACCETTO - INIZIA ORA
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- QUIZ SCREEN -->
-    <div id="quizScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
-        <div class="bg-white rounded-2xl shadow-xl p-8">
-            <!-- Header Quiz -->
-            <div class="flex justify-between items-center mb-6 pb-4 border-b">
-                <div>
-                    <span class="text-sm text-gray-600">Domanda</span>
-                    <span id="questionNumber" class="text-2xl font-bold text-blue-600 ml-2">1/15</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right">
-                        <div class="text-sm text-gray-600">Tempo rimanente</div>
-                        <div id="timer" class="text-2xl font-bold text-red-600">30:00</div>
+                <!-- Box Legale Rosso -->
+                <div class="bg-red-900/40 border-2 border-red-500 rounded-xl p-6 mb-6">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        ⚖️ Avvertenze Legali
+                    </h3>
+                    <div class="text-gray-100 space-y-4 leading-relaxed">
+                        <p>
+                            <strong>📜 Riferimento normativo:</strong> Art. 37 D.Lgs. 81/2008 - 
+                            La formazione obbligatoria deve essere erogata da enti accreditati.
+                        </p>
+                        <p>
+                            <strong>⚠️ Sanzioni penali:</strong> L'uso improprio di materiale didattico 
+                            per sostituire la formazione obbligatoria espone a responsabilità penali 
+                            (art. 55 D.Lgs. 81/2008).
+                        </p>
+                        <p class="font-bold text-red-300">
+                            <strong>❌ È VIETATO:</strong>
+                        </p>
+                        <ul class="list-none space-y-2 ml-4">
+                            <li>❌ Utilizzare questo test come certificazione ufficiale</li>
+                            <li>❌ Distribuire senza autorizzazione scritta</li>
+                            <li>❌ Modificare o alterare i contenuti</li>
+                            <li>❌ Uso commerciale non autorizzato</li>
+                        </ul>
+                        <p class="text-yellow-300 font-semibold">
+                            ✅ <strong>Autorizzazione richiesta:</strong> Per qualsiasi utilizzo diverso 
+                            dall'auto-formazione personale, contattare l'autore.
+                        </p>
                     </div>
                 </div>
-            </div>
 
-            <!-- Question -->
-            <div class="mb-8">
-                <h2 id="questionText" class="text-2xl font-semibold text-gray-800 leading-relaxed"></h2>
-            </div>
+                <!-- Info Quiz -->
+                <div class="text-gray-300 space-y-3 mb-8">
+                    <p class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>Questo test è uno <strong>strumento di verifica personale</strong></span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>Ha finalità <strong>esclusivamente didattiche</strong></span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>Non sostituisce la formazione obbligatoria ex D.Lgs. 81/2008</span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>I risultati sono <strong>indicativi</strong> del livello di preparazione</span>
+                    </p>
+                </div>
 
-            <!-- Answers -->
-            <div id="answersContainer" class="space-y-4">
-                <!-- Populated by JS -->
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="mt-8">
-                <div class="bg-gray-200 rounded-full h-3">
-                    <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all duration-300" style="width: 6.67%"></div>
+                <!-- Pulsanti -->
+                <div class="flex gap-4 flex-col sm:flex-row">
+                    <button id="closeDisclaimer"
+                            class="flex-1 bg-gray-700 hover:bg-red-600 border-2 border-gray-500 hover:border-red-500 text-white font-bold py-4 px-8 rounded-lg transition-all text-lg">
+                        ❌ ANNULLA
+                    </button>
+                    <button id="acceptDisclaimer"
+                            class="flex-1 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-400 hover:to-yellow-400 text-white font-bold py-4 px-8 rounded-lg shadow-lg shadow-orange-500/50 transition-all text-lg">
+                        ✅ ACCETTO E PROCEDO
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- RESULTS SCREEN -->
-    <div id="resultsScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
-        <div class="bg-white rounded-2xl shadow-xl p-8">
-            <!-- Score Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-800 mb-4">📊 Risultati Test</h1>
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
-                    <div class="text-6xl font-bold mb-2" id="finalScore">0/15</div>
-                    <div class="text-xl text-gray-600" id="percentage">0%</div>
-                    <div class="mt-4" id="resultMessage"></div>
+    <!-- ========== QUIZ SCREEN (NASCOSTO) ========== -->
+    <div id="quizScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Timer e Progress -->
+        <div class="glass-effect rounded-xl p-4 mb-6 border border-orange-500/30">
+            <div class="flex justify-between items-center mb-3">
+                <div class="text-lg">
+                    ⏱️ <span id="timerDisplay" class="font-mono font-bold text-orange-400">30:00</span>
+                </div>
+                <div class="text-lg">
+                    📊 Domanda <span id="questionNumber" class="font-bold text-orange-400">1</span>/15
                 </div>
             </div>
-
-            <!-- Review -->
-            <div id="reviewContainer" class="space-y-4 mb-6">
-                <!-- Populated by JS -->
+            <div class="w-full bg-gray-700 rounded-full h-3">
+                <div id="progressBar" class="bg-gradient-to-r from-orange-500 to-yellow-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
             </div>
+        </div>
 
-            <!-- Actions -->
-            <div class="flex gap-4 justify-center">
-                <button onclick="backToHome()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all">
+        <!-- Domanda -->
+        <div class="glass-effect rounded-xl p-8 mb-6 border border-orange-500/30 animate-slide-in">
+            <h2 id="questionText" class="text-2xl font-semibold mb-6 text-white"></h2>
+            <div id="answersContainer" class="space-y-4"></div>
+        </div>
+
+        <!-- Pulsante Avanti -->
+        <div class="text-center">
+            <button id="nextBtn" disabled
+                    class="bg-gradient-to-r from-orange-500 to-yellow-500 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg disabled:shadow-none transition-all disabled:cursor-not-allowed">
+                Avanti →
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== RESULTS SCREEN (NASCOSTO) ========== -->
+    <div id="resultsScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="glass-effect rounded-2xl p-8 border border-orange-500/30">
+            <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-orange-400 to-yellow-400 text-transparent bg-clip-text">
+                📊 Risultati Test
+            </h1>
+
+            <!-- Score Card -->
+            <div id="scoreCard" class="text-center mb-8 p-8 rounded-xl"></div>
+
+            <!-- Riepilogo Domande -->
+            <h2 class="text-2xl font-bold mb-4 text-orange-400">📝 Riepilogo Dettagliato</h2>
+            <div id="reviewContainer" class="space-y-4 mb-8"></div>
+
+            <!-- Pulsanti Finali -->
+            <div class="flex gap-4 flex-col sm:flex-row justify-center">
+                <button onclick="location.reload()"
+                        class="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-400 hover:to-yellow-400 text-white font-bold px-8 py-4 rounded-lg shadow-lg transition-all">
+                    🔄 RIPETI IL TEST
+                </button>
+                <button onclick="location.reload()"
+                        class="bg-gray-700 hover:bg-gray-600 border-2 border-gray-500 text-white font-bold px-8 py-4 rounded-lg transition-all">
                     🏠 TORNA ALLA HOME
                 </button>
             </div>
@@ -170,21 +264,6 @@
     </div>
 
     <script>
-        // ===== CONFIGURATION =====
-        const QUIZ_CONFIG = {
-            totalQuestions: 15,
-            timeLimit: 30 * 60,
-            questionsPerTest: 15
-        };
-
-        // ===== STATE =====
-        let currentQuestion = 0;
-        let score = 0;
-        let userAnswers = [];
-        let selectedQuestions = [];
-        let timeRemaining;
-        let timerInterval;
-
 // ===== QUESTIONS DATABASE =====
         const questions = [            {
                 question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
@@ -1225,7 +1304,14 @@
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
-// ===== UTILITY FUNCTIONS =====
+// ========== VARIABILI GLOBALI ==========
+        let selectedQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timerInterval;
+        let timeLeft = 1800; // 30 minuti in secondi
+
+        // ========== FUNZIONI UTILITÀ ==========
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -1235,215 +1321,162 @@
             return newArray;
         }
 
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // ===== QUIZ FUNCTIONS =====
         function startTest() {
-            console.log('🚀 START TEST CHIAMATA');
-            
-            // VERIFICA PANIERE
-            if (!questions || questions.length === 0) {
-                alert('⚠️ ERRORE: Paniere domande vuoto!');
-                return;
-            }
-            
-            if (questions.length < QUIZ_CONFIG.questionsPerTest) {
-                alert(`⚠️ ERRORE: Servono almeno ${QUIZ_CONFIG.questionsPerTest} domande. Trovate: ${questions.length}`);
-                return;
-            }
-            
-            // Reset
-            currentQuestion = 0;
-            score = 0;
-            userAnswers = new Array(QUIZ_CONFIG.questionsPerTest).fill(null);
-            timeRemaining = QUIZ_CONFIG.timeLimit;
-            
-            // Estrai 15 domande casuali
-            selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
-            
-            // Mescola risposte CON SUPPORTO options/answers
-            selectedQuestions = selectedQuestions.map(q => {
-                const answersArray = q.answers || q.options; // ← SUPPORTO ENTRAMBI
-                
-                if (!answersArray || !Array.isArray(answersArray) || answersArray.length === 0) {
-                    console.error('❌ Domanda malformata:', q);
-                    return null;
-                }
-                
-                if (q.correct === undefined || q.correct < 0 || q.correct >= answersArray.length) {
-                    console.error('❌ Indice risposta corretta non valido:', q);
-                    return null;
-                }
-                
-                const correctAnswer = answersArray[q.correct];
-                const shuffledAnswers = shuffleArray([...answersArray]);
-                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
-                
-                return {
-                    question: q.question,
-                    answers: shuffledAnswers,
-                    correct: newCorrectIndex,
-                    explanation: q.explanation || q.suggestion || ''
-                };
-            }).filter(q => q !== null);
-            
-            if (selectedQuestions.length < QUIZ_CONFIG.questionsPerTest) {
-                alert('⚠️ ERRORE: Alcune domande sono malformate.');
-                return;
-            }
-            
-            // Mostra schermo quiz
+            // Nascondi welcome e modale
+            document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('disclaimerModal').classList.add('hidden');
-            document.getElementById('homeScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
-            
-            displayQuestion();
+
+            // Estrai 15 domande casuali
+            selectedQuestions = shuffleArray(questions).slice(0, 15).map(q => ({
+                ...q,
+                shuffledAnswers: shuffleArray((q.answers || q.options).map((ans, idx) => ({ text: ans, originalIndex: idx })))
+            }));
+
+            currentQuestionIndex = 0;
+            userAnswers = new Array(15).fill(null);
+            showQuestion();
             startTimer();
-            
-            console.log('✅ Test avviato con', selectedQuestions.length, 'domande');
-        }
-
-        function displayQuestion() {
-            const question = selectedQuestions[currentQuestion];
-            
-            document.getElementById('questionNumber').textContent = `${currentQuestion + 1}/${QUIZ_CONFIG.questionsPerTest}`;
-            document.getElementById('questionText').textContent = question.question;
-            
-            const answersContainer = document.getElementById('answersContainer');
-            answersContainer.innerHTML = '';
-            
-            question.answers.forEach((answer, index) => {
-                const button = document.createElement('button');
-                button.className = 'w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all';
-                button.innerHTML = `
-                    <span class="font-semibold text-gray-700">${String.fromCharCode(65 + index)}.</span>
-                    <span class="ml-2 text-gray-800">${answer}</span>
-                `;
-                button.onclick = () => selectAnswer(index);
-                answersContainer.appendChild(button);
-            });
-            
-            updateProgressBar();
-        }
-
-        function selectAnswer(answerIndex) {
-            userAnswers[currentQuestion] = answerIndex;
-            
-            if (answerIndex === selectedQuestions[currentQuestion].correct) {
-                score++;
-            }
-            
-            currentQuestion++;
-            
-            if (currentQuestion < QUIZ_CONFIG.questionsPerTest) {
-                displayQuestion();
-            } else {
-                endQuiz();
-            }
         }
 
         function startTimer() {
             timerInterval = setInterval(() => {
-                timeRemaining--;
-                document.getElementById('timer').textContent = formatTime(timeRemaining);
-                
-                if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    endQuiz();
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timerDisplay').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 300 && timeLeft > 0) {
+                    document.getElementById('timerDisplay').classList.add('text-red-500');
                 }
-                
-                if (timeRemaining <= 60) {
-                    document.getElementById('timer').classList.add('text-red-600');
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResults();
                 }
             }, 1000);
         }
 
-        function updateProgressBar() {
-            const progress = ((currentQuestion + 1) / QUIZ_CONFIG.questionsPerTest) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
+        function showQuestion() {
+            const q = selectedQuestions[currentQuestionIndex];
+            const answersArray = q.answers || q.options; // ✅ SUPPORTO ENTRAMBI
+            
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('progressBar').style.width = `${((currentQuestionIndex + 1) / 15) * 100}%`;
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.shuffledAnswers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-full text-left p-4 rounded-lg border-2 border-gray-600 hover:border-orange-500 transition-all bg-gray-800/50 hover:bg-gray-700/50';
+                button.textContent = answer.text;
+                button.onclick = () => selectAnswer(index, answer.originalIndex);
+                container.appendChild(button);
+            });
+
+            document.getElementById('nextBtn').disabled = userAnswers[currentQuestionIndex] === null;
         }
 
-        function endQuiz() {
-            clearInterval(timerInterval);
+        function selectAnswer(displayIndex, originalIndex) {
+            userAnswers[currentQuestionIndex] = originalIndex;
             
-            document.getElementById('quizScreen').classList.add('hidden');
-            document.getElementById('resultsScreen').classList.remove('hidden');
-            
-            showResults();
+            const buttons = document.getElementById('answersContainer').children;
+            Array.from(buttons).forEach((btn, idx) => {
+                btn.className = 'w-full text-left p-4 rounded-lg border-2 transition-all';
+                if (idx === displayIndex) {
+                    btn.className += ' border-orange-500 bg-orange-500/20';
+                } else {
+                    btn.className += ' border-gray-600 bg-gray-800/50';
+                }
+            });
+
+            document.getElementById('nextBtn').disabled = false;
         }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentQuestionIndex < 14) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                clearInterval(timerInterval);
+                showResults();
+            }
+        });
 
         function showResults() {
-            const percentage = Math.round((score / QUIZ_CONFIG.questionsPerTest) * 100);
-            
-            document.getElementById('finalScore').textContent = `${score}/${QUIZ_CONFIG.questionsPerTest}`;
-            document.getElementById('percentage').textContent = `${percentage}%`;
-            
-            let message = '';
-            if (percentage >= 90) {
-                message = '<div class="text-green-600 text-xl font-semibold">🎉 Eccellente!</div>';
-            } else if (percentage >= 70) {
-                message = '<div class="text-blue-600 text-xl font-semibold">👍 Buon risultato!</div>';
-            } else if (percentage >= 50) {
-                message = '<div class="text-orange-600 text-xl font-semibold">📚 Serve più studio</div>';
-            } else {
-                message = '<div class="text-red-600 text-xl font-semibold">⚠️ Riprova!</div>';
-            }
-            document.getElementById('resultMessage').innerHTML = message;
-            
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            let correctCount = 0;
+            selectedQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) correctCount++;
+            });
+
+            const percentage = Math.round((correctCount / 15) * 100);
+            const passed = percentage >= 70;
+
+            const scoreCard = document.getElementById('scoreCard');
+            scoreCard.className = `text-center mb-8 p-8 rounded-xl border-2 ${
+                passed ? 'bg-green-900/30 border-green-500' : 'bg-red-900/30 border-red-500'
+            }`;
+            scoreCard.innerHTML = `
+                <div class="text-6xl mb-4">${passed ? '🏆' : '📚'}</div>
+                <div class="text-4xl font-bold mb-2">${percentage}%</div>
+                <div class="text-xl mb-4">${correctCount}/15 risposte corrette</div>
+                <div class="text-lg ${passed ? 'text-green-400' : 'text-red-400'} font-semibold">
+                    ${passed ? 'ECCELLENTE! Test superato! 🎉' : 'Insufficiente - Riprova dopo aver studiato 📖'}
+                </div>
+            `;
+
             const reviewContainer = document.getElementById('reviewContainer');
             reviewContainer.innerHTML = '';
-            
+
             selectedQuestions.forEach((q, index) => {
+                const answersArray = q.answers || q.options; // ✅ SUPPORTO ENTRAMBI
                 const userAnswer = userAnswers[index];
                 const isCorrect = userAnswer === q.correct;
-                
+
                 const reviewDiv = document.createElement('div');
-                reviewDiv.className = `p-4 rounded-xl border-2 ${isCorrect ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`;
-                
+                reviewDiv.className = `p-4 rounded-lg border-2 ${
+                    isCorrect ? 'bg-green-900/20 border-green-600' : 'bg-red-900/20 border-red-600'
+                }`;
+
                 reviewDiv.innerHTML = `
-                    <div class="font-semibold text-gray-800 mb-2">
+                    <div class="font-semibold text-white mb-2">
                         ${index + 1}. ${q.question}
                     </div>
                     <div class="text-sm space-y-1">
-                        <div class="text-gray-700">
+                        <div class="text-gray-300">
                             <strong>Tua risposta:</strong> 
-                            <span class="${isCorrect ? 'text-green-700' : 'text-red-700'}">${q.answers[userAnswer] || 'Nessuna'}</span>
+                            <span class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${answersArray[userAnswer] || 'Nessuna'}</span>
                         </div>
-                        ${!isCorrect ? `<div class="text-green-700"><strong>Risposta corretta:</strong> ${q.answers[q.correct]}</div>` : ''}
-                        ${q.explanation ? `<div class="text-gray-600 italic mt-2">💡 ${q.explanation}</div>` : ''}
+                        ${!isCorrect ? `<div class="text-green-400"><strong>Risposta corretta:</strong> ${answersArray[q.correct]}</div>` : ''}
+                        ${q.explanation ? `<div class="text-gray-400 italic mt-2">💡 ${q.explanation}</div>` : ''}
                     </div>
                 `;
-                
+
                 reviewContainer.appendChild(reviewDiv);
             });
         }
 
-        function backToHome() {
-            location.reload();
-        }
-
-        // ===== EVENT LISTENERS =====
+        // ========== EVENT LISTENERS ==========
         document.addEventListener('DOMContentLoaded', function() {
             const startBtn = document.getElementById('startTestBtn');
             const disclaimerModal = document.getElementById('disclaimerModal');
             const closeDisclaimer = document.getElementById('closeDisclaimer');
             const acceptDisclaimer = document.getElementById('acceptDisclaimer');
-            
-            // Click AVVIA TEST → Mostra pop-up
+
             startBtn.addEventListener('click', function() {
                 disclaimerModal.classList.remove('hidden');
             });
-            
-            // Click ANNULLA → Chiudi pop-up
+
             closeDisclaimer.addEventListener('click', function() {
                 disclaimerModal.classList.add('hidden');
             });
-            
-            // Click ACCETTO → Avvia test
+
             acceptDisclaimer.addEventListener('click', function() {
                 startTest();
             });
