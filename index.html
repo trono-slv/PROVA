@@ -1483,25 +1483,39 @@
 
         // ========== FUNZIONI PULSANTI FINALI ==========
         function repeatSameTest() {
-            // Riparte con le stesse domande
-            currentQuestionIndex = 0;
-            userAnswers = new Array(15).fill(null);
-            timeLeft = 1800;
-            
-            document.getElementById('resultsScreen').classList.add('hidden');
-            document.getElementById('quizScreen').classList.remove('hidden');
-            
-            showQuestion();
-            startTimer();
-        }
+    // Riparte con le stesse domande
+    currentQuestionIndex = 0;
+    userAnswers = new Array(15).fill(null);
+    timeLeft = 1800;
+    
+    // RESET TIMER DISPLAY
+    document.getElementById('timerDisplay').textContent = '30:00';
+    document.getElementById('timerDisplay').classList.remove('text-red-500');
+    
+    // Pulisci timer precedente se esiste
+    if (timerInterval) clearInterval(timerInterval);
+    
+    document.getElementById('resultsScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
+    
+    showQuestion();
+    startTimer();
+}
 
         function generateNewTest() {
+            // PULISCI TIMER PRECEDENTE
+            if (timerInterval) clearInterval(timerInterval);
+            
+            // RESET TIMER DISPLAY
+            document.getElementById('timerDisplay').textContent = '30:00';
+            document.getElementById('timerDisplay').classList.remove('text-red-500');
+            
+            // Nascondi results, genera nuovo test
+            document.getElementById('resultsScreen').classList.add('hidden');
+            
             // Genera nuovo set di 15 domande casuali
             startTest();
-            
-            document.getElementById('resultsScreen').classList.add('hidden');
         }
-
         // ========== EVENT LISTENERS ==========
         document.addEventListener('DOMContentLoaded', function() {
             const startBtn = document.getElementById('startTestBtn');
