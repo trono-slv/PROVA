@@ -1366,12 +1366,71 @@
             return newArray;
         }
 
-        // ===== START TEST =====
-        function startTest() {
-            if (!questions || questions.length === 0) {
-                alert('⚠️ Errore: Nessuna domanda disponibile!');
-                return;
-            }
+       function startTest() {
+    console.log('🚀 START TEST CHIAMATA');
+    
+    // VERIFICA PANIERE
+    if (!questions || questions.length === 0) {
+        alert('⚠️ ERRORE: Paniere domande vuoto! Inserisci almeno 15 domande nel array "questions".');
+        console.error('❌ Array questions:', questions);
+        return;
+    }
+    
+    if (questions.length < QUIZ_CONFIG.questionsPerTest) {
+        alert(`⚠️ ERRORE: Servono almeno ${QUIZ_CONFIG.questionsPerTest} domande. Trovate: ${questions.length}`);
+        return;
+    }
+    
+    // Reset
+    currentQuestion = 0;
+    score = 0;
+    userAnswers = new Array(QUIZ_CONFIG.questionsPerTest).fill(null);
+    timeRemaining = QUIZ_CONFIG.timeLimit;
+    
+    // Estrai 15 domande casuali
+    selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
+    
+    // Mescola risposte CON CONTROLLO
+    selectedQuestions = selectedQuestions.map(q => {
+        // CONTROLLO VALIDITA' DOMANDA
+        if (!q || !q.answers || !Array.isArray(q.answers) || q.answers.length === 0) {
+            console.error('❌ Domanda malformata:', q);
+            return null;
+        }
+        
+        if (q.correct === undefined || q.correct < 0 || q.correct >= q.answers.length) {
+            console.error('❌ Indice risposta corretta non valido:', q);
+            return null;
+        }
+        
+        const correctAnswer = q.answers[q.correct];
+        const shuffledAnswers = shuffleArray([...q.answers]);
+        const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+        
+        return {
+            ...q,
+            answers: shuffledAnswers,
+            correct: newCorrectIndex
+        };
+    }).filter(q => q !== null); // Rimuovi domande non valide
+    
+    // CONTROLLO FINALE
+    if (selectedQuestions.length < QUIZ_CONFIG.questionsPerTest) {
+        alert('⚠️ ERRORE: Alcune domande sono malformate. Controlla il paniere.');
+        console.error('❌ Domande valide:', selectedQuestions.length);
+        return;
+    }
+    
+    // Mostra schermo quiz
+    document.getElementById('homeScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
+    
+    displayQuestion();
+    startTimer();
+    
+    console.log('✅ Test avviato con', selectedQuestions.length, 'domande');
+}
+
             
             currentQuestion = 0;
             score = 0;
