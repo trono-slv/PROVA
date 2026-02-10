@@ -3,85 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Rischi Specifici in Magazzino - Dott. Salvatore Trono</title>
+    <title>Test Valutazione Rischi Magazzino - Dott. Salvatore Trono</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #f59e0b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --darker: #111827;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #e2e8f0;
             min-height: 100vh;
         }
 
         .glass-card {
             background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px -10px rgba(37, 99, 235, 0.6);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), #d97706);
+            background: rgba(71, 85, 105, 0.5);
+            color: #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px -10px rgba(245, 158, 11, 0.6);
-        }
-
-        .progress-bar {
-            transition: width 0.4s ease;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-overlay {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
+            background: rgba(71, 85, 105, 0.8);
+            border-color: rgba(148, 163, 184, 0.5);
         }
 
         .answer-option {
-            transition: all 0.3s ease;
+            background: rgba(51, 65, 85, 0.5);
+            border: 2px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 16px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .answer-option:hover {
-            transform: translateX(8px);
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(71, 85, 105, 0.7);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateX(4px);
         }
 
         .answer-option.selected {
@@ -89,257 +84,209 @@
             border-color: #3b82f6;
         }
 
-        .timer-warning {
-            animation: pulse 1s infinite;
+        .answer-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .hidden {
+            display: none !important;
         }
 
-        /* Warehouse Theme Colors */
-        .warehouse-accent {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        .question-review {
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid transparent;
         }
 
-        .warehouse-card {
-            background: rgba(41, 37, 36, 0.7);
-            border-color: rgba(251, 146, 60, 0.2);
+        .question-review.correct {
+            border-left-color: #10b981;
+        }
+
+        .question-review.incorrect {
+            border-left-color: #ef4444;
+        }
+
+        .summary-header {
+            padding: 48px;
+            text-align: center;
+            border-radius: 24px 24px 0 0;
+            color: white;
+        }
+
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .progress-bar-container {
+            background: rgba(51, 65, 85, 0.5);
+            height: 8px;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            height: 100%;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-6xl mx-auto">
-        <!-- Home Screen -->
-        <div id="homeScreen" class="space-y-6">
-            <!-- Header -->
-            <div class="glass-card rounded-2xl p-8 text-center fade-in">
-                <div class="mb-6">
-                    <span class="text-6xl">🏭</span>
-                </div>
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-                    Test Rischi Specifici<br>in Magazzino
-                </h1>
-                <p class="text-xl text-slate-300 mb-2">D.Lgs. 81/2008 - Sicurezza sul Lavoro</p>
-                <p class="text-sm text-slate-400">Verifica le tue conoscenze sui rischi specifici del settore</p>
+<body>
+
+    <!-- DISCLAIMER MODAL -->
+    <div id="disclaimerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+        <div class="glass-card max-w-2xl w-full p-8">
+            <h2 class="text-3xl font-bold mb-4 text-center">⚠️ Avviso Legale</h2>
+            <div class="text-gray-300 space-y-4 mb-6">
+                <p><strong>Materiale Didattico:</strong> Questo test è stato sviluppato esclusivamente per scopi formativi e didattici.</p>
+                <p><strong>Validità:</strong> I contenuti hanno valore puramente educativo e non sostituiscono la formazione obbligatoria prevista dal D.Lgs. 81/2008.</p>
+                <p><strong>Responsabilità:</strong> L'autore non si assume responsabilità per l'uso improprio del materiale o per decisioni basate esclusivamente su questi contenuti.</p>
+                <p><strong>Consultazione Professionale:</strong> Per valutazioni specifiche sui rischi aziendali, consultare professionisti qualificati in materia di sicurezza sul lavoro.</p>
             </div>
-
-            <!-- Info Card -->
-            <div class="glass-card rounded-2xl p-6 fade-in">
-                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <span>📋</span> Informazioni sul Test
-                </h2>
-                <div class="grid md:grid-cols-2 gap-4 text-slate-300">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">❓</span>
-                        <div>
-                            <p class="font-semibold text-white">15 Domande</p>
-                            <p class="text-sm">Estratte casualmente dal paniere</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">⏱️</span>
-                        <div>
-                            <p class="font-semibold text-white">30 Minuti</p>
-                            <p class="text-sm">Tempo massimo disponibile</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">✅</span>
-                        <div>
-                            <p class="font-semibold text-white">Risposta Singola</p>
-                            <p class="text-sm">Una sola risposta corretta per domanda</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">📊</span>
-                        <div>
-                            <p class="font-semibold text-white">Riepilogo Finale</p>
-                            <p class="text-sm">Con risposte corrette e spiegazioni</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex gap-4 justify-center">
+                <button id="acceptDisclaimer" class="btn-primary">✅ Ho Compreso</button>
+                <button id="closeDisclaimer" class="btn-secondary">❌ Chiudi</button>
             </div>
-
-            <!-- Start Button -->
-            <div class="text-center fade-in">
-               <button id="startTestBtn" class="btn-primary text-white px-12 py-4 rounded-xl font-bold text-xl shadow-xl hover:shadow-2xl transition-all hover:scale-105">
-    🚀 AVVIA IL TEST
-</button>
-
-            </div>
-
-            <!-- Footer -->
-            <footer class="glass-card rounded-2xl p-6 text-center fade-in">
-                <div class="space-y-4">
-                    <!-- Credits -->
-                    <div class="text-slate-300">
-                        <p class="font-semibold text-white mb-2">👨‍🏫 A cura del Dott. Salvatore Trono</p>
-                        <p class="text-sm">Laureato in Servizi Giuridici per l'Impresa</p>
-                        <p class="text-sm">Formatore ed Esperto in Sicurezza sui Luoghi di Lavoro</p>
-                    </div>
-
-                    <!-- Disclaimer -->
-                    <div class="text-xs text-slate-400 border-t border-slate-600 pt-4">
-                        <p class="mb-2">⚠️ <strong>DISCLAIMER:</strong></p>
-                        <p class="text-left max-w-2xl mx-auto">
-                            Questo test ha scopo puramente formativo e informativo. Non ha valore certificativo né sostituisce 
-                            la formazione obbligatoria in materia di salute e sicurezza sul lavoro prevista dal D.Lgs. 81/2008. 
-                            Le informazioni fornite potrebbero non essere esaustive e sono soggette a modifiche normative.
-                        </p>
-                    </div>
-                  </div>
-                </div>
-            </footer>
-        </div>
-
-        <!-- Legal Modal -->
-        <div id="legalModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
-            <div class="glass-card rounded-2xl p-8 max-w-2xl max-h-[90vh] overflow-y-auto">
-                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <span>⚖️</span> Informativa e Condizioni d'Uso
-                </h2>
-                
-                <div class="text-slate-300 space-y-4 text-sm">
-                    <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
-                        <p class="font-semibold text-orange-400 mb-2">⚠️ IMPORTANTE - LEGGERE ATTENTAMENTE</p>
-                        <p class="text-slate-300">
-                            Questo test è fornito esclusivamente a scopo <strong>formativo e informativo</strong>. 
-                            L'utilizzo dello strumento implica l'accettazione delle seguenti condizioni.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 class="font-semibold text-white mb-2">📌 Finalità del Test</h3>
-                        <p>
-                            Il test è progettato per verificare le conoscenze sui rischi specifici in ambito magazzino 
-                            secondo il D.Lgs. 81/2008. NON sostituisce la formazione obbligatoria prevista dalla legge.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 class="font-semibold text-white mb-2">🚫 Limitazioni</h3>
-                        <ul class="list-disc list-inside space-y-1 ml-2">
-                            <li>Nessun valore certificativo o legale</li>
-                            <li>Non rilascia attestati validi ai fini normativi</li>
-                            <li>Non sostituisce corsi di formazione obbligatori</li>
-                            <li>I contenuti possono non essere esaustivi</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 class="font-semibold text-white mb-2">🔒 Privacy e Dati</h3>
-                        <p>
-                            Nessun dato personale viene raccolto o trasmesso. Il test funziona completamente offline 
-                            dopo il caricamento. I risultati sono visibili solo all'utente e non vengono memorizzati.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 class="font-semibold text-white mb-2">⚖️ Responsabilità</h3>
-                        <p>
-                            L'autore non si assume responsabilità per danni derivanti dall'uso improprio dello strumento 
-                            o da decisioni prese sulla base dei risultati ottenuti.
-                        </p>
-                    </div>
-
-                    <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                        <p class="font-semibold text-blue-400 mb-2">📚 Riferimenti Normativi</p>
-                        <p class="text-slate-300">
-                            D.Lgs. 81/2008 (Testo Unico Sicurezza Lavoro)<br>
-                            Accordo Stato-Regioni 21/12/2011<br>
-                            Normativa vigente in materia di SSL
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-3 mt-6">
-                    <button onclick="closeLegalModal()" 
-                            class="flex-1 bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-semibold transition-all">
-                        ❌ ANNULLA
-                    </button>
-                    <button onclick="acceptLegal()" 
-                            class="flex-1 btn-primary text-white px-6 py-3 rounded-xl font-semibold">
-                        ✅ ACCETTO E CONTINUA
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quiz Screen -->
-        <div id="quizScreen" class="hidden space-y-6">
-            <!-- Header with Timer -->
-            <div class="glass-card rounded-2xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl">🏭</span>
-                    <div>
-                        <h2 class="text-xl font-bold text-white">Test in Corso</h2>
-                        <p class="text-sm text-slate-400">Rischi Specifici Magazzino</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-6">
-                    <div class="text-center">
-                        <div id="timer" class="text-3xl font-bold text-white">30:00</div>
-                        <p class="text-xs text-slate-400">Tempo rimanente</p>
-                    </div>
-                    <div class="text-center">
-                        <div id="questionCounter" class="text-3xl font-bold text-blue-400">1/30</div>
-                        <p class="text-xs text-slate-400">Domanda</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="glass-card rounded-xl p-4">
-                <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
-                    <div id="progressBar" class="progress-bar h-full rounded-full" style="width: 3.33%"></div>
-                </div>
-            </div>
-
-            <!-- Question Card -->
-            <div id="questionCard" class="glass-card rounded-2xl p-8 fade-in">
-                <div class="mb-6">
-                    <div class="flex items-start gap-4 mb-4">
-                        <span class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">
-                            <span id="questionNumber">1</span>
-                        </span>
-                        <h3 id="questionText" class="text-xl md:text-2xl font-semibold text-white flex-1">
-                            <!-- Question text here -->
-                        </h3>
-                    </div>
-                </div>
-
-                <!-- Answers -->
-                <div id="answersContainer" class="space-y-3">
-                    <!-- Answers will be inserted here -->
-                </div>
-
-                <!-- Navigation -->
-                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-600">
-                    <button id="prevBtn" onclick="previousQuestion()" 
-                            class="bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                        ← Precedente
-                    </button>
-                    <button id="nextBtn" onclick="nextQuestion()" 
-                            class="btn-primary text-white px-6 py-3 rounded-xl font-semibold">
-                        Successiva →
-                    </button>
-                    <button id="finishBtn" onclick="finishQuiz()" 
-                            class="hidden warehouse-accent text-white px-8 py-3 rounded-xl font-semibold shadow-lg">
-                        🏁 TERMINA TEST
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Summary Screen -->
-        <div id="summaryScreen" class="hidden">
-            <!-- Summary content will be inserted here -->
         </div>
     </div>
 
-   <script>
+    <!-- HEADER -->
+    <header class="border-b border-gray-700/30 backdrop-blur-sm bg-slate-900/50 sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                        🏭 Test Valutazione Rischi Magazzino
+                    </h1>
+                    <p class="text-gray-400 text-sm mt-1">Formazione professionale sulla sicurezza</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg font-semibold">Dott. Salvatore Trono</p>
+                    <p class="text-sm text-gray-400">Medico Competente | Esperto SSL</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+
+        <!-- HOME SCREEN -->
+        <div id="homeScreen">
+            <div class="glass-card p-8 mb-8">
+                <div class="text-center mb-8">
+                    <div class="text-6xl mb-4">📋</div>
+                    <h2 class="text-4xl font-bold mb-4">Test di Valutazione</h2>
+                    <p class="text-xl text-gray-300">Verifica le tue conoscenze sui rischi in magazzino</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="text-center p-6 glass-card">
+                        <div class="text-3xl mb-2">📝</div>
+                        <div class="text-2xl font-bold text-blue-400">15</div>
+                        <div class="text-sm text-gray-400">Domande</div>
+                    </div>
+                    <div class="text-center p-6 glass-card">
+                        <div class="text-3xl mb-2">⏱️</div>
+                        <div class="text-2xl font-bold text-blue-400">30</div>
+                        <div class="text-sm text-gray-400">Minuti</div>
+                    </div>
+                    <div class="text-center p-6 glass-card">
+                        <div class="text-3xl mb-2">✅</div>
+                        <div class="text-2xl font-bold text-blue-400">60%</div>
+                        <div class="text-sm text-gray-400">Per Superare</div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6 mb-8">
+                    <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
+                        <span>ℹ️</span> Istruzioni
+                    </h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>✓ Rispondi a tutte le 15 domande</li>
+                        <li>✓ Hai 30 minuti di tempo</li>
+                        <li>✓ Puoi navigare tra le domande</li>
+                        <li>✓ Il test si conclude automaticamente allo scadere del tempo</li>
+                        <li>✓ Punteggio minimo: 60% (9 risposte corrette su 15)</li>
+                    </ul>
+                </div>
+
+                <div class="text-center space-y-4">
+                    <button id="startTestBtn" class="btn-primary text-white px-12 py-4 rounded-xl font-bold text-xl shadow-xl hover:shadow-2xl transition-all">
+                        🚀 AVVIA IL TEST
+                    </button>
+                    <div>
+                        <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" 
+                           class="text-blue-400 hover:text-blue-300 underline text-sm">
+                            📖 Consulta la teoria prima del test
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quizScreen" class="hidden">
+            <div class="glass-card p-8">
+                <!-- TIMER & PROGRESS -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm text-gray-400">
+                        Domanda <span id="progressText" class="font-bold text-white">1/15</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">⏱️</span>
+                        <span id="timer" class="text-2xl font-bold">30:00</span>
+                    </div>
+                </div>
+
+                <div class="progress-bar-container mb-8">
+                    <div id="progressBar" class="progress-bar" style="width: 6.67%"></div>
+                </div>
+
+                <!-- QUESTION -->
+                <div class="mb-8">
+                    <h3 id="questionText" class="text-2xl font-bold mb-6"></h3>
+                    <div id="answersContainer" class="space-y-4"></div>
+                </div>
+
+                <!-- NAVIGATION -->
+                <div class="flex justify-between items-center pt-6 border-t border-gray-700/30">
+                    <button id="prevBtn" onclick="previousQuestion()" class="btn-secondary">
+                        ← Precedente
+                    </button>
+                    <button id="finishBtn" onclick="finishTest()" class="btn-primary hidden">
+                        🏁 TERMINA TEST
+                    </button>
+                    <button id="nextBtn" onclick="nextQuestion()" class="btn-secondary">
+                        Successiva →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY SCREEN -->
+        <div id="summaryScreen" class="hidden">
+            <div id="summaryContent" class="glass-card"></div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-8 mt-12 border-t border-gray-700/30">
+        <p class="text-gray-400 text-sm">
+            © Dott. Salvatore Trono - Medico Competente<br>
+            <span class="text-xs text-gray-500 mt-2 block">
+                Materiale didattico per formazione aziendale
+            </span>
+        </p>
+    </footer>
+
+    <script>
         // ===== CONFIGURATION =====
         const QUIZ_CONFIG = {
             totalQuestions: 15,
@@ -368,7 +315,7 @@
         let timeRemaining;
         let timerInterval;
 
-        // ===== QUESTIONS DATABASE =====
+// ===== QUESTIONS DATABASE =====
         const questions = [            {
                 question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
                 options: ["D.Lgs. 81/2008", "Legge 626/94", "D.Lgs. 152/2006", "Legge 300/70"],
@@ -1408,7 +1355,8 @@
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
- // ===== UTILITY: SHUFFLE ARRAY =====
+
+        // ===== UTILITY =====
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -1420,23 +1368,18 @@
 
         // ===== START TEST =====
         function startTest() {
-            console.log('🚀 startTest() chiamata');
-            
             if (!questions || questions.length === 0) {
                 alert('⚠️ Errore: Nessuna domanda disponibile!');
                 return;
             }
             
-            // Reset
             currentQuestion = 0;
             score = 0;
             userAnswers = [];
             timeRemaining = QUIZ_CONFIG.timeLimit;
             
-            // Estrai e mescola 15 domande
             selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
             
-            // Mescola risposte
             selectedQuestions = selectedQuestions.map(q => {
                 const correctAnswer = q.answers[q.correct];
                 const shuffledAnswers = shuffleArray([...q.answers]);
@@ -1449,9 +1392,6 @@
                 };
             });
             
-            console.log(`✅ ${selectedQuestions.length} domande estratte`);
-            
-            // Cambia schermata
             homeScreen.classList.add('hidden');
             quizScreen.classList.remove('hidden');
             
@@ -1495,7 +1435,6 @@
                 </label>
             `).join('');
             
-            // Event listeners
             document.querySelectorAll('.answer-option').forEach(option => {
                 option.addEventListener('click', function() {
                     const index = parseInt(this.dataset.index);
@@ -1548,7 +1487,6 @@
         function finishTest() {
             clearInterval(timerInterval);
             
-            // Calcola punteggio
             score = 0;
             selectedQuestions.forEach((q, index) => {
                 if (userAnswers[index] === q.correct) {
@@ -1633,7 +1571,6 @@
             userAnswers = [];
             timeRemaining = QUIZ_CONFIG.timeLimit;
             
-            // Rimescola solo le risposte
             selectedQuestions = selectedQuestions.map(q => {
                 const correctAnswer = q.answers[q.correct];
                 const shuffledAnswers = shuffleArray([...q.answers]);
@@ -1662,37 +1599,29 @@
         }
 
         // ===== INITIALIZE =====
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('✅ DOM caricato');
-            
-            // Pulsante Start
+        document.addEventListener('DOMContentLoaded', function() {
             const startBtn = document.getElementById('startTestBtn');
-            if (startBtn) {
-                startBtn.addEventListener('click', startTest);
-                console.log('✅ Event listener aggiunto');
-            } else {
-                console.error('❌ Pulsante Start non trovato!');
-            }
-            
-            // Disclaimer
+            const disclaimerModal = document.getElementById('disclaimerModal');
             const closeDisclaimer = document.getElementById('closeDisclaimer');
             const acceptDisclaimer = document.getElementById('acceptDisclaimer');
-            const disclaimerModal = document.getElementById('disclaimerModal');
+            
+            if (startBtn) {
+                startBtn.addEventListener('click', startTest);
+            }
             
             if (closeDisclaimer) {
-                closeDisclaimer.addEventListener('click', () => {
+                closeDisclaimer.addEventListener('click', function() {
                     disclaimerModal.classList.add('hidden');
                 });
             }
             
             if (acceptDisclaimer) {
-                acceptDisclaimer.addEventListener('click', () => {
+                acceptDisclaimer.addEventListener('click', function() {
                     disclaimerModal.classList.add('hidden');
                 });
             }
             
-            // Mostra disclaimer
-            setTimeout(() => {
+            setTimeout(function() {
                 disclaimerModal.classList.remove('hidden');
             }, 500);
         });
@@ -1700,4 +1629,3 @@
 
 </body>
 </html>
-        
