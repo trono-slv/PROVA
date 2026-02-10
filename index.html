@@ -164,10 +164,10 @@
 
             <!-- Start Button -->
             <div class="text-center fade-in">
-                <button onclick="showLegalModal()" 
-                        class="btn-primary text-white px-12 py-5 rounded-xl text-xl font-bold shadow-2xl hover:shadow-blue-500/50 transition-all duration-300">
-                    🚀 INIZIA IL TEST
-                </button>
+               <button id="startTestBtn" class="btn-primary text-white px-12 py-4 rounded-xl font-bold text-xl shadow-xl hover:shadow-2xl transition-all hover:scale-105">
+    🚀 AVVIA IL TEST
+</button>
+
             </div>
 
             <!-- Footer -->
@@ -1441,12 +1441,30 @@
             startQuiz();
         }
 
-        // ===== START QUIZ =====
-        function startQuiz() {
-            // Shuffle and select random questions
+               // ===== START TEST =====
+        function startTest() {
+            console.log('startTest() chiamata'); // DEBUG
+            
+            // Verifica che ci siano domande
+            if (!questions || questions.length === 0) {
+                alert('⚠️ ERRORE: Nessuna domanda trovata nel paniere!');
+                return;
+            }
+            
+            console.log(`Paniere: ${questions.length} domande`); // DEBUG
+            
+            // Reset variabili
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            timeRemaining = QUIZ_CONFIG.timeLimit;
+            
+            // Estrai 15 domande casuali
             selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
             
-            // Shuffle answers for each question
+            console.log(`Estratte: ${selectedQuestions.length} domande`); // DEBUG
+            
+            // Rimescola opzioni per ogni domanda
             selectedQuestions = selectedQuestions.map(q => {
                 const correctAnswer = q.answers[q.correct];
                 const shuffledAnswers = shuffleArray([...q.answers]);
@@ -1458,17 +1476,18 @@
                     correct: newCorrectIndex
                 };
             });
-
-            userAnswers = new Array(QUIZ_CONFIG.questionsPerTest).fill(null);
-            currentQuestion = 0;
-            score = 0;
-            timeRemaining = QUIZ_CONFIG.timeLimit;
-
+            
+            // Nascondi home, mostra quiz
             homeScreen.classList.add('hidden');
             quizScreen.classList.remove('hidden');
-
+            
+            console.log('Schermate cambiate'); // DEBUG
+            
+            // Avvia quiz
+            displayQuestion();
             startTimer();
-            showQuestion();
+            
+            console.log('Quiz avviato'); // DEBUG
         }
 
         // ===== TIMER =====
