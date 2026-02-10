@@ -3,288 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Valutazione Rischi Magazzino - Dott. Salvatore Trono</title>
+    <title>Quiz Sicurezza sul Lavoro - 15 Domande</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #e2e8f0;
-            min-height: 100vh;
+        .animate-slide-in { animation: slideIn 0.3s ease-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 18px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-        }
-
-        .btn-secondary {
-            background: rgba(71, 85, 105, 0.5);
-            color: #e2e8f0;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(71, 85, 105, 0.8);
-            border-color: rgba(148, 163, 184, 0.5);
-        }
-
-        .answer-option {
-            background: rgba(51, 65, 85, 0.5);
-            border: 2px solid rgba(148, 163, 184, 0.2);
-            border-radius: 12px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .answer-option:hover {
-            background: rgba(71, 85, 105, 0.7);
-            border-color: rgba(59, 130, 246, 0.5);
-            transform: translateX(4px);
-        }
-
-        .answer-option.selected {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6;
-        }
-
-        .answer-option input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .question-review {
-            background: rgba(51, 65, 85, 0.5);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border-left: 4px solid transparent;
-        }
-
-        .question-review.correct {
-            border-left-color: #10b981;
-        }
-
-        .question-review.incorrect {
-            border-left-color: #ef4444;
-        }
-
-        .summary-header {
-            padding: 48px;
-            text-align: center;
-            border-radius: 24px 24px 0 0;
-            color: white;
-        }
-
-        .modal-backdrop {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-        }
-
-        .progress-bar-container {
-            background: rgba(51, 65, 85, 0.5);
-            height: 8px;
-            border-radius: 999px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            height: 100%;
-            transition: width 0.3s ease;
-        }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
     </style>
 </head>
-<body>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
 
-    <!-- DISCLAIMER MODAL -->
-    <div id="disclaimerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
-        <div class="glass-card max-w-2xl w-full p-8">
-            <h2 class="text-3xl font-bold mb-4 text-center">⚠️ Avviso Legale</h2>
-            <div class="text-gray-300 space-y-4 mb-6">
-                <p><strong>Materiale Didattico:</strong> Questo test è stato sviluppato esclusivamente per scopi formativi e didattici.</p>
-                <p><strong>Validità:</strong> I contenuti hanno valore puramente educativo e non sostituiscono la formazione obbligatoria prevista dal D.Lgs. 81/2008.</p>
-                <p><strong>Responsabilità:</strong> L'autore non si assume responsabilità per l'uso improprio del materiale o per decisioni basate esclusivamente su questi contenuti.</p>
-                <p><strong>Consultazione Professionale:</strong> Per valutazioni specifiche sui rischi aziendali, consultare professionisti qualificati in materia di sicurezza sul lavoro.</p>
+    <!-- HOME SCREEN -->
+    <div id="homeScreen" class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-xl p-8 animate-slide-in">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Quiz Sicurezza sul Lavoro</h1>
+                <p class="text-gray-600 text-lg">Test di preparazione - 15 Domande</p>
+                <div class="mt-4 text-sm text-gray-500">
+                    <p><strong>Creato da:</strong> [IL TUO NOME]</p>
+                </div>
             </div>
-            <div class="flex gap-4 justify-center">
-                <button id="acceptDisclaimer" class="btn-primary">✅ Ho Compreso</button>
-                <button id="closeDisclaimer" class="btn-secondary">❌ Chiudi</button>
+
+            <!-- Istruzioni -->
+            <div class="bg-blue-50 rounded-xl p-6 mb-6">
+                <h2 class="text-xl font-semibold text-blue-900 mb-4">📋 Istruzioni</h2>
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <span>Il test contiene <strong>15 domande casuali</strong> estratte dal paniere ufficiale</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <span>Tempo disponibile: <strong>30 minuti</strong></span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <span>Ogni domanda ha <strong>4 opzioni</strong>, di cui <strong>solo 1 corretta</strong></span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <span>Cliccando su una risposta, il quiz <strong>avanza automaticamente</strong> alla domanda successiva</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <span>Al termine vedrai il <strong>riepilogo dettagliato</strong> con spiegazioni</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Pulsante Start -->
+            <div class="text-center">
+                <button id="startTestBtn" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-12 py-4 rounded-xl text-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg">
+                    🚀 AVVIA TEST
+                </button>
+            </div>
+
+            <!-- Credits -->
+            <div class="mt-8 text-center text-sm text-gray-500 border-t pt-4">
+                <p><strong>Disclaimer:</strong> Questo quiz è uno strumento di studio. Per informazioni ufficiali consultare la normativa vigente.</p>
+                <p class="mt-2">📚 <strong>Credits:</strong> Quiz sviluppato per scopi didattici</p>
             </div>
         </div>
     </div>
 
-    <!-- HEADER -->
-    <header class="border-b border-gray-700/30 backdrop-blur-sm bg-slate-900/50 sticky top-0 z-40">
-        <div class="container mx-auto px-4 py-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- DISCLAIMER MODAL (ora appare DOPO click AVVIA TEST) -->
+    <div id="disclaimerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 animate-slide-in">
+            <div class="text-center mb-6">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h2 class="text-3xl font-bold text-gray-800">Informativa Prima dell'Avvio</h2>
+            </div>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-6">
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong class="text-yellow-800">ATTENZIONE:</strong> Questo è un test simulato a scopo didattico.
+                </p>
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li>✓ Le domande sono estratte casualmente</li>
+                    <li>✓ Hai 30 minuti per completare il test</li>
+                    <li>✓ Non puoi tornare indietro sulle domande</li>
+                    <li>✓ Il timer parte automaticamente</li>
+                </ul>
+            </div>
+
+            <div class="flex gap-4">
+                <button id="closeDisclaimer" class="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-400 transition-all">
+                    ❌ ANNULLA
+                </button>
+                <button id="acceptDisclaimer" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all">
+                    ✅ ACCETTO - INIZIA ORA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <!-- Header Quiz -->
+            <div class="flex justify-between items-center mb-6 pb-4 border-b">
                 <div>
-                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-                        🏭 Test Valutazione Rischi Magazzino
-                    </h1>
-                    <p class="text-gray-400 text-sm mt-1">Formazione professionale sulla sicurezza</p>
+                    <span class="text-sm text-gray-600">Domanda</span>
+                    <span id="questionNumber" class="text-2xl font-bold text-blue-600 ml-2">1/15</span>
                 </div>
-                <div class="text-right">
-                    <p class="text-lg font-semibold">Dott. Salvatore Trono</p>
-                    <p class="text-sm text-gray-400">Medico Competente | Esperto SSL</p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTAINER -->
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-
-        <!-- HOME SCREEN -->
-        <div id="homeScreen">
-            <div class="glass-card p-8 mb-8">
-                <div class="text-center mb-8">
-                    <div class="text-6xl mb-4">📋</div>
-                    <h2 class="text-4xl font-bold mb-4">Test di Valutazione</h2>
-                    <p class="text-xl text-gray-300">Verifica le tue conoscenze sui rischi in magazzino</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="text-center p-6 glass-card">
-                        <div class="text-3xl mb-2">📝</div>
-                        <div class="text-2xl font-bold text-blue-400">15</div>
-                        <div class="text-sm text-gray-400">Domande</div>
-                    </div>
-                    <div class="text-center p-6 glass-card">
-                        <div class="text-3xl mb-2">⏱️</div>
-                        <div class="text-2xl font-bold text-blue-400">30</div>
-                        <div class="text-sm text-gray-400">Minuti</div>
-                    </div>
-                    <div class="text-center p-6 glass-card">
-                        <div class="text-3xl mb-2">✅</div>
-                        <div class="text-2xl font-bold text-blue-400">60%</div>
-                        <div class="text-sm text-gray-400">Per Superare</div>
-                    </div>
-                </div>
-
-                <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6 mb-8">
-                    <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
-                        <span>ℹ️</span> Istruzioni
-                    </h3>
-                    <ul class="space-y-2 text-gray-300">
-                        <li>✓ Rispondi a tutte le 15 domande</li>
-                        <li>✓ Hai 30 minuti di tempo</li>
-                        <li>✓ Puoi navigare tra le domande</li>
-                        <li>✓ Il test si conclude automaticamente allo scadere del tempo</li>
-                        <li>✓ Punteggio minimo: 60% (9 risposte corrette su 15)</li>
-                    </ul>
-                </div>
-
-                <div class="text-center space-y-4">
-                    <button id="startTestBtn" class="btn-primary text-white px-12 py-4 rounded-xl font-bold text-xl shadow-xl hover:shadow-2xl transition-all">
-                        🚀 AVVIA IL TEST
-                    </button>
-                    <div>
-                        <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" 
-                           class="text-blue-400 hover:text-blue-300 underline text-sm">
-                            📖 Consulta la teoria prima del test
-                        </a>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <div class="text-sm text-gray-600">Tempo rimanente</div>
+                        <div id="timer" class="text-2xl font-bold text-red-600">30:00</div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- QUIZ SCREEN -->
-        <div id="quizScreen" class="hidden">
-            <div class="glass-card p-8">
-                <!-- TIMER & PROGRESS -->
-                <div class="flex justify-between items-center mb-6">
-                    <div class="text-sm text-gray-400">
-                        Domanda <span id="progressText" class="font-bold text-white">1/15</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-2xl">⏱️</span>
-                        <span id="timer" class="text-2xl font-bold">30:00</span>
-                    </div>
-                </div>
+            <!-- Question -->
+            <div class="mb-8">
+                <h2 id="questionText" class="text-2xl font-semibold text-gray-800 leading-relaxed"></h2>
+            </div>
 
-                <div class="progress-bar-container mb-8">
-                    <div id="progressBar" class="progress-bar" style="width: 6.67%"></div>
-                </div>
+            <!-- Answers -->
+            <div id="answersContainer" class="space-y-4">
+                <!-- Populated by JS -->
+            </div>
 
-                <!-- QUESTION -->
-                <div class="mb-8">
-                    <h3 id="questionText" class="text-2xl font-bold mb-6"></h3>
-                    <div id="answersContainer" class="space-y-4"></div>
-                </div>
-
-                <!-- NAVIGATION -->
-                <div class="flex justify-between items-center pt-6 border-t border-gray-700/30">
-                    <button id="prevBtn" onclick="previousQuestion()" class="btn-secondary">
-                        ← Precedente
-                    </button>
-                    <button id="finishBtn" onclick="finishTest()" class="btn-primary hidden">
-                        🏁 TERMINA TEST
-                    </button>
-                    <button id="nextBtn" onclick="nextQuestion()" class="btn-secondary">
-                        Successiva →
-                    </button>
+            <!-- Progress Bar -->
+            <div class="mt-8">
+                <div class="bg-gray-200 rounded-full h-3">
+                    <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all duration-300" style="width: 6.67%"></div>
                 </div>
             </div>
         </div>
-
-        <!-- SUMMARY SCREEN -->
-        <div id="summaryScreen" class="hidden">
-            <div id="summaryContent" class="glass-card"></div>
-        </div>
-
     </div>
 
-    <!-- FOOTER -->
-    <footer class="text-center py-8 mt-12 border-t border-gray-700/30">
-        <p class="text-gray-400 text-sm">
-            © Dott. Salvatore Trono - Medico Competente<br>
-            <span class="text-xs text-gray-500 mt-2 block">
-                Materiale didattico per formazione aziendale
-            </span>
-        </p>
-    </footer>
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <!-- Score Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">📊 Risultati Test</h1>
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
+                    <div class="text-6xl font-bold mb-2" id="finalScore">0/15</div>
+                    <div class="text-xl text-gray-600" id="percentage">0%</div>
+                    <div class="mt-4" id="resultMessage"></div>
+                </div>
+            </div>
+
+            <!-- Review -->
+            <div id="reviewContainer" class="space-y-4 mb-6">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-4 justify-center">
+                <button onclick="backToHome()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all">
+                    🏠 TORNA ALLA HOME
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // ===== CONFIGURATION =====
@@ -293,19 +176,6 @@
             timeLimit: 30 * 60,
             questionsPerTest: 15
         };
-
-        // ===== DOM ELEMENTS =====
-        const homeScreen = document.getElementById('homeScreen');
-        const quizScreen = document.getElementById('quizScreen');
-        const summaryScreen = document.getElementById('summaryScreen');
-        const questionText = document.getElementById('questionText');
-        const answersContainer = document.getElementById('answersContainer');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const finishBtn = document.getElementById('finishBtn');
-        const timerDisplay = document.getElementById('timer');
-        const progressText = document.getElementById('progressText');
-        const progressBar = document.getElementById('progressBar');
 
         // ===== STATE =====
         let currentQuestion = 0;
@@ -1355,8 +1225,7 @@
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
-
-        // ===== UTILITY =====
+// ===== UTILITY FUNCTIONS =====
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -1366,323 +1235,218 @@
             return newArray;
         }
 
-       function startTest() {
-    console.log('🚀 START TEST CHIAMATA');
-    
-    // VERIFICA PANIERE
-    if (!questions || questions.length === 0) {
-        alert('⚠️ ERRORE: Paniere domande vuoto! Inserisci almeno 15 domande nel array "questions".');
-        console.error('❌ Array questions:', questions);
-        return;
-    }
-    
-    if (questions.length < QUIZ_CONFIG.questionsPerTest) {
-        alert(`⚠️ ERRORE: Servono almeno ${QUIZ_CONFIG.questionsPerTest} domande. Trovate: ${questions.length}`);
-        return;
-    }
-    
-    // Reset
-    currentQuestion = 0;
-    score = 0;
-    userAnswers = new Array(QUIZ_CONFIG.questionsPerTest).fill(null);
-    timeRemaining = QUIZ_CONFIG.timeLimit;
-    
-    // Estrai 15 domande casuali
-    selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
-    
-    // Mescola risposte CON CONTROLLO
-    selectedQuestions = selectedQuestions.map(q => {
-        // CONTROLLO VALIDITA' DOMANDA
-        if (!q || !q.answers || !Array.isArray(q.answers) || q.answers.length === 0) {
-            console.error('❌ Domanda malformata:', q);
-            return null;
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
-        
-        if (q.correct === undefined || q.correct < 0 || q.correct >= q.answers.length) {
-            console.error('❌ Indice risposta corretta non valido:', q);
-            return null;
-        }
-        
-        const correctAnswer = q.answers[q.correct];
-        const shuffledAnswers = shuffleArray([...q.answers]);
-        const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
-        
-        return {
-            ...q,
-            answers: shuffledAnswers,
-            correct: newCorrectIndex
-        };
-    }).filter(q => q !== null); // Rimuovi domande non valide
-    
-    // CONTROLLO FINALE
-    if (selectedQuestions.length < QUIZ_CONFIG.questionsPerTest) {
-        alert('⚠️ ERRORE: Alcune domande sono malformate. Controlla il paniere.');
-        console.error('❌ Domande valide:', selectedQuestions.length);
-        return;
-    }
-    
-    // Mostra schermo quiz
-    document.getElementById('homeScreen').classList.add('hidden');
-    document.getElementById('quizScreen').classList.remove('hidden');
-    
-    displayQuestion();
-    startTimer();
-    
-    console.log('✅ Test avviato con', selectedQuestions.length, 'domande');
-}
 
+        // ===== QUIZ FUNCTIONS =====
+        function startTest() {
+            console.log('🚀 START TEST CHIAMATA');
             
+            // VERIFICA PANIERE
+            if (!questions || questions.length === 0) {
+                alert('⚠️ ERRORE: Paniere domande vuoto!');
+                return;
+            }
+            
+            if (questions.length < QUIZ_CONFIG.questionsPerTest) {
+                alert(`⚠️ ERRORE: Servono almeno ${QUIZ_CONFIG.questionsPerTest} domande. Trovate: ${questions.length}`);
+                return;
+            }
+            
+            // Reset
             currentQuestion = 0;
             score = 0;
-            userAnswers = [];
+            userAnswers = new Array(QUIZ_CONFIG.questionsPerTest).fill(null);
             timeRemaining = QUIZ_CONFIG.timeLimit;
             
+            // Estrai 15 domande casuali
             selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
             
+            // Mescola risposte CON SUPPORTO options/answers
             selectedQuestions = selectedQuestions.map(q => {
-                const correctAnswer = q.answers[q.correct];
-                const shuffledAnswers = shuffleArray([...q.answers]);
+                const answersArray = q.answers || q.options; // ← SUPPORTO ENTRAMBI
+                
+                if (!answersArray || !Array.isArray(answersArray) || answersArray.length === 0) {
+                    console.error('❌ Domanda malformata:', q);
+                    return null;
+                }
+                
+                if (q.correct === undefined || q.correct < 0 || q.correct >= answersArray.length) {
+                    console.error('❌ Indice risposta corretta non valido:', q);
+                    return null;
+                }
+                
+                const correctAnswer = answersArray[q.correct];
+                const shuffledAnswers = shuffleArray([...answersArray]);
                 const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
                 
                 return {
-                    ...q,
+                    question: q.question,
                     answers: shuffledAnswers,
-                    correct: newCorrectIndex
+                    correct: newCorrectIndex,
+                    explanation: q.explanation || q.suggestion || ''
                 };
-            });
+            }).filter(q => q !== null);
             
-            homeScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
+            if (selectedQuestions.length < QUIZ_CONFIG.questionsPerTest) {
+                alert('⚠️ ERRORE: Alcune domande sono malformate.');
+                return;
+            }
+            
+            // Mostra schermo quiz
+            document.getElementById('disclaimerModal').classList.add('hidden');
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
             
             displayQuestion();
             startTimer();
+            
+            console.log('✅ Test avviato con', selectedQuestions.length, 'domande');
         }
 
-        // ===== TIMER =====
+        function displayQuestion() {
+            const question = selectedQuestions[currentQuestion];
+            
+            document.getElementById('questionNumber').textContent = `${currentQuestion + 1}/${QUIZ_CONFIG.questionsPerTest}`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const answersContainer = document.getElementById('answersContainer');
+            answersContainer.innerHTML = '';
+            
+            question.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all';
+                button.innerHTML = `
+                    <span class="font-semibold text-gray-700">${String.fromCharCode(65 + index)}.</span>
+                    <span class="ml-2 text-gray-800">${answer}</span>
+                `;
+                button.onclick = () => selectAnswer(index);
+                answersContainer.appendChild(button);
+            });
+            
+            updateProgressBar();
+        }
+
+        function selectAnswer(answerIndex) {
+            userAnswers[currentQuestion] = answerIndex;
+            
+            if (answerIndex === selectedQuestions[currentQuestion].correct) {
+                score++;
+            }
+            
+            currentQuestion++;
+            
+            if (currentQuestion < QUIZ_CONFIG.questionsPerTest) {
+                displayQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
         function startTimer() {
-            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 timeRemaining--;
-                updateTimerDisplay();
+                document.getElementById('timer').textContent = formatTime(timeRemaining);
                 
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    finishTest();
+                    endQuiz();
+                }
+                
+                if (timeRemaining <= 60) {
+                    document.getElementById('timer').classList.add('text-red-600');
                 }
             }, 1000);
         }
 
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (timeRemaining < 300) {
-                timerDisplay.classList.add('text-red-500');
-            }
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / QUIZ_CONFIG.questionsPerTest) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
         }
 
-        // ===== DISPLAY QUESTION =====
-        function displayQuestion() {
-            const q = selectedQuestions[currentQuestion];
-            questionText.textContent = q.question;
-            
-            answersContainer.innerHTML = q.answers.map((answer, index) => `
-                <label class="answer-option ${userAnswers[currentQuestion] === index ? 'selected' : ''}" data-index="${index}">
-                    <input type="radio" name="answer" value="${index}" ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
-                    <span class="answer-text">${answer}</span>
-                </label>
-            `).join('');
-            
-            document.querySelectorAll('.answer-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const index = parseInt(this.dataset.index);
-                    selectAnswer(index);
-                });
-            });
-            
-            updateProgress();
-            updateNavigationButtons();
-        }
-
-        function selectAnswer(index) {
-            userAnswers[currentQuestion] = index;
-            displayQuestion();
-        }
-
-        function updateProgress() {
-            progressText.textContent = `${currentQuestion + 1}/${QUIZ_CONFIG.questionsPerTest}`;
-            const percentage = ((currentQuestion + 1) / QUIZ_CONFIG.questionsPerTest) * 100;
-            progressBar.style.width = `${percentage}%`;
-        }
-
-        function updateNavigationButtons() {
-            prevBtn.disabled = currentQuestion === 0;
-            nextBtn.disabled = currentQuestion === QUIZ_CONFIG.questionsPerTest - 1;
-            
-            if (currentQuestion === QUIZ_CONFIG.questionsPerTest - 1) {
-                finishBtn.classList.remove('hidden');
-            } else {
-                finishBtn.classList.add('hidden');
-            }
-        }
-
-        // ===== NAVIGATION =====
-        function previousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                displayQuestion();
-            }
-        }
-
-        function nextQuestion() {
-            if (currentQuestion < QUIZ_CONFIG.questionsPerTest - 1) {
-                currentQuestion++;
-                displayQuestion();
-            }
-        }
-
-        // ===== FINISH TEST =====
-        function finishTest() {
+        function endQuiz() {
             clearInterval(timerInterval);
             
-            score = 0;
-            selectedQuestions.forEach((q, index) => {
-                if (userAnswers[index] === q.correct) {
-                    score++;
-                }
-            });
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
             
-            showSummary();
+            showResults();
         }
 
-        // ===== SHOW SUMMARY =====
-        function showSummary() {
+        function showResults() {
             const percentage = Math.round((score / QUIZ_CONFIG.questionsPerTest) * 100);
-            const passed = percentage >= 60;
             
-            const summaryHTML = `
-                <div class="summary-header ${passed ? 'bg-gradient-to-r from-green-500 to-emerald-600' : 'bg-gradient-to-r from-red-500 to-rose-600'}">
-                    <div class="text-6xl mb-4">${passed ? '🎉' : '😔'}</div>
-                    <h2 class="text-4xl font-bold mb-2">${passed ? 'TEST SUPERATO!' : 'TEST NON SUPERATO'}</h2>
-                    <p class="text-xl">Punteggio: ${score}/${QUIZ_CONFIG.questionsPerTest} (${percentage}%)</p>
-                </div>
+            document.getElementById('finalScore').textContent = `${score}/${QUIZ_CONFIG.questionsPerTest}`;
+            document.getElementById('percentage').textContent = `${percentage}%`;
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = '<div class="text-green-600 text-xl font-semibold">🎉 Eccellente!</div>';
+            } else if (percentage >= 70) {
+                message = '<div class="text-blue-600 text-xl font-semibold">👍 Buon risultato!</div>';
+            } else if (percentage >= 50) {
+                message = '<div class="text-orange-600 text-xl font-semibold">📚 Serve più studio</div>';
+            } else {
+                message = '<div class="text-red-600 text-xl font-semibold">⚠️ Riprova!</div>';
+            }
+            document.getElementById('resultMessage').innerHTML = message;
+            
+            const reviewContainer = document.getElementById('reviewContainer');
+            reviewContainer.innerHTML = '';
+            
+            selectedQuestions.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === q.correct;
                 
-                <div class="p-8">
-                    ${selectedQuestions.map((q, index) => {
-                        const userAnswer = userAnswers[index];
-                        const isCorrect = userAnswer === q.correct;
-                        
-                        return `
-                            <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
-                                <div class="flex items-start gap-3 mb-3">
-                                    <span class="text-2xl">${isCorrect ? '✅' : '❌'}</span>
-                                    <div class="flex-1">
-                                        <h3 class="font-bold text-lg mb-2">Domanda ${index + 1}</h3>
-                                        <p class="text-gray-300">${q.question}</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="ml-11 space-y-2">
-                                    ${userAnswer !== undefined ? `
-                                        <p class="text-sm">
-                                            <span class="font-semibold">La tua risposta:</span>
-                                            <span class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${q.answers[userAnswer]}</span>
-                                        </p>
-                                    ` : '<p class="text-yellow-400 text-sm">⚠️ Non hai risposto</p>'}
-                                    
-                                    ${!isCorrect ? `
-                                        <p class="text-sm">
-                                            <span class="font-semibold">Risposta corretta:</span>
-                                            <span class="text-green-400">${q.answers[q.correct]}</span>
-                                        </p>
-                                    ` : ''}
-                                    
-                                    <p class="text-sm text-gray-400 italic">💡 ${q.explanation}</p>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                    
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-                        <button onclick="retakeTest()" class="btn-primary">
-                            🔄 RIPETI TEST
-                        </button>
-                        <button onclick="generateNewTest()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                            🎲 NUOVO TEST
-                        </button>
-                        <button onclick="backToHome()" class="btn-secondary">
-                            🏠 HOME
-                        </button>
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = `p-4 rounded-xl border-2 ${isCorrect ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'}`;
+                
+                reviewDiv.innerHTML = `
+                    <div class="font-semibold text-gray-800 mb-2">
+                        ${index + 1}. ${q.question}
                     </div>
-                </div>
-            `;
-            
-            document.getElementById('summaryContent').innerHTML = summaryHTML;
-            quizScreen.classList.add('hidden');
-            summaryScreen.classList.remove('hidden');
-        }
-
-        // ===== ACTIONS =====
-        function retakeTest() {
-            currentQuestion = 0;
-            score = 0;
-            userAnswers = [];
-            timeRemaining = QUIZ_CONFIG.timeLimit;
-            
-            selectedQuestions = selectedQuestions.map(q => {
-                const correctAnswer = q.answers[q.correct];
-                const shuffledAnswers = shuffleArray([...q.answers]);
-                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+                    <div class="text-sm space-y-1">
+                        <div class="text-gray-700">
+                            <strong>Tua risposta:</strong> 
+                            <span class="${isCorrect ? 'text-green-700' : 'text-red-700'}">${q.answers[userAnswer] || 'Nessuna'}</span>
+                        </div>
+                        ${!isCorrect ? `<div class="text-green-700"><strong>Risposta corretta:</strong> ${q.answers[q.correct]}</div>` : ''}
+                        ${q.explanation ? `<div class="text-gray-600 italic mt-2">💡 ${q.explanation}</div>` : ''}
+                    </div>
+                `;
                 
-                return {
-                    ...q,
-                    answers: shuffledAnswers,
-                    correct: newCorrectIndex
-                };
+                reviewContainer.appendChild(reviewDiv);
             });
-            
-            summaryScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            displayQuestion();
-            startTimer();
-        }
-
-        function generateNewTest() {
-            startTest();
-            summaryScreen.classList.add('hidden');
         }
 
         function backToHome() {
             location.reload();
         }
 
-        // ===== INITIALIZE =====
+        // ===== EVENT LISTENERS =====
         document.addEventListener('DOMContentLoaded', function() {
             const startBtn = document.getElementById('startTestBtn');
             const disclaimerModal = document.getElementById('disclaimerModal');
             const closeDisclaimer = document.getElementById('closeDisclaimer');
             const acceptDisclaimer = document.getElementById('acceptDisclaimer');
             
-            if (startBtn) {
-                startBtn.addEventListener('click', startTest);
-            }
-            
-            if (closeDisclaimer) {
-                closeDisclaimer.addEventListener('click', function() {
-                    disclaimerModal.classList.add('hidden');
-                });
-            }
-            
-            if (acceptDisclaimer) {
-                acceptDisclaimer.addEventListener('click', function() {
-                    disclaimerModal.classList.add('hidden');
-                });
-            }
-            
-            setTimeout(function() {
+            // Click AVVIA TEST → Mostra pop-up
+            startBtn.addEventListener('click', function() {
                 disclaimerModal.classList.remove('hidden');
-            }, 500);
+            });
+            
+            // Click ANNULLA → Chiudi pop-up
+            closeDisclaimer.addEventListener('click', function() {
+                disclaimerModal.classList.add('hidden');
+            });
+            
+            // Click ACCETTO → Avvia test
+            acceptDisclaimer.addEventListener('click', function() {
+                startTest();
+            });
         });
     </script>
 
