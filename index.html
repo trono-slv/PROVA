@@ -1648,16 +1648,24 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button onclick="location.reload()" 
-                                class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl">
-                            🔄 RIPETI IL TEST
-                        </button>
-                        <button onclick="backToHome()" 
-                                class="btn-secondary text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl">
-                            🏠 TORNA ALLA HOME
-                        </button>
-                    </div>
+                                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                    <!-- Ripeti Test (stesse domande) -->
+                    <button onclick="retakeTest()" 
+                            class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                        🔄 RIPETI TEST
+                    </button>
+                    
+                    <!-- Genera Nuovo Test (nuove domande) -->
+                    <button onclick="generateNewTest()" 
+                            class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2">
+                        🎲 NUOVO TEST
+                    </button>
+                    
+                    <!-- Torna Home -->
+                    <button onclick="backToHome()" 
+                            class="btn-secondary text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                        🏠 HOME
+                    </button>
                 </div>
             `;
         }
@@ -1666,7 +1674,74 @@
         function backToHome() {
             location.reload();
         }
+// ===== RETAKE TEST (stesse domande, solo opzioni rimescolate) =====
+        function retakeTest() {
+            // Reset variabili
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            timeRemaining = QUIZ_CONFIG.timeLimit;
+            
+            // Rimescola solo le opzioni delle domande esistenti
+            selectedQuestions = selectedQuestions.map(q => {
+                const correctAnswer = q.answers[q.correct];
+                const shuffledAnswers = shuffleArray([...q.answers]);
+                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+                
+                return {
+                    ...q,
+                    answers: shuffledAnswers,
+                    correct: newCorrectIndex
+                };
+            });
+            
+            // Riavvia quiz
+            summaryScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            displayQuestion();
+            startTimer();
+        }
 
+        // ===== GENERATE NEW TEST (15 nuove domande casuali) =====
+        function generateNewTest() {
+            // Reset variabili
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            timeRemaining = QUIZ_CONFIG.timeLimit;
+            
+            // Estrai 15 nuove domande casuali
+            selectedQuestions = shuffleArray([...questions]).slice(0, QUIZ_CONFIG.questionsPerTest);
+            
+            // Rimescola opzioni per ogni domanda
+            selectedQuestions = selectedQuestions.map(q => {
+                const correctAnswer = q.answers[q.correct];
+                const shuffledAnswers = shuffleArray([...q.answers]);
+                const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+                
+                return {
+                    ...q,
+                    answers: shuffledAnswers,
+                    correct: newCorrectIndex
+                };
+            });
+            
+            // Riavvia quiz
+            summaryScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            displayQuestion();
+            startTimer();
+        }
+
+        // ===== UTILITY: SHUFFLE ARRAY =====
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
         // ===== UTILITY: SHUFFLE ARRAY =====
         function shuffleArray(array) {
             const newArray = [...array];
