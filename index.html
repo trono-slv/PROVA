@@ -3,1781 +3,861 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Valutazione Rischi Magazzino - Dott. Salvatore Trono</title>
+    <title>Test di Valutazione SSL - Dott. Salvatore Trono</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --arancione: #f97316;
+            --arancione-chiaro: #fb923c;
+            --grigio-scuro: #1f1f1f;
+            --grigio-medio: #2d2d2d;
+            --verde: #22c55e;
+            --rosso: #ef4444;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-            min-height: 100vh;
-            color: #1f2937;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+        .glass-card {
+            background: rgba(31, 31, 31, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(249, 115, 22, 0.2);
         }
 
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s ease;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--arancione), var(--arancione-chiaro));
+            transition: all 0.3s ease;
         }
-@keyframes modalIn {
-    0% { opacity: 0; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1); }
-}
-.animate-modal-in {
-    animation: modalIn 0.3s ease-out;
-}
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.5);
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+            background: linear-gradient(90deg, var(--arancione), var(--arancione-chiaro));
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .header-badge {
-            display: inline-block;
-            background: #1e40af;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        .btn {
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
+        .animate-modal-in {
+            animation: modalIn 0.3s ease-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .answer-option {
+            transition: all 0.2s ease;
             cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
+        .answer-option:hover {
+            transform: translateX(5px);
+            border-color: var(--arancione);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+        .answer-selected {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: var(--arancione) !important;
         }
 
-        .btn-secondary {
-            background: white;
-            color: #1e40af;
-            border: 2px solid #1e40af;
+        .answer-correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: var(--verde) !important;
         }
 
-        .btn-secondary:hover {
-            background: #1e40af;
-            color: white;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .timer {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 24px;
-            font-weight: 700;
-            display: inline-block;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-
-        .timer.warning {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
-        .option {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 16px;
-            margin: 12px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .option:hover {
-            background: #eff6ff;
-            border-color: #3b82f6;
-            transform: translateX(4px);
-        }
-
-        .option-letter {
-            width: 40px;
-            height: 40px;
-            background: #1e40af;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .score-box {
-            text-align: center;
-            padding: 30px;
-            border-radius: 16px;
-            margin: 20px 0;
-        }
-
-        .score-box.excellent {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-
-        .score-box.sufficient {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-        }
-
-        .score-box.insufficient {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-        }
-
-        .result-item {
-            background: white;
-            border-left: 4px solid;
-            padding: 20px;
-            margin: 16px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .result-item.correct {
-            border-color: #10b981;
-            background: #f0fdf4;
-        }
-
-        .result-item.incorrect {
-            border-color: #ef4444;
-            background: #fef2f2;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .badge-correct {
-            background: #10b981;
-            color: white;
-        }
-
-        .badge-incorrect {
-            background: #ef4444;
-            color: white;
-        }
-
-        .suggestion-box {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 12px 16px;
-            margin-top: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #92400e;
-        }
-
-        .info-box {
-            background: #eff6ff;
-            border-left: 4px solid #3b82f6;
-            padding: 16px;
-            margin: 16px 0;
-            border-radius: 8px;
-        }
-
-        .disclaimer-box {
-            background: #fef2f2;
-            border: 2px solid #fecaca;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.8;
+        .answer-wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--rosso) !important;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- SCHERMATA INTRODUZIONE -->
-        <div id="introScreen" class="card">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <span class="header-badge">🎓 FORMAZIONE SSL</span>
-                <h1 style="font-size: 32px; font-weight: 800; color: #1e40af; margin: 16px 0;">
-                    Test Rischi Specifici in Magazzino
+<body class="text-white min-h-screen">
+
+    <!-- Schermata di Benvenuto -->
+    <div id="welcomeScreen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-8 md:p-12 max-w-4xl w-full fade-in">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🎓</div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: var(--arancione);">
+                    Test di Valutazione SSL
                 </h1>
-                <div style="height: 4px; width: 100px; background: linear-gradient(90deg, #1e40af, #3b82f6); margin: 16px auto; border-radius: 10px;"></div>
-            </div>
-<!-- MODAL LEGALE -->
-<div id="legalModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);">
-    <div class="animate-modal-in max-w-2xl w-full rounded-2xl p-8 relative" 
-         style="background: linear-gradient(135deg, rgba(31,31,31,0.95), rgba(23,23,23,0.98)); 
-                border: 2px solid var(--arancione); 
-                box-shadow: 0 25px 50px -12px rgba(249,115,22,0.4);">
-        
-        <!-- Titolo -->
-        <div class="text-center mb-6">
-            <div class="text-5xl mb-3">⚠️</div>
-            <h2 class="text-3xl font-bold mb-2" style="color: var(--arancione);">ATTENZIONE</h2>
-            <div class="h-1 w-32 mx-auto rounded-full" style="background: var(--arancione);"></div>
-        </div>
-
-        <!-- Contenuto -->
-        <div class="space-y-5 text-gray-300 text-base leading-relaxed">
-            <p class="font-semibold text-white">Confermo di aver letto e compreso:</p>
-            
-            <ul class="space-y-3 pl-2">
-                <li class="flex items-start gap-2">
-                    <span class="text-xl flex-shrink-0">•</span>
-                    <span>È <strong class="text-white">vietato usare il materiale per scopi privati</strong></span>
-                </li>
-            </ul>
-
-            <!-- BOX LEGALE ROSSO -->
-            <div class="bg-red-950 border-2 border-red-600 rounded-xl p-5 space-y-4">
-                <div class="flex items-center gap-2 text-red-400 font-bold text-lg">
-                    <span class="text-2xl">⚖️</span>
-                    <span>TUTELA LEGALE</span>
-                </div>
-                
-                <p class="text-gray-200 text-sm leading-relaxed">
-                    Il presente materiale è protetto da:
+                <p class="text-xl text-gray-300 mb-6">
+                    Verifica le tue competenze in Sicurezza sul Lavoro
                 </p>
-                
-                <ul class="space-y-2 text-sm text-gray-200">
+                <div class="inline-block px-6 py-3 rounded-full text-sm font-semibold" 
+                     style="background: rgba(249, 115, 22, 0.2); color: var(--arancione);">
+                    📚 Formazione Professionale SSL
+                </div>
+            </div>
+
+            <!-- Info Test -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-2">📝</div>
+                    <div class="text-2xl font-bold" style="color: var(--arancione);">15</div>
+                    <div class="text-gray-400 text-sm">Domande</div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-2">⏱️</div>
+                    <div class="text-2xl font-bold" style="color: var(--arancione);">30 min</div>
+                    <div class="text-gray-400 text-sm">Tempo disponibile</div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-2">✅</div>
+                    <div class="text-2xl font-bold" style="color: var(--arancione);">80%</div>
+                    <div class="text-gray-400 text-sm">Soglia superamento</div>
+                </div>
+            </div>
+
+            <!-- Istruzioni -->
+            <div class="glass-card rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>📋</span>
+                    <span>Istruzioni</span>
+                </h3>
+                <ul class="space-y-3 text-gray-300">
                     <li class="flex items-start gap-2">
-                        <span>📜</span>
-                        <span><strong>Legge 633/1941</strong> (Diritto d'Autore) - Art. 171</span>
+                        <span class="text-orange-500">•</span>
+                        <span>Rispondi a tutte le 15 domande nel tempo disponibile</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span>⚖️</span>
-                        <span><strong>Sanzione penale:</strong> reclusione fino a <strong class="text-red-300">3 anni</strong> + multa fino a <strong class="text-red-300">€15.493</strong></span>
+                        <span class="text-orange-500">•</span>
+                        <span>Ogni domanda ha una sola risposta corretta</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-orange-500">•</span>
+                        <span>Puoi navigare tra le domande e modificare le risposte</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-orange-500">•</span>
+                        <span>Il test si chiude automaticamente allo scadere del tempo</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Pulsante Inizio -->
+            <button onclick="startQuiz()" 
+                    class="w-full btn-primary text-white font-bold py-4 px-8 rounded-xl text-lg">
+                🚀 INIZIA IL TEST
+            </button>
+
+            <!-- Footer -->
+            <div class="text-center mt-8 pt-8 border-t border-gray-700">
+                <p class="text-gray-400 text-sm mb-2">
+                    <strong style="color: var(--arancione);">Dott. Salvatore Trono</strong> - Formatore ed Esperto SSL
+                </p>
+                <p class="text-gray-500 text-xs">
+                    © 2024 - Materiale protetto da diritto d'autore. Riproduzione vietata senza autorizzazione.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LEGALE -->
+    <div id="legalModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);">
+        <div class="animate-modal-in max-w-2xl w-full rounded-2xl p-8 relative" 
+             style="background: linear-gradient(135deg, rgba(31,31,31,0.95), rgba(23,23,23,0.98)); 
+                    border: 2px solid var(--arancione); 
+                    box-shadow: 0 25px 50px -12px rgba(249,115,22,0.4);">
+            
+            <!-- Titolo -->
+            <div class="text-center mb-6">
+                <div class="text-5xl mb-3">⚠️</div>
+                <h2 class="text-3xl font-bold mb-2" style="color: var(--arancione);">ATTENZIONE</h2>
+                <div class="h-1 w-32 mx-auto rounded-full" style="background: var(--arancione);"></div>
+            </div>
+
+            <!-- Contenuto -->
+            <div class="space-y-5 text-gray-300 text-base leading-relaxed">
+                <p class="font-semibold text-white">Confermo di aver letto e compreso:</p>
+                
+                <ul class="space-y-3 pl-2">
+                    <li class="flex items-start gap-2">
+                        <span class="text-xl flex-shrink-0">•</span>
+                        <span>È <strong class="text-white">vietato usare il materiale per scopi privati</strong></span>
                     </li>
                 </ul>
 
-                <div class="border-t-2 border-red-800 pt-3 mt-3">
-                    <p class="text-red-400 font-bold mb-2">⛔ DIVIETO ASSOLUTO DI:</p>
-                    <ul class="space-y-1 text-sm text-gray-200">
-                        <li class="flex items-center gap-2">
-                            <span class="text-red-500 font-bold">✗</span>
-                            <span>Riproduzione totale o parziale</span>
+                <!-- BOX LEGALE ROSSO -->
+                <div class="bg-red-950 border-2 border-red-600 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center gap-2 text-red-400 font-bold text-lg">
+                        <span class="text-2xl">⚖️</span>
+                        <span>TUTELA LEGALE</span>
+                    </div>
+                    
+                    <p class="text-gray-200 text-sm leading-relaxed">
+                        Il presente materiale è protetto da:
+                    </p>
+                    
+                    <ul class="space-y-2 text-sm text-gray-200">
+                        <li class="flex items-start gap-2">
+                            <span>📜</span>
+                            <span><strong>Legge 633/1941</strong> (Diritto d'Autore) - Art. 171</span>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-red-500 font-bold">✗</span>
-                            <span>Distribuzione a terzi</span>
+                        <li class="flex items-start gap-2">
+                            <span>🛡️</span>
+                            <span><strong>D.Lgs 231/2001</strong> (Responsabilità Amministrativa)</span>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-red-500 font-bold">✗</span>
-                            <span>Uso commerciale non autorizzato</span>
+                        <li class="flex items-start gap-2">
+                            <span>⚖️</span>
+                            <span><strong>Codice Penale</strong> - Art. 615-ter (Accesso Abusivo)</span>
                         </li>
                     </ul>
+                    
+                    <div class="bg-red-900 rounded-lg p-3 mt-3">
+                        <p class="text-red-200 text-xs font-semibold">
+                            ⚠️ La violazione comporta: <strong>Sanzioni pecuniarie</strong> fino a €15.493 e/o <strong>reclusione</strong> fino a 3 anni
+                        </p>
+                    </div>
                 </div>
 
-                <div class="bg-green-950 border border-green-700 rounded-lg p-3">
-                    <p class="text-green-400 text-sm">
-                        <strong>✅ Uso consentito SOLO</strong> previa <strong>autorizzazione scritta</strong> dell'autore
+                <!-- DISCLAIMER -->
+                <div class="bg-gray-800 border border-gray-600 rounded-xl p-4">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong class="text-gray-300">DISCLAIMER:</strong> Questo test è uno strumento formativo. 
+                        I risultati non costituiscono certificazione ufficiale. Per attestati validi ai sensi del D.Lgs 81/08, 
+                        contattare enti accreditati.
                     </p>
                 </div>
             </div>
 
-            <ul class="space-y-3 pl-2">
-                <li class="flex items-start gap-2">
-                    <span class="text-xl flex-shrink-0">•</span>
-                    <span>Il <strong class="text-white">disclaimer sulla finalità didattica</strong> del test</span>
-                </li>
-                <li class="flex items-start gap-2">
-                    <span class="text-xl flex-shrink-0">•</span>
-                    <span>Che questo quiz <strong class="text-white">non sostituisce la formazione obbligatoria</strong></span>
-                </li>
-            </ul>
-
-            <p class="text-center font-semibold text-white text-lg pt-4">
-                Vuoi procedere con il test?
-            </p>
-        </div>
-
-        <!-- Pulsanti -->
-        <div class="flex flex-col sm:flex-row gap-4 mt-8">
-            <button onclick="closeLegalModal()" 
-                    class="flex-1 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 border-2"
-                    style="background: var(--grigio-scuro); border-color: #fff; color: #fff;"
-                    onmouseover="this.style.background='var(--rosso)'; this.style.borderColor='var(--rosso)';"
-                    onmouseout="this.style.background='var(--grigio-scuro)'; this.style.borderColor='#fff';">
-                ❌ ANNULLA
-            </button>
-            <button onclick="acceptLegal()" 
-                    class="flex-1 px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300"
-                    style="background: linear-gradient(135deg, var(--arancione), var(--arancione-chiaro)); 
-                           box-shadow: 0 10px 25px -5px rgba(249,115,22,0.5);"
-                    onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 15px 35px -5px rgba(249,115,22,0.7)';"
-                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 25px -5px rgba(249,115,22,0.5)';">
-                ✅ ACCETTO E PROSEGUO
-            </button>
-        </div>
-    </div>
-</div>
-
-            <div style="text-align: center; margin: 30px 0;">
-                <p style="font-size: 20px; font-weight: 600; color: #374151; margin-bottom: 8px;">
-                    👨‍🏫 Dott. Salvatore Trono
-                </p>
-                <p style="font-size: 15px; color: #6b7280; line-height: 1.6;">
-                    Laureato in Servizi Giuridici per l'Impresa<br>
-                    Formatore • Esperto in Sicurezza sui Luoghi di Lavoro
-                </p>
-            </div>
-
-            <div class="info-box">
-                <h3 style="font-size: 18px; font-weight: 700; color: #1e40af; margin-bottom: 12px;">
-                    📋 Informazioni sul Test
-                </h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 8px 0; display: flex; align-items: center;">
-                        <span style="color: #3b82f6; margin-right: 12px; font-size: 20px;">📝</span>
-                        <span><strong>15 domande</strong> estratte casualmente da un paniere di 128</span>
-                    </li>
-                    <li style="padding: 8px 0; display: flex; align-items: center;">
-                        <span style="color: #3b82f6; margin-right: 12px; font-size: 20px;">⏱️</span>
-                        <span><strong>20 minuti</strong> di tempo disponibile</span>
-                    </li>
-                    <li style="padding: 8px 0; display: flex; align-items: center;">
-                        <span style="color: #3b82f6; margin-right: 12px; font-size: 20px;">✅</span>
-                        <span>Superamento test: <strong>≥ 60%</strong> (9 risposte corrette)</span>
-                    </li>
-                    <li style="padding: 8px 0; display: flex; align-items: center;">
-                        <span style="color: #3b82f6; margin-right: 12px; font-size: 20px;">🎯</span>
-                        <span>Opzioni di risposta <strong>randomizzate</strong> per ogni domanda</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div style="text-align: center; margin: 30px 0;">
-                <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" target="_blank" class="btn btn-secondary" style="margin: 10px;">
-                    📚 Prima di procedere al test puoi studiare i rischi a questo link
-                </a>
-            </div>
-<!-- NUOVO LINK FORMAZIONE GENERALE -->
-<div class="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border-2 border-blue-200">
-    <p class="text-gray-700 mb-3 text-center">
-        ⚖️ Per il test sugli aspetti giuridico-normativi della sicurezza sul lavoro:
-    </p>
-    <a href="https://trono-slv.github.io/test-SSL---BASE/" 
-       target="_blank" 
-       class="text-lg font-semibold text-blue-600 hover:text-blue-700 hover:translate-x-2 transition-all duration-300 flex items-center justify-center gap-2">
-        ➡️ Test Formazione Generale
-    </a>
-    <p class="text-sm text-gray-600 mt-3 text-center italic">
-        📖 domande su obblighi normativi, diritti, procedure di sicurezza
-    </p>
-</div>
-
-            <div class="disclaimer-box">
-                <h3 style="font-size: 16px; font-weight: 700; color: #991b1b; margin-bottom: 12px;">
-                    ⚠️ DISCLAIMER LEGALE
-                </h3>
-                <p style="font-size: 14px; line-height: 1.8; color: #7f1d1d;">
-                    Questo test è uno <strong>strumento didattico</strong> e NON sostituisce:
-                </p>
-                <ul style="margin: 12px 0 12px 24px; font-size: 14px; color: #7f1d1d;">
-                    <li>La formazione obbligatoria prevista dal D.Lgs. 81/2008</li>
-                    <li>Le valutazioni specifiche del datore di lavoro</li>
-                    <li>L'addestramento pratico sui luoghi di lavoro</li>
-                </ul>
-                <p style="font-size: 13px; color: #991b1b; margin-top: 12px;">
-                    Il materiale ha esclusivo scopo <strong>informativo ed educativo</strong>. Per la formazione certificata rivolgersi a enti accreditati.
-                </p>
-            </div>
-
-            <div style="background: #f9fafb; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: center;">
-                <p style="font-size: 13px; color: #6b7280; line-height: 1.6;">
-                    <strong>Credits:</strong> Dott. Salvatore Trono<br>
-                    Laureato in Servizi Giuridici per l'Impresa • Formatore • Esperto in Sicurezza sui Luoghi di Lavoro<br>
-                    <span style="font-size: 12px; color: #9ca3af;">
-                        Materiale didattico conforme alla normativa vigente in materia di SSL
-                    </span>
-                </p>
-            </div>
-
-            <div style="text-align: center; margin-top: 40px;">
-                <button onclick="startQuiz()" class="btn btn-primary" style="font-size: 20px; padding: 18px 48px;">
-                    🚀 Avvia Test
+            <!-- Pulsanti -->
+            <div class="flex gap-4 mt-8">
+                <button onclick="closeLegalModal()" 
+                        class="flex-1 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 border-2"
+                        style="background: var(--grigio-scuro); border-color: #fff; color: #fff;"
+                        onmouseover="this.style.background='var(--rosso)'; this.style.borderColor='var(--rosso)';"
+                        onmouseout="this.style.background='var(--grigio-scuro)'; this.style.borderColor='#fff';">
+                    ❌ ANNULLA
+                </button>
+                <button onclick="acceptLegal()" 
+                        class="flex-1 px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300"
+                        style="background: linear-gradient(135deg, var(--arancione), var(--arancione-chiaro)); 
+                               box-shadow: 0 10px 25px -5px rgba(249,115,22,0.5);"
+                        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 15px 35px -5px rgba(249,115,22,0.7)';"
+                        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 25px -5px rgba(249,115,22,0.5)';">
+                    ✅ ACCETTO E PROSEGUO
                 </button>
             </div>
         </div>
+    </div>
 
-        <!-- SCHERMATA QUIZ -->
-        <div id="quizScreen" class="hidden">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
-                    <div>
-                        <span style="font-size: 14px; color: #6b7280;">Domanda</span>
-                        <h2 style="font-size: 28px; font-weight: 800; color: #1e40af;">
-                            <span id="currentQuestion">1</span> / 15
-                        </h2>
+    <!-- Schermata Quiz (nascosta inizialmente) -->
+    <div id="quizScreen" class="hidden min-h-screen p-4 md:p-8">
+        <!-- Header Quiz -->
+        <div class="max-w-5xl mx-auto mb-6">
+            <div class="glass-card rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <!-- Timer -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-3xl">⏱️</div>
+                        <div>
+                            <div class="text-sm text-gray-400">Tempo rimanente</div>
+                            <div id="timer" class="text-2xl font-bold" style="color: var(--arancione);">30:00</div>
+                        </div>
                     </div>
-                    <div id="timer" class="timer">
-                        ⏱️ <span id="timeLeft">20:00</span>
+
+                    <!-- Progress -->
+                    <div class="flex-1 max-w-md">
+                        <div class="flex justify-between text-sm text-gray-400 mb-2">
+                            <span>Progresso</span>
+                            <span id="progressText">0/15</span>
+                        </div>
+                        <div class="h-3 bg-gray-700 rounded-full overflow-hidden">
+                            <div id="progressBar" class="progress-bar h-full" style="width: 0%"></div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="progress-bar">
-                    <div id="progressBar" class="progress-fill" style="width: 0%;"></div>
-                </div>
-
-                <div style="margin: 30px 0;">
-                    <h3 id="questionText" style="font-size: 20px; font-weight: 600; color: #1f2937; line-height: 1.6;">
-                        <!-- Testo domanda -->
-                    </h3>
-                </div>
-
-                <div id="optionsContainer">
-                    <!-- Opzioni di risposta -->
+                    <!-- Score -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-3xl">🎯</div>
+                        <div>
+                            <div class="text-sm text-gray-400">Risposte date</div>
+                            <div id="answeredCount" class="text-2xl font-bold" style="color: var(--arancione);">0/15</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- SCHERMATA RISULTATI -->
-        <div id="resultsScreen" class="hidden">
-            <div class="card">
-                <div style="text-align: center;">
-                    <span class="header-badge">📊 RISULTATI TEST</span>
-                    <h1 style="font-size: 32px; font-weight: 800; color: #1e40af; margin: 16px 0;">
-                        Test Completato!
-                    </h1>
-                </div>
-
-                <div id="scoreBox" class="score-box">
-                    <div style="font-size: 72px; font-weight: 900; margin: 20px 0;" id="scorePercentage">
-                        0%
+        <!-- Domanda -->
+        <div class="max-w-5xl mx-auto">
+            <div class="glass-card rounded-2xl p-8 mb-6 fade-in">
+                <div class="mb-6">
+                    <div class="text-sm text-gray-400 mb-2">
+                        Domanda <span id="questionNumber">1</span> di 15
                     </div>
-                    <h2 style="font-size: 32px; font-weight: 700; margin: 16px 0;" id="scoreMessage">
-                        <!-- Messaggio risultato -->
-                    </h2>
-                    <p style="font-size: 18px; opacity: 0.9;" id="scoreDetail">
-                        <!-- Dettaglio punteggio -->
-                    </p>
+                    <h2 id="questionText" class="text-2xl font-bold text-white leading-relaxed"></h2>
                 </div>
 
-                <div style="text-align: center; margin: 30px 0; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                    <button onclick="retryQuiz()" class="btn btn-primary">
-                        🔄 Ripeti Test (stesse domande)
-                    </button>
-                    <button onclick="newQuiz()" class="btn btn-secondary">
-                        🎲 Genera Nuovo Test
-                    </button>
-                    <button onclick="backToHome()" class="btn btn-secondary">
-                        🏠 Torna alla Home
-                    </button>
-                </div>
+                <!-- Opzioni di risposta -->
+                <div id="answersContainer" class="space-y-4"></div>
+            </div>
 
-                <div style="margin-top: 40px;">
-                    <h3 style="font-size: 24px; font-weight: 700; color: #1e40af; margin-bottom: 20px;">
-                        📝 Riepilogo Risposte
-                    </h3>
-                    <div id="resultsContainer">
-                        <!-- Riepilogo dettagliato -->
+            <!-- Navigazione -->
+            <div class="flex justify-between gap-4">
+                <button id="prevBtn" onclick="previousQuestion()" 
+                        class="glass-card px-6 py-3 rounded-xl font-semibold hover:border-orange-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    ← Precedente
+                </button>
+                
+                <button id="nextBtn" onclick="nextQuestion()" 
+                        class="glass-card px-6 py-3 rounded-xl font-semibold hover:border-orange-500 transition-all">
+                    Successiva →
+                </button>
+                
+                <button id="submitBtn" onclick="submitQuiz()" 
+                        class="hidden btn-primary px-8 py-3 rounded-xl font-bold text-white">
+                    📊 TERMINA TEST
+                </button>
+            </div>
+
+            <!-- Mappa domande -->
+            <div class="glass-card rounded-2xl p-6 mt-6">
+                <h3 class="text-lg font-bold mb-4">Mappa domande</h3>
+                <div id="questionMap" class="grid grid-cols-5 md:grid-cols-10 gap-3"></div>
+                <div class="flex gap-6 mt-4 text-sm text-gray-400">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded bg-gray-700"></div>
+                        <span>Non risposta</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded" style="background: var(--arancione);"></div>
+                        <span>Risposta data</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schermata Risultati (nascosta inizialmente) -->
+    <div id="resultsScreen" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-8 md:p-12 max-w-4xl w-full fade-in">
+            <!-- Risultato Finale -->
+            <div class="text-center mb-8">
+                <div id="resultEmoji" class="text-8xl mb-4">🎉</div>
+                <h2 id="resultTitle" class="text-4xl font-bold mb-4" style="color: var(--arancione);">
+                    Test Completato!
+                </h2>
+                <div id="resultScore" class="text-6xl font-bold mb-4">0/15</div>
+                <div id="resultPercentage" class="text-2xl text-gray-300 mb-4">0%</div>
+                <div id="resultMessage" class="text-xl text-gray-400"></div>
+            </div>
+
+            <!-- Statistiche -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-2">✅</div>
+                    <div id="correctAnswers" class="text-3xl font-bold" style="color: var(--verde);">0</div>
+                    <div class="text-gray-400 text-sm">Corrette</div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-2">❌</div>
+                    <div id="wrongAnswers" class="text-3xl font-bold" style="color: var(--rosso);">0</div>
+                    <div class="text-gray-400 text-sm">Errate</div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-3xl mb-2">⏱️</div>
+                    <div id="timeUsed" class="text-3xl font-bold" style="color: var(--arancione);">0:00</div>
+                    <div class="text-gray-400 text-sm">Tempo impiegato</div>
+                </div>
+            </div>
+
+            <!-- Riepilogo dettagliato -->
+            <div class="glass-card rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">📋 Riepilogo dettagliato</h3>
+                <div id="detailedResults" class="space-y-4 max-h-96 overflow-y-auto"></div>
+            </div>
+
+            <!-- Azioni -->
+            <div class="flex gap-4">
+                <button onclick="restartQuiz()" 
+                        class="flex-1 glass-card px-6 py-4 rounded-xl font-bold hover:border-orange-500 transition-all">
+                    🔄 RICOMINCIA
+                </button>
+                <button onclick="exportResults()" 
+                        class="flex-1 btn-primary px-6 py-4 rounded-xl font-bold text-white">
+                    📄 ESPORTA PDF
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // PANIERE COMPLETO 128 DOMANDE
-        const quizData = [
-            {
-                question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
-                options: ["D.Lgs. 81/2008", "Legge 626/94", "D.Lgs. 152/2006", "Legge 300/70"],
-                correct: 0,
-                suggestion: "Il Testo Unico sulla Sicurezza (D.Lgs. 81/2008) è la normativa di riferimento per la salute e sicurezza sul lavoro."
-            },
+        // Database domande
+        const questionDatabase = [
             {
                 question: "Chi è il responsabile del Servizio di Prevenzione e Protezione (RSPP)?",
-                options: ["Il datore di lavoro o persona da lui designata", "Il Rappresentante dei Lavoratori", "Il medico competente", "L'ispettore del lavoro"],
-                correct: 0,
-                suggestion: "Il RSPP può essere il datore di lavoro stesso o una persona da lui designata con adeguata formazione."
+                answers: [
+                    "Una figura designata dal datore di lavoro",
+                    "Un dipendente qualsiasi dell'azienda",
+                    "Il medico competente",
+                    "Un rappresentante dei lavoratori"
+                ],
+                correct: 0
             },
             {
-                question: "Qual è la principale funzione del DVR?",
-                options: ["Valutare tutti i rischi per la salute e sicurezza", "Registrare gli infortuni", "Calcolare le ferie dei dipendenti", "Gestire le buste paga"],
-                correct: 0,
-                suggestion: "Il Documento di Valutazione dei Rischi (DVR) identifica e valuta tutti i rischi presenti nell'ambiente di lavoro."
+                question: "Qual è l'obiettivo principale del D.Lgs 81/08?",
+                answers: [
+                    "Aumentare la produttività",
+                    "Tutelare la salute e sicurezza dei lavoratori",
+                    "Ridurre i costi aziendali",
+                    "Incrementare il personale"
+                ],
+                correct: 1
             },
             {
-                question: "Ogni quanto deve essere aggiornato il DVR?",
-                options: ["In caso di modifiche significative o ogni 3 anni", "Ogni anno", "Ogni 5 anni", "Solo alla costituzione dell'azienda"],
-                correct: 0,
-                suggestion: "Il DVR va aggiornato quando ci sono cambiamenti organizzativi, tecnologici o almeno ogni 3 anni per revisione."
+                question: "Cosa si intende per DPI?",
+                answers: [
+                    "Dispositivi di Produzione Industriale",
+                    "Dispositivi di Protezione Individuale",
+                    "Documenti di Prevenzione Incendi",
+                    "Direttive di Protezione Interna"
+                ],
+                correct: 1
             },
             {
-                question: "Cosa identifica la sigla DPI?",
-                options: ["Dispositivi di Protezione Individuale", "Documento di Protezione Infortuni", "Dispositivo Prevenzione Incendi", "Dichiarazione Protezione Impianti"],
-                correct: 0,
-                suggestion: "I DPI sono attrezzature destinate a essere indossate dal lavoratore per proteggersi dai rischi."
+                question: "Ogni quanto deve essere aggiornato il Documento di Valutazione dei Rischi (DVR)?",
+                answers: [
+                    "Ogni 5 anni",
+                    "Solo alla fondazione dell'azienda",
+                    "In caso di modifiche significative",
+                    "Mensilmente"
+                ],
+                correct: 2
             },
             {
-                question: "Chi deve fornire i DPI ai lavoratori?",
-                options: ["Il datore di lavoro gratuitamente", "I lavoratori li acquistano", "Il sindacato", "L'INAIL"],
-                correct: 0,
-                suggestion: "Il datore di lavoro deve fornire gratuitamente i DPI necessari, sostituirli quando necessario e assicurarsi del loro uso."
+                question: "Chi può svolgere il ruolo di Rappresentante dei Lavoratori per la Sicurezza (RLS)?",
+                answers: [
+                    "Solo il datore di lavoro",
+                    "Un lavoratore eletto o designato",
+                    "Il medico competente",
+                    "Un consulente esterno"
+                ],
+                correct: 1
             },
             {
-                question: "Qual è la distanza minima tra i bancali in un magazzino?",
-                options: ["Almeno 70-100 cm per consentire transito sicuro", "50 cm", "30 cm", "Non è specificata"],
-                correct: 0,
-                suggestion: "Serve spazio sufficiente per transito persone/mezzi, evacuazione emergenze e movimentazione merci (min 70-100cm)."
-            },
-            {
-                question: "Qual è il peso massimo sollevabile manualmente da un lavoratore maschio adulto?",
-                options: ["25 kg in condizioni ideali", "50 kg", "30 kg sempre", "Non c'è limite"],
-                correct: 0,
-                suggestion: "Il D.Lgs. 81/2008 indica 25kg come riferimento in condizioni ottimali; va valutato frequenza, presa, postura, distanze."
-            },
-            {
-                question: "Cosa indica un cartello triangolare giallo con bordo nero?",
-                options: ["Pericolo/Avvertimento", "Divieto", "Obbligo", "Salvataggio"],
-                correct: 0,
-                suggestion: "Giallo triangolare = avvertimento (es. carrelli elevatori, carichi sospesi, tensione elettrica)."
-            },
-            {
-                question: "Quale DPI è obbligatorio per chi lavora in magazzino?",
-                options: ["Scarpe antinfortunistiche", "Casco sempre", "Guanti sempre", "Occhiali sempre"],
-                correct: 0,
-                suggestion: "Le scarpe antinfortunistiche sono sempre obbligatorie in magazzino; altri DPI dipendono dai rischi specifici (DVR)."
-            },
-            {
-                question: "Cosa fare in caso di incendio in magazzino?",
-                options: ["Allertare, evacuare, usare estintore solo se sicuro", "Spegnere subito da soli", "Nascondersi", "Chiamare dopo aver spento"],
-                correct: 0,
-                suggestion: "Priorità: dare allarme, evacuare in sicurezza, usare estintore solo se addestrati e incendio iniziale."
-            },
-            {
-                question: "Qual è la larghezza minima delle vie di circolazione interne?",
-                options: ["Almeno 80-90 cm per pedoni, di più per mezzi", "50 cm", "1 metro sempre", "Non specificata"],
-                correct: 0,
-                suggestion: "Vie di circolazione: min 70-80cm pedoni, 90-120cm con mezzi, segnalate e libere da ostacoli."
-            },
-            {
-                question: "Chi deve essere formato sull'uso del muletto?",
-                options: ["Solo chi lo utilizza con patentino specifico", "Tutti i dipendenti", "Solo il responsabile", "Nessuno"],
-                correct: 0,
-                suggestion: "Serve abilitazione specifica (patentino mulettista) con corso teorico-pratico e aggiornamenti quinquennali."
-            },
-            {
-                question: "Qual è la frequenza di controllo degli estintori?",
-                options: ["Semestrale", "Annuale", "Trimestrale", "Mai"],
-                correct: 0,
-                suggestion: "Controllo semestrale (verifica pressione, integrità), sostituzione carica ogni 3-5 anni secondo tipo."
-            },
-            {
-                question: "Cosa indica un cartello rotondo blu?",
-                options: ["Obbligo (es. indossare DPI)", "Divieto", "Pericolo", "Uscita"],
-                correct: 0,
-                suggestion: "Blu rotondo = obbligo (indossare casco, scarpe, protezioni acustiche, lavarsi le mani, ecc.)."
-            },
-            {
-                question: "Chi può rimuovere le protezioni dalle macchine?",
-                options: ["Nessuno, salvo manutenzione autorizzata con macchina ferma", "Chiunque se serve", "Solo il datore", "Solo i manutentori sempre"],
-                correct: 0,
-                suggestion: "Le protezioni non vanno mai rimosse; solo per manutenzione con macchina spenta, lockout/tagout e ripristino immediato."
-            },
-            {
-                question: "Qual è l'altezza massima di stoccaggio senza scaffalature?",
-                options: ["Secondo stabilità del carico (max 1,5-2m per bancali)", "Non limitata", "3 metri", "5 metri"],
-                correct: 0,
-                suggestion: "Bancali a terra: max 1,5-2m altezza per stabilità; oltre serve scaffalatura progettata e ancorata."
+                question: "Qual è la frequenza minima di formazione obbligatoria per i lavoratori?",
+                answers: [
+                    "Ogni anno",
+                    "Ogni 5 anni",
+                    "All'assunzione e quando necessario",
+                    "Mai, se già formati"
+                ],
+                correct: 2
             },
             {
                 question: "Cosa deve contenere il Piano di Emergenza?",
-                options: ["Procedure evacuazione, addetti, vie fuga, punti raccolta", "Solo numeri emergenza", "Solo planimetria", "Non serve"],
-                correct: 0,
-                suggestion: "Piano emergenza: procedure allertamento/evacuazione, addetti antincendio/primo soccorso, planimetrie, esercitazioni."
-            },
-            {
-                question: "Chi rappresenta i lavoratori per la sicurezza?",
-                options: ["Il Rappresentante dei Lavoratori per la Sicurezza (RLS)", "Il sindacato", "Il datore di lavoro", "L'ispettore ASL"],
-                correct: 0,
-                suggestion: "L'RLS è eletto/designato dai lavoratori, ha diritto a consultazione, informazione, formazione specifica (32h)."
-            },
-            {
-                question: "Qual è il limite di velocità dei carrelli elevatori in magazzino?",
-                options: ["Secondo segnaletica/DVR (tipicamente 5-10 km/h)", "30 km/h", "Non limitata", "20 km/h sempre"],
-                correct: 0,
-                suggestion: "Velocità ridotta (5-10 km/h), adeguata a visibilità, traffico, carico; rispettare segnaletica interna."
-            },
-            {
-                question: "Cosa indica il pittogramma di un teschio?",
-                options: ["Sostanza tossica/letale", "Corrosivo", "Infiammabile", "Irritante"],
-                correct: 0,
-                suggestion: "Teschio e tibie incrociate = tossicità acuta grave (può causare morte/gravi danni per ingestione/inalazione/contatto)."
-            },
-            {
-                question: "Qual è la sanzione per il datore di lavoro che non fornisce DPI?",
-                options: ["Arresto o ammenda", "Solo richiamo", "Multa amministrativa lieve", "Nessuna"],
-                correct: 0,
-                suggestion: "Mancata fornitura DPI: arresto 2-4 mesi o ammenda 3.071-7.862€ (art. 55 D.Lgs. 81/08)."
-            },
-            {
-                question: "Quante uscite di emergenza deve avere un magazzino?",
-                options: ["Almeno 2 indipendenti", "1 è sufficiente", "3 sempre", "Dipende solo dalla superficie"],
-                correct: 0,
-                suggestion: "Almeno 2 vie di fuga indipendenti, larghe adeguate (>80cm), percorso <30-50m, porte verso esodo."
-            },
-            {
-                question: "Chi deve effettuare la sorveglianza sanitaria?",
-                options: ["Il medico competente", "Il medico di base", "L'INAIL", "Non è obbligatoria"],
-                correct: 0,
-                suggestion: "Il medico competente effettua visite preventive, periodiche, su richiesta, cambio mansione, cessazione."
-            },
-            {
-                question: "Cosa deve essere presente nei luoghi di lavoro per il primo soccorso?",
-                options: ["Cassetta di pronto soccorso e personale addestrato", "Solo numeri emergenza", "Niente", "Solo aspirina"],
-                correct: 0,
-                suggestion: "Obbligo cassetta/pacchetto pronto soccorso (DM 388/03) e addetti formati (12/16h secondo gruppo aziendale)."
-            },
-            {
-                question: "Qual è l'illuminamento minimo nei luoghi di lavoro?",
-                options: ["Secondo compito visivo (minimo 100-200 lux generale)", "50 lux", "500 lux sempre", "Non specificato"],
-                correct: 0,
-                suggestion: "Magazzino: min 100-150 lux; zone operative 200-300 lux; lavori di precisione 500-1000 lux."
-            },
-            {
-                question: "Chi deve verificare la conformità CE delle attrezzature?",
-                options: ["Il datore di lavoro prima dell'acquisto/uso", "Il venditore", "L'INAIL", "Nessuno"],
-                correct: 0,
-                suggestion: "Il datore deve verificare marcatura CE, dichiarazione conformità, manuale uso/manutenzione prima di acquistare/usare."
-            },
-            {
-                question: "Cosa indica un cartello rosso rotondo con barra diagonale?",
-                options: ["Divieto (es. vietato fumare, accesso, ecc.)", "Obbligo", "Pericolo", "Uscita"],
-                correct: 0,
-                suggestion: "Rosso rotondo con barra = divieto (fumare, fiamme libere, accesso non autorizzati, transito carrelli, ecc.)."
-            },
-            {
-                question: "Qual è la portata minima di un estintore in un magazzino?",
-                options: ["6 litri/kg (13A-89BC)", "3 kg", "10 kg", "Non specificata"],
-                correct: 0,
-                suggestion: "Estintori: min 6L/kg, capacità 13A-89BC, 1 ogni 200m² (rischio basso), max 30m distanza."
-            },
-            {
-                question: "Chi deve redigere il DUVRI?",
-                options: ["Il datore di lavoro committente", "L'appaltatore", "Il coordinatore sicurezza", "Non serve"],
-                correct: 0,
-                suggestion: "Il DUVRI (Documento Unico Valutazione Rischi Interferenza) è redatto dal committente per lavori in appalto."
-            },
-            {
-                question: "Qual è la periodicità della formazione dei lavoratori?",
-                options: ["Aggiornamento ogni 5 anni (6 ore)", "Mai", "Annuale", "Solo all'assunzione"],
-                correct: 0,
-                suggestion: "Formazione iniziale (4h generale + 4/8/12h specifica) + aggiornamento quinquennale 6 ore."
-            },
-            {
-                question: "Cosa deve fare il lavoratore se individua un rischio?",
-                options: ["Segnalarlo immediatamente al preposto/datore", "Risolverlo da solo", "Ignorarlo", "Aspettare l'infortunio"],
-                correct: 0,
-                suggestion: "Obbligo di segnalazione immediata di situazioni pericolose; divieto di rimuovere protezioni o dispositivi sicurezza."
-            },
-            {
-                question: "Qual è la temperatura minima nei locali di lavoro?",
-                options: ["Non inferiore a 18°C (attività sedentarie)", "10°C", "25°C", "Non specificata"],
-                correct: 0,
-                suggestion: "Min 18°C (lavoro sedentario), 16°C (lavoro fisico leggero), con adeguata ventilazione e umidità 40-60%."
-            },
-            {
-                question: "Chi deve essere avvisato in caso di infortunio sul lavoro?",
-                options: ["Datore, INAIL (se >3 gg), ASL (se grave/mortale)", "Solo il datore", "Solo l'INAIL", "Nessuno"],
-                correct: 0,
-                suggestion: "Prognosi >3gg: denuncia INAIL entro 2gg; infortunio grave (>40gg) o mortale: ASL/Procura immediate."
-            },
-            {
-                question: "Cosa deve contenere la segnaletica di sicurezza?",
-                options: ["Pittogrammi, colori, forme normalizzati", "Solo scritte", "Disegni liberi", "Non serve"],
-                correct: 0,
-                suggestion: "Segnaletica conforme D.Lgs. 81/08 All. XXV: divieto (rosso/rotondo), obbligo (blu/rotondo), pericolo (giallo/triangolo)."
-            },
-            {
-                question: "Qual è la distanza minima da linee elettriche aeree?",
-                options: ["5 metri (3m se <1000V con precauzioni)", "1 metro", "10 metri", "Non specificata"],
-                correct: 0,
-                suggestion: "Distanza di sicurezza 5m (o 3m se <1000V con procedure), più se lavori con gru/piattaforme."
-            },
-            {
-                question: "Chi deve formare i nuovi assunti?",
-                options: ["Il datore di lavoro entro 60 giorni", "Non serve", "Il responsabile entro 1 anno", "Solo dopo 6 mesi"],
-                correct: 0,
-                suggestion: "Formazione obbligatoria prima/contestualmente all'assunzione; massimo entro 60gg se affiancati."
-            },
-            {
-                question: "Qual è il numero minimo di addetti antincendio?",
-                options: ["Almeno 1-2 secondo dimensione/rischi", "Non serve", "10", "Solo 1 sempre"],
-                correct: 0,
-                suggestion: "Numero adeguato a dimensioni, rischi, turnazione; minimo 1 per piccole attività, più per complesse."
-            },
-            {
-                question: "Cosa indica il pittogramma con punto esclamativo?",
-                options: ["Irritante, sensibilizzante, tossico", "Esplosivo", "Corrosivo", "Infiammabile"],
-                correct: 0,
-                suggestion: "Punto esclamativo = irritante cutaneo/oculare, sensibilizzante, tossicità acuta moderata, stupefacente."
-            },
-            {
-                question: "Qual è la sanzione per mancata valutazione dei rischi (DVR)?",
-                options: ["Arresto 3-6 mesi o ammenda 2.740-7.014€", "Richiamo", "Multa 100€", "Nessuna"],
-                correct: 0,
-                suggestion: "Mancato DVR: tra le violazioni più gravi, arresto o ammenda elevata per il datore di lavoro."
-            },
-            {
-                question: "Chi deve autorizzare l'uso di attrezzature particolari?",
-                options: ["Il datore di lavoro previa formazione specifica", "Chiunque", "Solo i manutentori", "Non serve autorizzazione"],
-                correct: 0,
-                suggestion: "Attrezzature speciali (carrelli, PLE, gru, ecc.): serve abilitazione/patentino dopo corso teorico-pratico."
-            },
-            {
-                question: "Qual è l'altezza minima dei soffitti nei locali di lavoro?",
-                options: ["3 metri", "2,5 metri", "4 metri", "Non specificata"],
-                correct: 0,
-                suggestion: "Altezza minima locali chiusi: 3m (riducibile a 2,70m per uffici); maggiore per presenza impianti/scaffalature alte."
-            },
-            {
-                question: "Cosa deve essere fatto prima di entrare in spazi confinati?",
-                options: ["Permesso lavoro, verifica atmosfera, ventilazione, DPI", "Niente", "Solo aprire", "Solo indossare maschera"],
-                correct: 0,
-                suggestion: "Spazi confinati: permesso scritto, rilevazione gas (O2, CO, H2S), ventilazione, imbracatura, sorveglianza esterna."
-            },
-            {
-                question: "Qual è la larghezza minima delle porte interne?",
-                options: ["80 cm (85 cm per transito intenso)", "60 cm", "100 cm", "Non specificata"],
-                correct: 0,
-                suggestion: "Porte: min 80cm (75cm per servizio); 85-90cm se transito intenso; 120cm se >25 persone; verso esodo per emergenza."
-            },
-            {
-                question: "Chi deve essere consultato prima di modifiche organizzative?",
-                options: ["Il Rappresentante dei Lavoratori per la Sicurezza", "Nessuno", "Solo il datore decide", "Solo i dirigenti"],
-                correct: 0,
-                suggestion: "L'RLS deve essere consultato preventivamente su: DVR, DPI, formazione, organizzazione, nomina figure sicurezza."
-            },
-            {
-                question: "Qual è la frequenza della formazione antincendio?",
-                options: ["Aggiornamento ogni 5 anni (2-5-8 h)", "Annuale", "Mai", "Solo iniziale"],
-                correct: 0,
-                suggestion: "Antincendio: formazione iniziale (4/8/16h) + aggiornamento quinquennale (2h basso, 5h medio, 8h alto)."
-            },
-            {
-                question: "Cosa deve essere presente su ogni piano di un edificio?",
-                options: ["Planimetria di evacuazione e vie di fuga", "Niente", "Solo estintori", "Solo cartelli divieto fumo"],
-                correct: 0,
-                suggestion: "Planimetrie: posizione attuale, vie fuga, uscite emergenza, estintori, allarmi, valvole intercettazione."
-            },
-            {
-                question: "Chi deve verificare l'efficacia della formazione?",
-                options: ["Il datore di lavoro con verifiche/test", "Nessuno", "Solo il docente", "L'INAIL"],
-                correct: 0,
-                suggestion: "Il datore deve verificare l'apprendimento con test/prove pratiche e rilasciare attestato di avvenuta formazione."
-            },
-            {
-                question: "Qual è la capacità minima della cassetta di pronto soccorso?",
-                options: ["Secondo DM 388/03 per numero dipendenti", "Non specificata", "Solo cerotti", "Solo garze"],
-                correct: 0,
-                suggestion: "Contenuto minimo: guanti, disinfettante, garze sterili, cerotti, forbici, laccio, ghiaccio istantaneo, coperta termica."
-            },
-            {
-                question: "Cosa deve fare il preposto?",
-                options: ["Sovrintendere e verificare attuazione direttive sicurezza", "Solo dare ordini di lavoro", "Niente", "Sostituisce il datore"],
-                correct: 0,
-                suggestion: "Il preposto vigila su applicazione procedure, uso DPI, comportamenti sicuri; può fermare lavori pericolosi."
-            },
-            {
-                question: "Qual è la periodicità di controllo degli impianti elettrici?",
-                options: ["2 anni (5 anni luoghi ordinari)", "Annuale", "Mai", "Solo all'installazione"],
-                correct: 0,
-                suggestion: "Verifica impianto messa a terra: 2 anni (luoghi lavoro), 5 anni (altri luoghi) da organismi abilitati."
-            },
-            {
-                question: "Cosa indica un cartello verde con pittogramma bianco?",
-                options: ["Salvataggio/emergenza (uscita, pronto soccorso)", "Obbligo", "Divieto", "Pericolo"],
-                correct: 0,
-                suggestion: "Verde rettangolare = segnali salvataggio (uscita emergenza, pronto soccorso, barella, doccia sicurezza, telefono)."
-            },
-            {
-                question: "Chi può effettuare lavori elettrici?",
-                options: ["Solo personale qualificato PES/PAV", "Chiunque", "Qualsiasi operaio", "Solo periti elettrotecnici"],
-                correct: 0,
-                suggestion: "Lavori elettrici: PES (esperto), PAV (avvertito), PEI (idoneo lavori sotto tensione) con formazione CEI 11-27."
-            },
-            {
-                question: "Qual è la distanza di sicurezza dalle scaffalature?",
-                options: ["Minimo 70-100 cm per transito", "30 cm", "50 cm", "Non serve"],
-                correct: 0,
-                suggestion: "Corridoi tra scaffalature: 70-100cm pedoni, 120-150cm con carrelli; segnalati e mantenuti liberi."
-            },
-            {
-                question: "Cosa deve contenere il registro controlli antincendio?",
-                options: ["Data, tipo controllo, anomalie, firma responsabile", "Solo date", "Niente", "Solo numeri VVF"],
-                correct: 0,
-                suggestion: "Registro: controlli estintori, idranti, porte REI, luci emergenza, prove evacuazione con esito e firma."
-            },
-            {
-                question: "Chi nomina il medico competente?",
-                options: ["Il datore di lavoro", "I lavoratori", "L'ASL", "L'INAIL"],
-                correct: 0,
-                suggestion: "Il datore nomina il medico competente quando la sorveglianza sanitaria è obbligatoria per i rischi presenti."
-            },
-            {
-                question: "Qual è la pendenza massima delle rampe pedonali?",
-                options: ["8% (10-12% per brevi tratti)", "20%", "15%", "Non specificata"],
-                correct: 0,
-                suggestion: "Rampe: max 8% (ideale 5%), 10-12% per tratti brevi; disabili max 8% con corrimano e pianerottoli."
-            },
-            {
-                question: "Cosa deve essere presente nei locali a rischio esplosione?",
-                options: ["Impianti ATEX, ventilazione, divieto fiamme", "Niente", "Solo estintori", "Solo cartelli"],
-                correct: 0,
-                suggestion: "Zone ATEX: classificazione, attrezzature certificate, impianti antistatici, ventilazione, divieto fonti ignizione."
-            },
-            {
-                question: "Chi deve aggiornare il DVR dopo un infortunio grave?",
-                options: ["Il datore di lavoro con RSPP", "Nessuno", "Solo l'INAIL", "Solo l'ASL"],
-                correct: 0,
-                suggestion: "Infortunio grave richiede rivalutazione rischi e aggiornamento DVR per prevenire ripetizione eventi."
-            },
-            {
-                question: "Qual è la resistenza minima dei parapetti?",
-                options: ["100 kg/m orizzontale", "50 kg", "200 kg", "Non specificata"],
-                correct: 0,
-                suggestion: "Parapetti: corrente superiore 1m, intermedio 50cm, tavola fermapiede 20cm; resistenza min 100kg/m."
-            },
-            {
-                question: "Cosa deve essere verificato prima di usare una scala?",
-                options: ["Integrità pioli, stabilità, dispositivi antiscivolo", "Niente", "Solo altezza", "Solo peso"],
-                correct: 0,
-                suggestion: "Scale: pioli integri, montanti stabili, piedini antiscivolo, ganci/catene, inclinazione 75° (1:4)."
-            },
-            {
-                question: "Chi deve essere informato sui rischi specifici?",
-                options: ["Tutti i lavoratori esposti", "Solo i dirigenti", "Solo i nuovi assunti", "Nessuno"],
-                correct: 0,
-                suggestion: "Informazione continua a tutti i lavoratori su rischi, misure di prevenzione, procedure emergenza, DPI."
-            },
-            {
-                question: "Qual è la durata minima della formazione per lavoratori?",
-                options: ["4 ore generale + 4/8/12 ore specifica", "2 ore", "16 ore sempre", "Non obbligatoria"],
-                correct: 0,
-                suggestion: "4h generale + specifica (4h rischio basso, 8h medio, 12h alto) secondo settore ATECO."
-            },
-            {
-                question: "Cosa deve essere presente negli spogliatoi?",
-                options: ["Armadietti, sedute, separazione sessi", "Niente", "Solo appendiabiti", "Solo lavandini"],
-                correct: 0,
-                suggestion: "Spogliatoi: separati per sesso, armadietti doppi (lavoro/privato), sedute, ventilazione, dimensioni adeguate."
-            },
-            {
-                question: "Chi può sospendere i lavori per pericolo grave?",
-                options: ["Preposto, RSPP, RLS, organi vigilanza", "Solo il datore", "Solo i VVF", "Nessuno"],
-                correct: 0,
-                suggestion: "Pericolo grave e imminente: preposto deve fermare lavori; lavoratori possono allontanarsi senza sanzioni."
-            },
-            {
-                question: "Qual è la periodicità delle verifiche delle attrezzature di sollevamento?",
-                options: ["Annuale per prime 3 anni, poi ogni 2 anni", "Semestrale", "Mai", "Solo all'acquisto"],
-                correct: 0,
-                suggestion: "Apparecchi sollevamento: verifica INAIL/ASL/organismi prima messa in servizio, poi annuale (3 anni) e biennale."
-            },
-            {
-                question: "Cosa deve contenere il libretto macchina?",
-                options: ["Istruzioni uso, manutenzione, rischi residui", "Solo marca", "Solo prezzo", "Niente"],
-                correct: 0,
-                suggestion: "Manuale: caratteristiche, uso corretto, rischi residui, manutenzione, controlli, ricambi, marcatura CE."
-            },
-            {
-                question: "Chi deve verificare l'idoneità sanitaria dei lavoratori?",
-                options: ["Il medico competente", "Il medico di base", "Il datore", "L'INAIL"],
-                correct: 0,
-                suggestion: "Il medico competente esprime giudizio: idoneo, idoneo con prescrizioni, temporaneamente non idoneo, non idoneo."
-            },
-            {
-                question: "Qual è l'altezza minima per considerare un lavoro in quota?",
-                options: ["2 metri da piano stabile", "3 metri", "5 metri", "1 metro"],
-                correct: 0,
-                suggestion: "Lavoro in quota: ≥2m da piano stabile; serve valutazione, DPI anticaduta, formazione specifica."
-            },
-            {
-                question: "Cosa deve essere presente sulle vie di fuga?",
-                options: ["Illuminazione emergenza, segnaletica, porte apribili", "Solo luci", "Niente", "Solo cartelli"],
-                correct: 0,
-                suggestion: "Vie fuga: segnalate, illuminate (anche emergenza), libere, porte verso esodo con maniglione antipanico."
-            },
-            {
-                question: "Chi deve redigere il POS (Piano Operativo di Sicurezza)?",
-                options: ["Il datore di lavoro dell'impresa esecutrice", "Il committente", "Il coordinatore", "Nessuno"],
-                correct: 0,
-                suggestion: "Ogni impresa in cantiere redige POS: organizzazione, rischi, misure prevenzione, DPI, attrezzature."
-            },
-            {
-                question: "Qual è la durata della formazione per dirigenti?",
-                options: ["16 ore + aggiornamento 6h/5anni", "4 ore", "32 ore", "Non prevista"],
-                correct: 0,
-                suggestion: "Dirigenti: 16 ore (4 moduli giuridico-gestionale-tecnico-relazionale) + 6h aggiornamento quinquennale."
-            },
-            {
-                question: "Cosa deve essere verificato su un ponteggio prima dell'uso?",
-                options: ["Ancoraggi, pianali, parapetti, accessi", "Niente", "Solo altezza", "Solo montanti"],
-                correct: 0,
-                suggestion: "Verifica ponteggio: PIMUS, montaggio qualificato, pianali completi, parapetti, controventature, ancoraggi."
-            },
-            {
-                question: "Chi deve fornire informazioni sui prodotti chimici?",
-                options: ["Il fornitore con scheda dati sicurezza", "Il datore", "I lavoratori", "Nessuno"],
-                correct: 0,
-                suggestion: "Fornitore deve dare SDS (Scheda Dati Sicurezza) 16 sezioni; datore forma lavoratori su uso sicuro."
-            },
-            {
-                question: "Qual è la periodicità di aggiornamento per preposti?",
-                options: ["6 ore ogni 5 anni", "4 ore annuali", "Non previsto", "Solo all'inizio"],
-                correct: 0,
-                suggestion: "Preposti: corso 8h + aggiornamento 6h ogni 5 anni su responsabilità, rischi, comunicazione."
-            },
-            {
-                question: "Cosa deve essere presente in caso di lavori in altezza?",
-                options: ["Parapetti, reti, cinture di sicurezza", "Niente", "Solo casco", "Solo corde"],
-                correct: 0,
-                suggestion: "Priorità: eliminare caduta (parapetti), proteggersi (reti), DPI anticaduta (imbracatura + cordino assorbimento)."
-            },
-            {
-                question: "Chi deve essere formato sulla gestione emergenze?",
-                options: ["Tutti i lavoratori + addetti specifici", "Solo addetti antincendio", "Solo il datore", "Nessuno"],
-                correct: 0,
-                suggestion: "Tutti ricevono informazioni; addetti antincendio/primo soccorso hanno formazione specifica con esercitazioni."
-            },
-            {
-                question: "Qual è la larghezza minima dei corridoi con carrelli?",
-                options: ["Larghezza carrello + 120-140 cm", "1 metro", "80 cm", "Non specificata"],
-                correct: 0,
-                suggestion: "Corridoi con mezzi: larghezza mezzo + 120cm (doppio senso +140cm); segnalati, illuminati, mantenuti liberi."
-            },
-            {
-                question: "Cosa deve contenere l'attestato di formazione?",
-                options: ["Dati partecipante, corso, ore, test, firma ente", "Solo nome", "Solo data", "Niente"],
-                correct: 0,
-                suggestion: "Attestato: anagrafica, denominazione corso, ore, date, contenuti, superamento test, firma legale rappresentante ente."
-            },
-            {
-                question: "Chi deve essere consultato per modifiche degli orari di lavoro?",
-                options: ["Il medico competente per rischi specifici", "Nessuno", "Solo il sindacato", "Solo i lavoratori"],
-                correct: 0,
-                suggestion: "Modifiche turni/orari: consultare medico competente se impattano su sorveglianza sanitaria (es. lavoro notturno)."
-            },
-            {
-                question: "Qual è la temperatura massima nei luoghi di lavoro?",
-                options: ["Non specificata ma deve essere confortevole", "30°C", "25°C", "35°C"],
-                correct: 0,
-                suggestion: "Non c'è limite massimo specifico; va garantito comfort con ventilazione/climatizzazione; microclima valutato in DVR."
-            },
-            {
-                question: "Cosa deve essere fatto prima di utilizzare una nuova sostanza chimica?",
-                options: ["Leggere SDS, valutare rischi, formare lavoratori", "Usarla subito", "Solo aprirla", "Solo indossare guanti"],
-                correct: 0,
-                suggestion: "Prima dell'uso: acquisire SDS, valutare rischi chimici, aggiornare DVR, informare/formare, fornire DPI."
-            },
-            {
-                question: "Chi deve verificare l'applicazione delle misure di prevenzione?",
-                options: ["Datore, dirigenti, preposti", "Solo il datore", "Solo l'RSPP", "Nessuno"],
-                correct: 0,
-                suggestion: "Datore vigila sull'applicazione; dirigenti/preposti controllano quotidianamente; RSPP/RLS verificano efficacia."
-            },
-            {
-                question: "Qual è la durata della formazione per addetti al montaggio ponteggi?",
-                options: ["28 ore + aggiornamento 4h/4anni", "16 ore", "8 ore", "Non prevista"],
-                correct: 0,
-                suggestion: "Ponteggi >2m: corso 28h teorico-pratico + 4h aggiornamento quadriennale per montatori autorizzati."
-            },
-            {
-                question: "Cosa deve essere presente nei depositi di sostanze pericolose?",
-                options: ["Ventilazione, segnaletica, kit emergenza, DPI", "Niente", "Solo estintori", "Solo cartelli"],
-                correct: 0,
-                suggestion: "Depositi: separazione incompatibili, ventilazione, elettrica conforme, segnaletica, kit assorbenti, schede emergenza."
-            },
-            {
-                question: "Chi deve essere nominato per gestire le emergenze?",
-                options: ["Addetti antincendio e primo soccorso", "Nessuno", "Solo vigili del fuoco", "Tutti i dipendenti"],
-                correct: 0,
-                suggestion: "Numero adeguato di addetti antincendio/primo soccorso formati, designati per iscritto, sempre presenti (turnazione)."
-            },
-            {
-                question: "Qual è la periodicità dei controlli sugli impianti di aspirazione?",
-                options: ["Secondo fabbricante (tipicamente semestrale/annuale)", "Mai", "Ogni 5 anni", "Solo all'installazione"],
-                correct: 0,
-                suggestion: "Impianti aspirazione polveri/fumi: controlli filtri/efficienza secondo libretto; verifica efficacia almeno annuale."
-            },
-            {
-                question: "Cosa deve essere fatto in caso di near miss (quasi infortunio)?",
-                options: ["Segnalarlo e analizzare le cause", "Ignorarlo", "Solo annotarlo", "Niente"],
-                correct: 0,
-                suggestion: "Near miss: segnalare, registrare, analizzare cause, adottare azioni correttive preventive; cultura della sicurezza."
-            },
-            {
-                question: "Chi deve autorizzare lavori straordinari in azienda?",
-                options: ["Il datore di lavoro con valutazione rischi", "Chiunque", "Solo il preposto", "Non serve autorizzazione"],
-                correct: 0,
-                suggestion: "Lavori non ordinari: autorizzazione scritta, valutazione rischi, misure specifiche, informazione/formazione."
-            },
-            {
-                question: "Qual è l'obbligo del lavoratore in materia di sicurezza?",
-                options: ["Rispettare direttive, usare DPI, segnalare pericoli", "Nessuno", "Solo lavorare", "Solo firmare presenza"],
-                correct: 0,
-                suggestion: "Lavoratore: prendersi cura di sé/altri, usare correttamente attrezzature/DPI, segnalare deficienze, non rimuovere protezioni."
-            },
-            {
-                question: "Qual è la sanzione per omessa sorveglianza sanitaria?",
-                options: ["Arresto 2-4 mesi o ammenda 2.192-4.384€", "Richiamo", "Multa 100€", "Nessuna"],
-                correct: 0,
-                suggestion: "Mancata sorveglianza sanitaria obbligatoria: sanzioni penali per datore di lavoro."
-            },
-            {
-                question: "Cosa deve contenere il registro degli esposti?",
-                options: ["Anagrafica, mansione, esposizioni, controlli sanitari", "Solo nomi", "Solo date", "Non esiste più"],
-                correct: 0,
-                suggestion: "Per agenti cancerogeni/mutageni/biologici: registro esposti nominativo conservato ≥40 anni, trasmesso ASL/INAIL."
-            },
-            {
-                question: "Chi può accedere ai documenti della sicurezza?",
-                options: ["RLS, organi vigilanza, lavoratori (propri dati)", "Solo il datore", "Nessuno", "Solo l'INAIL"],
-                correct: 0,
-                suggestion: "DVR: accessibile a RLS, ispettori; sorveglianza sanitaria: lavoratore vede propria cartella sanitaria."
-            },
-            {
-                question: "Qual è la periodicità della riunione periodica di sicurezza?",
-                options: ["Annuale (aziende >15 dipendenti)", "Semestrale", "Mai", "Solo se c'è infortunio"],
-                correct: 0,
-                suggestion: "Riunione annuale obbligatoria (>15 dip.): datore, RSPP, medico, RLS; ordine giorno DVR, formazione, DPI."
-            },
-            {
-                question: "Cosa deve essere presente per l'uso di sostanze tossiche?",
-                options: ["SDS, DPI specifici, formazione, procedure emergenza", "Niente", "Solo guanti", "Solo maschera"],
-                correct: 0,
-                suggestion: "Sostanze tossiche: valutazione rischio chimico, DPI appropriati (maschere filtri specifici), formazione, docce/lavaocchi emergenza."
-            },
-            {
-                question: "Chi deve redigere il PSC (Piano di Sicurezza e Coordinamento)?",
-                options: ["Il coordinatore per la progettazione (CSP)", "Il committente", "L'impresa", "Nessuno"],
-                correct: 0,
-                suggestion: "PSC obbligatorio se cantiere con ≥2 imprese; redatto dal CSP nominato dal committente."
-            },
-            {
-                question: "Qual è la formazione minima per addetti PLE (piattaforme elevabili)?",
-                options: ["10 ore (4 teoria + 6 pratica) + aggiornamento 4h/5anni", "4 ore", "16 ore", "Non prevista"],
-                correct: 0,
-                suggestion: "PLE: abilitazione 10h (8h-10h secondo tipo) + aggiornamento 4h quinquennale con esame teorico-pratico."
-            },
-            {
-                question: "Cosa deve essere verificato negli impianti di riscaldamento?",
-                options: ["Efficienza, emissioni, sicurezza annualmente", "Niente", "Solo temperatura", "Solo all'installazione"],
-                correct: 0,
-                suggestion: "Caldaie: controllo efficienza energetica periodico; verifica fumi, ventilazione, sicurezza secondo normativa impianti."
-            },
-            {
-                question: "Chi deve essere informato su modifiche del ciclo produttivo?",
-                options: ["RSPP, RLS, lavoratori interessati", "Nessuno", "Solo il datore decide", "Solo i dirigenti"],
-                correct: 0,
-                suggestion: "Modifiche significative: consultazione RSPP/RLS, valutazione nuovi rischi, aggiornamento DVR, informazione/formazione."
-            },
-            {
-                question: "Qual è la durata del corso per uso carrelli elevatori rischio basso?",
-                options: ["12 ore (4 teoria + 8 pratica) + aggiornamento 4h/5anni", "8 ore", "16 ore", "4 ore"],
-                correct: 0,
-                suggestion: "Carrelli elevatori: 12h (teoria generale + specifica + pratica) + 4h aggiornamento quinquennale."
-            },
-            {
-                question: "Cosa deve contenere il piano di emergenza?",
-                options: ["Rischi, procedure evacuazione, ruoli, numeri utili", "Solo numeri VVF", "Solo planimetria", "Niente"],
-                correct: 0,
-                suggestion: "Piano emergenza: scenari, procedure, responsabilità, vie fuga, punti raccolta, comunicazioni, coordinamento soccorsi."
-            },
-            {
-                question: "Chi deve verificare la conformità delle attrezzature di lavoro?",
-                options: ["Il datore di lavoro prima dell'uso", "Nessuno", "Solo il produttore", "Solo l'INAIL"],
-                correct: 0,
-                suggestion: "Datore verifica: marcatura CE, conformità, idoneità all'uso, manutenzione, controlli periodici secondo libretto."
-            },
-            {
-                question: "Qual è l'altezza massima di stoccaggio senza autorizzazioni speciali?",
-                options: ["Varia secondo normativa antincendio e stabilità", "10 metri", "5 metri", "Non c'è limite"],
-                correct: 0,
-                suggestion: "Limiti stoccaggio: normativa antincendio (attività soggette CPI), stabilità scaffalature, raggiungibilità sicura."
-            },
-            {
-                question: "Cosa deve essere fatto per lavori in spazi confinati?",
-                options: ["Permesso lavoro, verifica atmosfera, sorveglianza esterna", "Niente", "Solo entrare", "Solo usare maschera"],
-                correct: 0,
-                suggestion: "Spazi confinati: DPR 177/11, permesso scritto, test gas, ventilazione, DPI specifici, recupero emergenza, sorvegliante."
-            },
-            {
-                question: "Chi deve firmare il DVR?",
-                options: ["Datore, RSPP, medico competente, RLS (consultazione)", "Solo il datore", "Solo l'RSPP", "Tutti i dipendenti"],
-                correct: 0,
-                suggestion: "Firme DVR: datore (responsabile), RSPP, medico competente; RLS firma per consultazione (non responsabilità)."
-            },
-            {
-                question: "Qual è la periodicità dei controlli sui dispositivi anticaduta?",
-                options: ["Annuale da persona competente + visivo ogni uso", "Mai", "Solo all'acquisto", "Ogni 5 anni"],
-                correct: 0,
-                suggestion: "DPI anticaduta: verifica visiva pre-uso, revisione annuale da ditta specializzata con registrazione."
-            },
-            {
-                question: "Cosa deve essere presente per il lavoro notturno?",
-                options: ["Valutazione rischi specifici, sorveglianza sanitaria", "Niente", "Solo illuminazione", "Solo turni"],
-                correct: 0,
-                suggestion: "Lavoro notturno: valutazione rischi (fatica, sonnolenza), sorveglianza sanitaria, tutele (donne gravide, genitori)."
-            },
-            {
-                question: "Chi deve autorizzare l'uso di attrezzature non conformi?",
-                options: ["Nessuno, sono vietate", "Il datore", "L'ispettore", "Chiunque"],
-                correct: 0,
-                suggestion: "Attrezzature non conformi/prive marcatura CE: divieto assoluto di uso; sanzioni penali per datore."
-            },
-            {
-                question: "Qual è la distanza minima di sicurezza da linee elettriche aeree?",
-                options: ["5 metri (3 metri se <1000V con precauzioni)", "1 metro", "10 metri", "2 metri"],
-                correct: 0,
-                suggestion: "Linee elettriche: 5m distanza, 3m se <1kV con procedura, delimitazione area, segnaletica, formazione operatori."
-            },
-            {
-                question: "Cosa deve contenere il registro infortuni?",
-                options: ["Nome, dinamica, giorni prognosi, causa", "Solo nome", "Solo data", "Non esiste più"],
-                correct: 0,
-                suggestion: "Registro infortuni abolito; denuncia INAIL entro 2gg, comunicazione INAIL/ASL per gravi (>40gg o mortali)."
-            },
-            {
-                question: "Chi può modificare una macchina marcata CE?",
-                options: ["Nessuno senza rivalutazione conformità", "Chiunque", "Solo il produttore", "Il datore liberamente"],
-                correct: 0,
-                suggestion: "Modifiche sostanziali: richiedono nuova valutazione conformità, marcatura CE, documentazione tecnica."
-            },
-            {
-                question: "Qual è la periodicità della verifica degli estintori?",
-                options: ["Controllo semestrale + collaudo 3 anni + revisione 6 anni", "Annuale", "Mai", "Solo all'acquisto"],
-                correct: 0,
-                suggestion: "Estintori: semestrale (peso, cartellino), collaudo 3 anni, revisione 6 anni, sostituzione secondo vita utile."
-            },
-            {
-                question: "Cosa deve essere fatto per lavori con rischio caduta dall'alto?",
-                options: ["POS specifico, DPI anticaduta, formazione, punti ancoraggio", "Niente", "Solo casco", "Solo corda"],
-                correct: 0,
-                suggestion: "Quote >2m: valutazione, protezioni collettive (parapetti), DPI III cat. (imbracatura+assorbitore), ancoraggi certificati."
-            },
-            {
-                question: "Chi deve essere formato sull'uso dei DPI di III categoria?",
-                options: ["Tutti i lavoratori che li usano con addestramento", "Solo alcuni", "Nessuno", "Solo il preposto"],
-                correct: 0,
-                suggestion: "DPI III cat. (anticaduta, respiratori, chimici): addestramento pratico specifico obbligatorio oltre formazione teorica."
-            },
-            {
-                question: "Qual è la sanzione per mancato aggiornamento del DVR?",
-                options: ["Arresto 3-6 mesi o ammenda 2.500-6.400€", "Richiamo", "Multa 100€", "Nessuna"],
-                correct: 0,
-                suggestion: "DVR non aggiornato equiparato a omessa redazione: sanzioni penali gravi per datore di lavoro."
-            },
-            {
-                question: "Cosa deve essere verificato nei carrelli elevatori?",
-                options: ["Freni, sterzo, forche, catene, manutenzione", "Niente", "Solo ruote", "Solo batteria"],
-                correct: 0,
-                suggestion: "Controlli giornalieri: freni, sterzo, clacson, luci, forche integre, livelli; manutenzione programmata registrata."
-            },
-            {
-                question: "Chi deve essere consultato per l'acquisto di nuove attrezzature?",
-                options: ["RSPP, medico competente, RLS, lavoratori", "Nessuno", "Solo il fornitore", "Solo l'ufficio acquisti"],
-                correct: 0,
-                suggestion: "Prima dell'acquisto: valutare conformità, ergonomia, rumorosità, vibrazioni, compatibilità DPI; consultare RSPP/RLS."
-            },
-            {
-                question: "Qual è la durata della formazione per addetti primo soccorso gruppo B-C?",
-                options: ["12 ore + aggiornamento 4h/3anni", "4 ore", "16 ore", "8 ore"],
-                correct: 0,
-                suggestion: "Primo soccorso: 16h gruppo A (>5 dip. industria), 12h gruppo B-C; aggiornamento 6h/4h triennale."
-            },
-            {
-                question: "Cosa deve essere presente per rischio biologico?",
-                options: ["Valutazione, DPI, vaccinazioni, protocolli", "Niente", "Solo disinfettante", "Solo mascherina"],
-                correct: 0,
-                suggestion: "Rischio biologico: classificazione agenti, misure contenimento, DPI, sorveglianza sanitaria, vaccinazioni se disponibili."
-            },
-            {
-                question: "Chi deve redigere le procedure operative di sicurezza?",
-                options: ["Datore con RSPP, consultando RLS", "Solo RSPP", "Solo RLS", "Nessuno"],
-                correct: 0,
-                suggestion: "Procedure: datore con supporto RSPP redige istruzioni operative; consultazione RLS; divulgazione/formazione lavoratori."
-            },
-            {
-                question: "Qual è la temperatura minima nei locali di lavoro?",
-                options: ["Almeno 18°C (attività sedentaria)", "10°C", "15°C", "Non specificata"],
-                correct: 0,
-                suggestion: "Temperature minime: 18°C attività sedentaria, 16°C attività moderata, valutare anche umidità/ventilazione."
-            },
-            {
-                question: "Cosa deve essere fatto per lavori rumorosi?",
-                options: ["Valutazione, insonorizzazione, DPI, sorveglianza sanitaria", "Niente", "Solo tappi", "Solo ridurre orario"],
-                correct: 0,
-                suggestion: "Rumore: fonometria, Lex<80dB informazione, 80-85dB DPI disponibili, >85dB DPI obbligatori+audiometria."
-            },
-            {
-                question: "Chi deve verificare l'efficacia della formazione?",
-                options: ["Datore, preposti, RSPP attraverso osservazione", "Nessuno", "Solo l'ente formatore", "Solo al test finale"],
-                correct: 0,
-                suggestion: "Verifica continua: osservazione comportamenti, audit, near miss, infortuni; eventuale formazione integrativa."
-            },
-            {
-                question: "Qual è la larghezza minima delle porte di emergenza?",
-                options: ["80 cm (120 cm se >25 persone)", "60 cm", "100 cm sempre", "Non specificata"],
-                correct: 0,
-                suggestion: "Porte emergenza: min 80cm (120cm >25 persone), verso esodo, maniglione antipanico, mantenute libere."
-            },
-            {
-                question: "Cosa deve contenere il cartellino di manutenzione?",
-                options: ["Data, intervento, anomalie, firma tecnico", "Solo data", "Niente", "Solo firma"],
-                correct: 0,
-                suggestion: "Registro manutenzioni: data, tipo intervento, componenti sostituiti, anomalie riscontrate, firma operatore qualificato."
-            },
-            {
-                question: "Chi deve essere nominato come RLS?",
-                options: ["Eletto dai lavoratori o designato", "Il datore sceglie", "Nessuno", "L'RSPP"],
-                correct: 0,
-                suggestion: "RLS: eletto dai lavoratori (1 ogni 200 dip.); se non eletto possono ricorrere a RLST territoriale."
-            },
-            {
-                question: "Qual è la periodicità della formazione antincendio?",
-                options: ["Aggiornamento 2-5-8h secondo rischio ogni 5 anni", "Annuale", "Mai", "Solo all'assunzione"],
-                correct: 0,
-                suggestion: "Antincendio: nuovo DM 2021, aggiornamento quinquennale 2h basso, 5h medio, 8h alto rischio."
-            },
-            {
-                question: "Cosa deve essere fatto prima di lavori in quota?",
-                options: ["Valutazione, protezioni collettive, DPI, formazione", "Niente", "Solo indossare cintura", "Solo avvisare"],
-                correct: 0,
-                suggestion: "Priorità: eliminare lavoro in quota, protezioni collettive (ponteggi/reti), ultima opzione DPI anticaduta certificati."
-            },
-            {
-                question: "Chi può rilasciare attestati di formazione sicurezza?",
-                options: ["Enti accreditati Regioni", "Chiunque", "Solo università", "Solo aziende"],
-                correct: 0,
-                suggestion: "Formazione: enti accreditati Regioni secondo criteri Accordo Stato-Regioni; docenti qualificati (es. RSPP con esperienza)."
-            },
-            {
-                question: "Qual è l'obbligo del preposto in caso di violazione?",
-                options: ["Interrompere lavori e informare datore", "Niente", "Solo rimproverare", "Licenziare"],
-                correct: 0,
-                suggestion: "Preposto: interrompere attività pericolose, richiamare lavoratori, informare datore/RSPP per provvedimenti."
-            },
-            {
-                question: "Cosa deve essere presente per rischio vibrazioni?",
-                options: ["Valutazione, attrezzature conformi, rotazione, sorveglianza", "Niente", "Solo guanti", "Solo informazione"],
-                correct: 0,
-                suggestion: "Vibrazioni: misurazioni, valori azione/limite, attrezzature basse emissioni, rotazione compiti, sorveglianza sanitaria."
-            },
-            {
-                question: "Chi deve autorizzare i lavori elettrici sotto tensione?",
-                options: ["Datore con procedura specifica e personale PEI", "Chiunque", "Solo elettricista", "Nessuno"],
-                correct: 0,
-                suggestion: "Lavori sotto tensione: vietati salvo indispensabili; solo PEI con procedura scritta, DPI, attrezzi isolati."
-            },
-            {
-                question: "Qual è la sanzione per mancata fornitura DPI?",
-                options: ["Arresto 2-4 mesi o ammenda 1.315-5.699€", "Richiamo", "Multa 50€", "Nessuna"],
-                correct: 0,
-                suggestion: "Omessa fornitura DPI: sanzioni penali per datore; anche per omessa vigilanza sul corretto utilizzo."
-            },
-            {
-                question: "Cosa deve essere verificato negli scaffali portapallet?",
-                options: ["Verticalità, danni, ancoraggi, portata", "Niente", "Solo polvere", "Solo vernice"],
-                correct: 0,
-                suggestion: "Scaffalature: verifica annuale da tecnico, controlli periodici montanti/traversi, segnalazione danni, rispetto portate."
-            },
-            {
-                question: "Chi deve essere formato sulle procedure di emergenza?",
-                options: ["Tutti i lavoratori", "Solo addetti emergenza", "Solo il datore", "Nessuno"],
-                correct: 0,
-                suggestion: "Tutti i lavoratori: formazione su vie fuga, allarme, punti raccolta, numeri emergenza; addetti hanno formazione specifica."
-            },
-            {
-                question: "Qual è la durata minima delle prove di evacuazione?",
-                options: ["Almeno 1-2 volte l'anno", "Mai", "Ogni 5 anni", "Solo all'inizio attività"],
-                correct: 0,
-                suggestion: "Prove evacuazione: almeno annuali (semestrali consigliato), coinvolgere tutti, valutare tempi, criticità, miglioramenti."
-            },
-            {
-                question: "Cosa deve essere presente per sostanze CMR?",
-                options: ["Registro esposti, sorveglianza sanitaria, sostituzione", "Niente", "Solo guanti", "Solo etichetta"],
-                correct: 0,
-                suggestion: "Cancerogeni/mutageni: sostituzione se possibile, esposizione minima, zone delimitate, registro nominativo 40 anni."
-            },
-            {
-                question: "Chi deve redigere il manuale d'uso delle attrezzature?",
-                options: ["Il fabbricante in lingua italiana", "Il datore", "Nessuno", "L'utilizzatore"],
-                correct: 0,
-                suggestion: "Fabbricante: manuale istruzioni in italiano, completo, comprensibile, con rischi residui, manutenzione, marcatura CE."
-            },
-            {
-                question: "Qual è la periodicità dei controlli sulle funi e catene?",
-                options: ["Trimestrale + verifica annuale approfondita", "Annuale", "Mai", "Solo all'acquisto"],
-                correct: 0,
-                suggestion: "Funi/catene sollevamento: controllo trimestrale, verifica annuale da persona competente con registrazione, dismissione."
-            },
-            {
-                question: "Cosa deve essere fatto per appalti e contratti?",
-                options: ["DUVRI, verifica idoneità, cooperazione", "Niente", "Solo contratto", "Solo pagamento"],
-                correct: 0,
-                suggestion: "Committente: verifica idoneità tecnico-professionale, DUVRI per interferenze, cooperazione/coordinamento, contratto scritto."
-            },
-            {
-                question: "Chi deve essere informato su modifiche organizzative?",
-                options: ["RLS, lavoratori interessati, RSPP", "Nessuno", "Solo il datore decide", "Solo sindacato"],
-                correct: 0,
-                suggestion: "Modifiche: informare RLS preventivamente, valutare nuovi rischi, aggiornare DVR, formare lavoratori interessati."
-            },
-            {
-                question: "Qual è la distanza minima tra scaffalature opposte?",
-                options: ["Almeno 1 metro (1,5m con carrelli)", "50 cm", "2 metri", "Non specificata"],
-                correct: 0,
-                suggestion: "Corridoi tra scaffali opposti: min 1m pedoni, 1,5m+ carrelli secondo dimensioni, segnalati, illuminati."
-            },
-            {
-                question: "Cosa deve contenere il piano di carico-scarico merci?",
-                options: ["Procedure, DPI, attrezzature, segnaletica", "Solo orari", "Niente", "Solo nomi autisti"],
-                correct: 0,
-                suggestion: "Carico/scarico: procedure sicure, attrezzature idonee, segregazione area, DPI, formazione, controllo automezzi."
-            },
-            {
-                question: "Chi deve verificare la conformità dei DPI?",
-                options: ["Datore prima della fornitura", "Nessuno", "Solo il venditore", "I lavoratori"],
-                correct: 0,
-                suggestion: "Datore verifica: marcatura CE, categoria, idoneità ai rischi, conformità normativa, libretto istruzioni."
-            },
-            {
-                question: "Qual è la periodicità della revisione del piano di emergenza?",
-                options: ["Almeno triennale o quando cambia layout", "Annuale", "Mai", "Solo all'inizio"],
-                correct: 0,
-                suggestion: "Piano emergenza: revisione almeno triennale, aggiornamento per modifiche strutturali/organizzative, prove periodiche."
-            },
-            {
-                question: "Cosa deve essere fatto per lavori in presenza di amianto?",
-                options: ["Notifica ASL, piano lavori, bonifica certificata", "Niente", "Solo mascherina", "Solo avvisare"],
-                correct: 0,
-                suggestion: "Amianto: vietata lavorazione; rimozione solo da ditte iscritte Albo, piano lavori, notifica 30gg ASL, smaltimento tracciato."
-            },
-            {
-                question: "Chi deve essere consultato per cambio turni?",
-                options: ["RLS, medico competente, lavoratori", "Nessuno", "Solo sindacato", "Solo il datore decide"],
-                correct: 0,
-                suggestion: "Modifiche organizzative: consultare RLS, valutare impatto su salute (medico), informare lavoratori, rispettare CCNL."
-            },
-            {
-                question: "Qual è l'altezza minima dei soffitti nei locali di lavoro?",
-                options: ["3 metri (2,70 uffici)", "2 metri", "4 metri", "Non specificata"],
-                correct: 0,
-                suggestion: "Altezza minima: 3m locali lavoro, 2,70m uffici; volume minimo 10m³/persona; cubatura adeguata al tipo attività."
-            },
-            {
-                question: "Cosa deve essere presente per il lavoro in solitaria?",
-                options: ["Dispositivo uomo a terra, procedure controllo", "Niente", "Solo telefono", "Solo orologio"],
-                correct: 0,
-                suggestion: "Lavoro isolato: valutazione rischi, dispositivi allarme/localizzazione, controlli periodici, procedure emergenza."
-            },
-            {
-                question: "Chi deve autorizzare l'uso di attrezzature particolari?",
-                options: ["Datore dopo verifica idoneità e formazione", "Chiunque", "Solo il preposto", "Nessuno"],
-                correct: 0,
-                suggestion: "Attrezzature specifiche (carrelli, PLE, gru): autorizzazione scritta previo corso abilitante e verifica idoneità sanitaria."
-            },
-            {
-                question: "Qual è la sanzione per omessa designazione addetti emergenza?",
-                options: ["Arresto 2-4 mesi o ammenda 1.315-5.699€", "Richiamo", "Multa 100€", "Nessuna"],
-                correct: 0,
-                suggestion: "Mancata designazione addetti antincendio/primo soccorso: sanzioni penali; anche per omessa formazione."
-            },
-            {
-                question: "Cosa deve essere verificato negli impianti di sollevamento?",
-                options: ["Funi, ganci, freni, limitatori, catene cinematiche", "Niente", "Solo corda", "Solo vernice"],
-                correct: 0,
-                suggestion: "Controlli apparecchi sollevamento: verifica INAIL/ASL, manutenzione programmata, registro, limitatori carico, dispositivi sicurezza."
-            },
-            {
-                question: "Chi deve essere formato sulla movimentazione manuale carichi?",
-                options: ["Tutti i lavoratori esposti al rischio", "Solo magazzinieri", "Solo mulettisti", "Nessuno"],
-                correct: 0,
-                suggestion: "MMC: formazione specifica su tecniche corrette, rischi, uso ausili, esercizi pratici; aggiornamento periodico."
-            },
-            {
-                question: "Qual è la durata formazione per coordinatori sicurezza cantieri?",
-                options: ["120 ore + aggiornamento 40h/5anni", "40 ore", "16 ore", "Non prevista"],
-                correct: 0,
-                suggestion: "CSP/CSE: corso 120h (giuridico-tecnico-metodologico-pratico) + 40h aggiornamento quinquennale; requisiti professionali."
-            },
-            {
-                question: "Cosa deve essere presente nelle aree di transito pedoni-mezzi?",
-                options: ["Separazione fisica, segnaletica, strisce", "Niente", "Solo cartello", "Solo luci"],
-                correct: 0,
-                suggestion: "Segregazione: barriere fisiche (new jersey/guard rail), strisce gialle/bianche, segnaletica orizzontale/verticale, specchi."
-            },
-            {
-                question: "Chi deve redigere le istruzioni operative?",
-                options: ["Datore con RSPP, consultando lavoratori esperti", "Solo RSPP", "Solo lavoratori", "Nessuno"],
-                correct: 0,
-                suggestion: "Istruzioni: datore coordina redazione con RSPP, coinvolgendo lavoratori esperti; divulgazione attraverso formazione."
-            },
-            {
-                question: "Qual è la periodicità controllo impianti antincendio?",
-                options: ["Semestrale (estintori) + annuale (rete idrica/rivelazione)", "Annuale tutto", "Mai", "Solo all'installazione"],
-                correct: 0,
-                suggestion: "Impianti: estintori 6 mesi, idranti/rivelatori/evacuat[...]ione 6 mesi, allarme/spegnimento annuale; registro controlli."
-            },
-            {
-                question: "Cosa deve essere fatto per rischio stress lavoro-correlato?",
-                options: ["Valutazione oggettiva, questionari, azioni migliorative", "Niente", "Solo parlare", "Solo assumere psicologo"],
-                correct: 0,
-                suggestion: "Stress: valutazione obbligatoria DVR, indicatori oggettivi, eventuale questionari, misure organizzative, supporto psicologico."
-            },
-            {
-                question: "Chi deve essere formato sulle emergenze chimiche?",
-                options: ["Tutti gli esposti + addetti emergenza specifici", "Solo chimici", "Solo il datore", "Nessuno"],
-                correct: 0,
-                suggestion: "Emergenze chimiche: tutti formati su SDS/primo intervento; addetti emergenza su procedure neutralizzazione/contenimento."
-            },
-            {
-                question: "Qual è l'illuminamento minimo in magazzino?",
-                options: ["150-200 lux (300 lux aree controllo qualità)", "50 lux", "500 lux", "Non specificato"],
-                correct: 0,
-                suggestion: "Illuminazione: 150-200 lux magazzino, 300 lux lettura/controllo, 500 lux uffici; luce emergenza su vie fuga."
-            },
-            {
-                question: "Cosa deve essere presente per accesso mezzi esterni?",
-                options: ["Procedure ingresso, DPI, informazione rischi", "Niente", "Solo badge", "Solo firma"],
-                correct: 0,
-                suggestion: "Automezzi esterni: regolamento accesso, informazione rischi/procedure, DPI visitatori, aree segregate, coordinamento."
-            },
-            {
-                question: "Chi deve verificare idoneità tecnico-professionale fornitori?",
-                options: ["Datore committente prima dell'affidamento", "Nessuno", "Solo ufficio acquisti", "Solo dopo il lavoro"],
-                correct: 0,
-                suggestion: "Verifica: DURC, iscrizione CCIAA, assicurazioni, formazione, DVR, attrezzature conformi prima affidamento lavori."
-            },
-            {
-                question: "Qual è la sanzione per mancata elaborazione DVR?",
-                options: ["Arresto 3-6 mesi o ammenda 2.500-6.400€", "Richiamo", "Multa 200€", "Nessuna"],
-                correct: 0,
-                suggestion: "DVR: obbligo entro 90gg inizio attività; omissione = sanzione penale più grave per datore di lavoro."
-            },
-            {
-                question: "Cosa deve contenere il libretto ponteggio?",
-                options: ["Autorizzazione ministeriale, disegni, portate, istruzioni", "Solo marca", "Solo altezza", "Niente"],
-                correct: 0,
-                suggestion: "Libretto: autorizzazione Ministero, schemi montaggio, portate ammissibili, istruzioni montaggio/uso/smontaggio, manutenzione."
-            },
-            {
-                question: "Chi può svolgere la sorveglianza sanitaria?",
-                options: ["Medico competente con titolo e iscrizione", "Qualsiasi medico", "Infermiere", "Nessuno"],
-                correct: 0,
-                suggestion: "Medico competente: specializzazione medicina lavoro o equipollenti, iscrizione elenco Ministero Salute."
-            },
-            {
-                question: "Qual è la periodicità della formazione generale lavoratori?",
-                options: ["Una tantum all'assunzione + aggiornamento 6h/5anni", "Annuale", "Mai", "Solo prima volta"],
-                correct: 0,
-                suggestion: "Formazione: 4h generale una tantum + 4/8/12h specifica all'assunzione; aggiornamento 6h quinquennale."
-            },
-            {
-                question: "Cosa deve essere presente per rischio rapina?",
-                options: ["Valutazione, procedure, cassaforte, allarme, formazione", "Niente", "Solo telecamere", "Solo assicurazione"],
-                correct: 0,
-                suggestion: "Rischio rapina: valutazione, misure tecniche (allarmi/telecamere), organizzative (contante minimo), formazione comportamentale."
-            },
-            {
-                question: "Chi deve autorizzare modifiche agli impianti?",
-                options: ["Datore dopo verifica tecnica e aggiornamento DVR", "Chiunque", "Solo elettricista", "Nessuno"],
-                correct: 0,
-                suggestion: "Modifiche impianti: progetto tecnico, autorizzazioni, aggiornamento DVR, dichiarazione conformità, formazione utilizzatori."
-            },
-            {
-                question: "Qual è l'altezza massima di accumulo bancali?",
-                options: ["Secondo stabilità e portata scaffalature", "10 metri", "Non c'è limite", "2 metri"],
-                correct: 0,
-                suggestion: "Stoccaggio: rispettare portate scaffali, stabilità (5-6 bancali max a terra), accessibilità, normativa antincendio."
-            },
-            {
-                question: "Cosa deve essere fatto prima di lavori su impianti elettrici?",
-                options: ["Togliere tensione, verificare assenza, messa a terra, blocco", "Niente", "Solo avvisare", "Solo guanti"],
-                correct: 0,
-                suggestion: "5 regole sicurezza: 1)togliere tensione, 2)blocco richiusura, 3)verifica assenza, 4)messa a terra, 5)delimitazione."
-            },
-            {
-                question: "Chi deve essere formato sui rischi interferenti?",
-                options: ["Tutti i lavoratori esposti a interferenze", "Solo appaltatori", "Solo il datore", "Nessuno"],
-                correct: 0,
-                suggestion: "DUVRI: informazione/formazione su rischi interferenti, procedure coordinate, DPI, referenti, numeri emergenza."
-            },
-            {
-                question: "Qual è la durata corso RSPP datore di lavoro rischio medio?",
-                options: ["32 ore + aggiornamento 10h/5anni", "16 ore", "48 ore", "Non previsto"],
-                correct: 0,
-                suggestion: "RSPP datore: 16h rischio basso, 32h medio, 48h alto + aggiornamento 6/10/14h quinquennale."
-            },
-            {
-                question: "Cosa deve essere presente per accesso disabili?",
-                options: ["Rampe 8%, ascensori, servizi igienici, segnaletica", "Niente", "Solo rampa", "Solo cartello"],
-                correct: 0,
-                suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
+                answers: [
+                    "Solo i numeri di emergenza",
+                    "Procedure, vie di fuga, punti di raccolta",
+                    "L'organigramma aziendale",
+                    "Il bilancio di sicurezza"
+                ],
+                correct: 1
+            },
+            {
+                question: "Qual è il limite di rumore per l'esposizione quotidiana senza protezioni?",
+                answers: [
+                    "80 dB(A)",
+                    "85 dB(A)",
+                    "90 dB(A)",
+                    "95 dB(A)"
+                ],
+                correct: 1
+            },
+            {
+                question: "Chi ha l'obbligo di fornire i DPI ai lavoratori?",
+                answers: [
+                    "I lavoratori stessi",
+                    "Il datore di lavoro",
+                    "Il medico competente",
+                    "Il RLS"
+                ],
+                correct: 1
+            },
+            {
+                question: "Cosa indica la segnaletica di colore rosso?",
+                answers: [
+                    "Obbligo",
+                    "Pericolo o divieto",
+                    "Salvataggio",
+                    "Avvertimento"
+                ],
+                correct: 1
+            },
+            {
+                question: "Quale documento certifica l'idoneità alla mansione del lavoratore?",
+                answers: [
+                    "Il DVR",
+                    "Il certificato medico del medico competente",
+                    "L'attestato di formazione",
+                    "Il contratto di lavoro"
+                ],
+                correct: 1
+            },
+            {
+                question: "Ogni quanto deve essere effettuata la sorveglianza sanitaria?",
+                answers: [
+                    "Secondo protocolli stabiliti dal medico competente",
+                    "Ogni 10 anni",
+                    "Solo in caso di malattia",
+                    "Mai, se il lavoratore è sano"
+                ],
+                correct: 0
+            },
+            {
+                question: "Cos'è il near miss?",
+                answers: [
+                    "Un infortunio grave",
+                    "Un mancato infortunio",
+                    "Una violazione normativa",
+                    "Un dispositivo di sicurezza"
+                ],
+                correct: 1
+            },
+            {
+                question: "Quale organo vigila sull'applicazione delle norme di sicurezza?",
+                answers: [
+                    "L'azienda stessa",
+                    "L'Ispettorato del Lavoro",
+                    "I sindacati",
+                    "Il medico di base"
+                ],
+                correct: 1
+            },
+            {
+                question: "Cosa si intende per rischio ergonomico?",
+                answers: [
+                    "Rischio legato a posture e movimenti",
+                    "Rischio chimico",
+                    "Rischio elettrico",
+                    "Rischio biologico"
+                ],
+                correct: 0
+            },
+            {
+                question: "Chi può interrompere l'attività lavorativa in caso di pericolo grave e immediato?",
+                answers: [
+                    "Solo il datore di lavoro",
+                    "Il lavoratore stesso",
+                    "Solo il RLS",
+                    "Nessuno, il lavoro deve continuare"
+                ],
+                correct: 1
+            },
+            {
+                question: "Qual è la durata minima del corso di formazione generale per i lavoratori?",
+                answers: [
+                    "2 ore",
+                    "4 ore",
+                    "8 ore",
+                    "16 ore"
+                ],
+                correct: 1
+            },
+            {
+                question: "Cosa indica un cartello di forma rotonda con bordo rosso?",
+                answers: [
+                    "Obbligo",
+                    "Divieto",
+                    "Avvertimento",
+                    "Salvataggio"
+                ],
+                correct: 1
+            },
+            {
+                question: "Qual è il primo intervento in caso di incendio?",
+                answers: [
+                    "Chiamare i vigili del fuoco",
+                    "Attivare l'allarme e tentare lo spegnimento se possibile",
+                    "Evacuare immediatamente",
+                    "Filmare l'evento"
+                ],
+                correct: 1
+            },
+            {
+                question: "Cosa si intende per agenti cancerogeni?",
+                answers: [
+                    "Sostanze che possono causare il cancro",
+                    "Agenti atmosferici",
+                    "Sostanze allergeniche",
+                    "Agenti biologici generici"
+                ],
+                correct: 0
             }
         ];
 
-        // VARIABILI GLOBALI
-        let currentQuizData = [];
+        // Variabili globali
+        let questions = [];
         let currentQuestion = 0;
         let userAnswers = [];
+        let score = 0;
+        let timeLeft = 30 * 60; // 30 minuti in secondi
         let timerInterval;
-        let timeRemaining = 1200; // 20 minuti in secondi
+        let startTime;
 
-        // FUNZIONE INIZIO QUIZ
+        // Funzione per ottenere domande casuali
+        function getRandomQuestions(num) {
+            const shuffled = [...questionDatabase].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, num);
+        }
+
+        // Funzione per iniziare il quiz
         function startQuiz() {
-    document.getElementById('legalModal').classList.remove('hidden');
-}
-
-function closeLegalModal() {
-    document.getElementById('legalModal').classList.add('hidden');
-}
-
-function acceptLegal() {
-    document.getElementById('legalModal').classList.add('hidden');
-    document.getElementById('welcomeScreen').style.display = 'none';
-    document.getElementById('quizScreen').classList.remove('hidden');
-    
-    questions = getRandomQuestions(15);
-    currentQuestion = 0;
-    userAnswers = new Array(questions.length).fill(null);
-    score = 0;
-    timeLeft = 30 * 60;
-    
-    renderQuestion();
-    startTimer();
-}
-
-
-        // FUNZIONE MOSTRA DOMANDA
-        function showQuestion() {
-            const question = currentQuizData[currentQuestion];
-            const letters = ['A', 'B', 'C', 'D'];
-
-            document.getElementById('currentQuestion').textContent = currentQuestion + 1;
-            document.getElementById('questionText').textContent = question.question;
-            document.getElementById('progressBar').style.width = ((currentQuestion / 15) * 100) + '%';
-
-            const optionsHTML = question.options.map((option, index) => `
-                <div class="option" onclick="selectAnswer(${index})">
-                    <div class="option-letter">${letters[index]}</div>
-                    <div style="flex: 1; font-size: 16px;">${option}</div>
-                </div>
-            `).join('');
-
-            document.getElementById('optionsContainer').innerHTML = optionsHTML;
+            document.getElementById('legalModal').classList.remove('hidden');
         }
 
-        // FUNZIONE SELEZIONE RISPOSTA
-        function selectAnswer(index) {
-            userAnswers.push({
-                question: currentQuizData[currentQuestion].question,
-                userAnswer: index,
-                correctAnswer: currentQuizData[currentQuestion].correct,
-                options: currentQuizData[currentQuestion].options,
-                suggestion: currentQuizData[currentQuestion].suggestion
-            });
-
-            currentQuestion++;
-
-            if (currentQuestion < 15) {
-                showQuestion();
-            } else {
-                finishQuiz();
-            }
+        function closeLegalModal() {
+            document.getElementById('legalModal').classList.add('hidden');
         }
 
-        // FUNZIONE TIMER
+        function acceptLegal() {
+            document.getElementById('legalModal').classList.add('hidden');
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('quizScreen').classList.remove('hidden');
+            
+            questions = getRandomQuestions(15);
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            score = 0;
+            timeLeft = 30 * 60;
+            startTime = Date.now();
+            
+            renderQuestion();
+            updateQuestionMap();
+            startTimer();
+        }
+
+        // Timer
         function startTimer() {
             timerInterval = setInterval(() => {
-                timeRemaining--;
-
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
-                document.getElementById('timeLeft').textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-                if (timeRemaining < 300) {
-                    document.getElementById('timer').classList.add('warning');
-                }
-
-                if (timeRemaining <= 0) {
-                    finishQuiz();
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
                 }
             }, 1000);
         }
 
-        // FUNZIONE FINE QUIZ
-        function finishQuiz() {
-            clearInterval(timerInterval);
-
-            const correctCount = userAnswers.filter(a => a.userAnswer === a.correctAnswer).length;
-            const percentage = Math.round((correctCount / 15) * 100);
-
-            let scoreClass, scoreMessage, emoji;
-            if (percentage >= 80) {
-                scoreClass = 'excellent';
-                scoreMessage = '🏆 Eccellente!';
-                emoji = '🎉';
-            } else if (percentage >= 60) {
-                scoreClass = 'sufficient';
-                scoreMessage = '✅ Sufficiente';
-                emoji = '👍';
-            } else {
-                scoreClass = 'insufficient';
-                scoreMessage = '❌ Insufficiente';
-                emoji = '📚';
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer').textContent = display;
+            
+            // Cambio colore se < 5 minuti
+            if (timeLeft < 300) {
+                document.getElementById('timer').style.color = 'var(--rosso)';
             }
+        }
 
-            document.getElementById('scoreBox').className = `score-box ${scoreClass}`;
-            document.getElementById('scorePercentage').textContent = percentage + '%';
-            document.getElementById('scoreMessage').textContent = scoreMessage;
-            document.getElementById('scoreDetail').textContent = 
-                `${correctCount} risposte corrette su 15 ${emoji}`;
+        // Renderizza domanda
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            document.getElementById('questionText').textContent = q.question;
+            
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+            
+            q.answers.forEach((answer, index) => {
+                const div = document.createElement('div');
+                div.className = `answer-option glass-card rounded-xl p-4 border-2 border-gray-700 ${
+                    userAnswers[currentQuestion] === index ? 'answer-selected' : ''
+                }`;
+                div.innerHTML = `
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="radio" 
+                               name="answer" 
+                               value="${index}" 
+                               ${userAnswers[currentQuestion] === index ? 'checked' : ''}
+                               onchange="selectAnswer(${index})"
+                               class="w-5 h-5">
+                        <span class="flex-1">${answer}</span>
+                    </label>
+                `;
+                container.appendChild(div);
+            });
+            
+            updateProgress();
+            updateNavButtons();
+        }
 
-            const resultsHTML = userAnswers.map((answer, index) => {
-                const letters = ['A', 'B', 'C', 'D'];
-                const isCorrect = answer.userAnswer === answer.correctAnswer;
+        function selectAnswer(index) {
+            userAnswers[currentQuestion] = index;
+            updateQuestionMap();
+            renderQuestion();
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const percentage = (answered / questions.length) * 100;
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${answered}/${questions.length}`;
+            document.getElementById('answeredCount').textContent = `${answered}/${questions.length}`;
+        }
+
+        function updateQuestionMap() {
+            const container = document.getElementById('questionMap');
+            container.innerHTML = '';
+            
+            questions.forEach((_, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = index + 1;
+                btn.className = `w-10 h-10 rounded-lg font-bold transition-all ${
+                    userAnswers[index] !== null 
+                        ? 'text-white' 
+                        : 'bg-gray-700 text-gray-400'
+                }`;
                 
-                return `
-                    <div class="result-item ${isCorrect ? 'correct' : 'incorrect'}">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                            <div style="flex: 1;">
-                                <span class="badge ${isCorrect ? 'badge-correct' : 'badge-incorrect'}">
-                                    Domanda ${index + 1}
-                                </span>
-                                <p style="font-size: 16px; font-weight: 600; color: #1f2937; margin-top: 8px;">
-                                    ${answer.question}
-                                </p>
-                            </div>
-                            <div style="font-size: 28px; margin-left: 16px;">
-                                ${isCorrect ? '✅' : '❌'}
-                            </div>
-                        </div>
-                        
-                        <div style="margin: 12px 0;">
-                            <p style="font-size: 14px; color: #6b7280; margin-bottom: 6px;">
-                                <strong>Tua risposta:</strong>
-                            </p>
-                            <p style="font-size: 15px; color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: 600;">
-                                ${letters[answer.userAnswer]}. ${answer.options[answer.userAnswer]}
-                            </p>
-                        </div>
+                if (userAnswers[index] !== null) {
+                    btn.style.background = 'var(--arancione)';
+                }
+                
+                if (index === currentQuestion) {
+                    btn.style.border = '2px solid white';
+                }
+                
+                btn.onclick = () => {
+                    currentQuestion = index;
+                    renderQuestion();
+                    updateQuestionMap();
+                };
+                
+                container.appendChild(btn);
+            });
+        }
 
-                        ${!isCorrect ? `
-                            <div style="margin: 12px 0;">
-                                <p style="font-size: 14px; color: #6b7280; margin-bottom: 6px;">
-                                    <strong>Risposta corretta:</strong>
-                                </p>
-                                <p style="font-size: 15px; color: #059669; font-weight: 600;">
-                                    ${letters[answer.correctAnswer]}. ${answer.options[answer.correctAnswer]}
-                                </p>
-                            </div>
-                        ` : ''}
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('submitBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('submitBtn').classList.add('hidden');
+            }
+        }
 
-                        <div class="suggestion-box">
-                            <strong>💡 Suggerimento:</strong><br>
-                            ${answer.suggestion}
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateQuestionMap();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+                updateQuestionMap();
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            
+            // Calcola punteggio
+            score = 0;
+            questions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    score++;
+                }
+            });
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            const timeUsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutesUsed = Math.floor(timeUsed / 60);
+            const secondsUsed = timeUsed % 60;
+            
+            // Mostra risultati
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+            
+            // Emoji e messaggio basati sul risultato
+            let emoji, title, message;
+            if (percentage >= 80) {
+                emoji = '🎉';
+                title = 'COMPLIMENTI!';
+                message = 'Hai superato il test con successo!';
+            } else if (percentage >= 60) {
+                emoji = '😊';
+                title = 'BUON RISULTATO';
+                message = 'Hai una buona preparazione, ma puoi migliorare.';
+            } else {
+                emoji = '📚';
+                title = 'DA RIVEDERE';
+                message = 'Ti consigliamo di ripassare gli argomenti e riprovare.';
+            }
+            
+            document.getElementById('resultEmoji').textContent = emoji;
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultScore').textContent = `${score}/${questions.length}`;
+            document.getElementById('resultPercentage').textContent = `${percentage}%`;
+            document.getElementById('resultMessage').textContent = message;
+            
+            document.getElementById('correctAnswers').textContent = score;
+            document.getElementById('wrongAnswers').textContent = questions.length - score;
+            document.getElementById('timeUsed').textContent = `${minutesUsed}:${secondsUsed.toString().padStart(2, '0')}`;
+            
+            // Riepilogo dettagliato
+            const detailedContainer = document.getElementById('detailedResults');
+            detailedContainer.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const isCorrect = userAnswers[index] === q.correct;
+                const div = document.createElement('div');
+                div.className = `glass-card rounded-xl p-4 border-2 ${
+                    isCorrect ? 'border-green-500' : 'border-red-500'
+                }`;
+                div.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="text-2xl">${isCorrect ? '✅' : '❌'}</div>
+                        <div class="flex-1">
+                            <div class="font-bold mb-2">Domanda ${index + 1}</div>
+                            <div class="text-gray-300 mb-2">${q.question}</div>
+                            ${!isCorrect ? `
+                                <div class="text-sm">
+                                    <div class="text-red-400">La tua risposta: ${q.answers[userAnswers[index]] || 'Nessuna risposta'}</div>
+                                    <div class="text-green-400">Risposta corretta: ${q.answers[q.correct]}</div>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 `;
-            }).join('');
-
-            document.getElementById('resultsContainer').innerHTML = resultsHTML;
-
-            document.getElementById('quizScreen').classList.add('hidden');
-            document.getElementById('resultsScreen').classList.remove('hidden');
+                detailedContainer.appendChild(div);
+            });
         }
 
-        // FUNZIONE RIPETI TEST
-        function retryQuiz() {
-            currentQuestion = 0;
-            userAnswers = [];
-            timeRemaining = 1200;
-
-            document.getElementById('resultsScreen').classList.add('hidden');
-            document.getElementById('quizScreen').classList.remove('hidden');
-
-            showQuestion();
-            startTimer();
+        function restartQuiz() {
+            location.reload();
         }
 
-        // FUNZIONE NUOVO TEST
-        function newQuiz() {
-            startQuiz();
-            document.getElementById('resultsScreen').classList.add('hidden');
-        }
-
-        // FUNZIONE TORNA HOME
-        function backToHome() {
-            document.getElementById('resultsScreen').classList.add('hidden');
-            document.getElementById('introScreen').classList.remove('hidden');
+        function exportResults() {
+            // Funzionalità di esportazione (da implementare con jsPDF o html2canvas)
+            alert('Funzione di esportazione in sviluppo!');
         }
     </script>
 </body>
