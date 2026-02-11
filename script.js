@@ -1046,39 +1046,7 @@ let userAnswers = [];
 let timerInterval;
 let timeLeft = 1800;
 
-// ========== FUNZIONI TIMER ==========
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        updateTimerDisplay();
-        
-        if (timeLeft <= 300) {
-            document.getElementById('timer').classList.add('timer-warning');
-        }
-        
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            submitTest();
-        }
-    }, 1000);
-}
-
-function updateTimerDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    document.getElementById('timer').textContent = 
-        `⏱️ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
-
 // ========== AVVIO TEST ==========
-function startTest() {
-    // ✅ CONTROLLO SICUREZZA
-    if (questionBank.length === 0) {
-        alert('❌ ERRORE: Nessuna domanda nel paniere!');
-        return;
-    }
-    
-    // ========== AVVIO TEST ==========
 function startTest() {
     if (questionBank.length === 0) {
         alert('❌ ERRORE: Nessuna domanda nel paniere!');
@@ -1132,9 +1100,8 @@ function updateTimerDisplay() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     document.getElementById('timer').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        `⏱️ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
-
 
 // ========== MOSTRA DOMANDA ==========
 function showQuestion() {
@@ -1171,7 +1138,7 @@ function selectAnswer(index) {
     userAnswers[currentQuestionIndex] = index;
     updateQuestionMap();
     
-    // ✅ EVIDENZIA RISPOSTA SELEZIONATA
+    // Evidenzia risposta selezionata
     const buttons = document.querySelectorAll('.answer-btn');
     buttons.forEach((btn, i) => {
         btn.classList.remove('answer-selected');
@@ -1180,7 +1147,7 @@ function selectAnswer(index) {
         }
     });
     
-    // ✅ AVANZA AUTOMATICAMENTE DOPO 300ms
+    // Avanza automaticamente dopo 300ms
     setTimeout(() => {
         if (currentQuestionIndex < currentQuestions.length - 1) {
             currentQuestionIndex++;
@@ -1192,7 +1159,6 @@ function selectAnswer(index) {
         }
     }, 300);
 }
-
 
 // ========== NAVIGAZIONE ==========
 function nextQuestion() {
@@ -1218,6 +1184,7 @@ function jumpToQuestion(index) {
     showQuestion();
     updateQuestionMap();
 }
+
 
 // ========== MAPPA DOMANDE ==========
 function updateQuestionMap() {
