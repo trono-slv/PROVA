@@ -3,144 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Analisi dei Rischi Specifici in Magazzino</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Simulatore Test Sicurezza Lavoro</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-   <!-- Welcome Screen -->
-<div id="welcomeScreen" class="screen active">
     <div class="container">
-        <!-- TITOLO PRINCIPALE -->
-        <header class="welcome-header">
-            <h1>📦 Test Analisi dei Rischi Specifici in Magazzino</h1>
-            <p class="test-description">15 domande casuali per valutare la conoscenza dei rischi specifici nei magazzini</p>
-            
-            <!-- ISTRUZIONI -->
-            <div class="instructions">
-                <h3>📋 Istruzioni:</h3>
-                <ul>
-                    <li>⏱️ Tempo disponibile: <strong>20 minuti</strong></li>
-                    <li>🔀 Le domande e le risposte sono randomizzate</li>
-                    <li>➡️ Avanzamento automatico al click della risposta</li>
-                    <li>🚫 Non è possibile tornare indietro</li>
-                    <li>📊 Al termine vedrai il riepilogo completo</li>
-                </ul>
-            </div>
-        </header>
+        
+        <!-- ==================== WELCOME SCREEN ==================== -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="card">
+                <div class="welcome-header">
+                    <h1>🎓 SIMULATORE TEST SICUREZZA SUL LAVORO</h1>
+                    <p>Verifica la tua preparazione sulla normativa D.Lgs. 81/2008</p>
+                </div>
 
-        <!-- Link Esterni -->
-        <div class="resource-section">
-            <h2>📚 Prima di iniziare, ti consigliamo:</h2>
-            <div class="resource-cards">
-                <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" target="_blank" class="resource-card">
-                    <div class="card-icon">📖</div>
-                    <h3>Teoria Rischi Specifici</h3>
-                    <p>Leggi il materiale didattico prima del test</p>
-                </a>
-                <a href="https://trono-slv.github.io/test-SSL---BASE" target="_blank" class="resource-card">
-                    <div class="card-icon">📝</div>
-                    <h3>Quiz Formazione Base</h3>
-                    <p>Formazione generale (D.Lgs. 81/08)</p>
-                </a>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="icon">📋</div>
+                        <div class="label">Domande</div>
+                        <div class="value">15</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">⏱️</div>
+                        <div class="label">Tempo</div>
+                        <div class="value">15 min</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">✅</div>
+                        <div class="label">Sufficienza</div>
+                        <div class="value">70%</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">🎯</div>
+                        <div class="label">Paniere</div>
+                        <div class="value">128 domande</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="startBtn" class="btn btn-primary btn-large">
+                        🚀 INIZIA IL TEST
+                    </button>
+                </div>
             </div>
         </div>
 
-        <button id="startBtn" class="btn-primary">▶️ INIZIA TEST</button>
-    </div>
-</div>
+        <!-- ==================== QUIZ SCREEN ==================== -->
+        <div id="quizScreen" class="screen">
+            <div class="card">
+                <div class="quiz-header">
+                    <div class="progress-info">
+                        <div class="progress-item">
+                            <div class="label">Domanda</div>
+                            <div class="value">
+                                <span id="currentQuestionNum">1</span>/15
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="label">Risposte</div>
+                            <div class="value">
+                                <span id="answeredCount">0</span>/15
+                            </div>
+                        </div>
+                    </div>
+                    <div id="timer" class="timer">⏱️ 15:00</div>
+                </div>
 
-    <!-- Disclaimer Popup -->
+                <div class="question-card">
+                    <div id="questionText" class="question-text"></div>
+                    <div id="optionsContainer" class="options-container"></div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button id="prevBtn" class="btn btn-secondary">
+                        ⬅️ INDIETRO
+                    </button>
+                    <button id="nextBtn" class="btn btn-primary">
+                        AVANTI ➡️
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== RESULTS SCREEN ==================== -->
+        <div id="resultsScreen" class="screen">
+            <div class="card">
+                <div class="results-header">
+                    <div id="resultStatus" class="status"></div>
+                    <div class="score-circle">
+                        <svg viewBox="0 0 200 200">
+                            <circle cx="100" cy="100" r="90" fill="none" 
+                                    stroke="#e9ecef" stroke-width="20"/>
+                            <circle id="scoreCircle" cx="100" cy="100" r="90" 
+                                    fill="none" stroke="#667eea" stroke-width="20"
+                                    stroke-dasharray="565.48" stroke-dashoffset="0"
+                                    transform="rotate(-90 100 100)"/>
+                        </svg>
+                        <div class="score-text" id="scoreText">0%</div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item correct">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-label">Corrette</div>
+                        <div class="stat-value" id="statCorrect">0</div>
+                    </div>
+                    <div class="stat-item incorrect">
+                        <div class="stat-icon">❌</div>
+                        <div class="stat-label">Errate</div>
+                        <div class="stat-value" id="statIncorrect">0</div>
+                    </div>
+                    <div class="stat-item time">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-label">Tempo</div>
+                        <div class="stat-value" id="statTime">0:00</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="restartBtn" class="btn btn-primary">
+                        🔄 RIFAI IL TEST
+                    </button>
+                    <button id="printBtn" class="btn btn-secondary">
+                        🖨️ STAMPA RISULTATI
+                    </button>
+                    <button id="downloadBtn" class="btn btn-secondary">
+                        📥 SCARICA PDF
+                    </button>
+                </div>
+
+                <div class="review-section">
+                    <h2>📝 Revisione Risposte</h2>
+                    <div id="reviewContainer"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== MODAL DISCLAIMER ==================== -->
     <div id="disclaimerModal" class="modal-overlay">
         <div class="modal-content">
-            <h2 class="modal-title">⚠️ ATTENZIONE</h2>
+            <div class="modal-header">
+                <div class="warning-icon">⚠️</div>
+                <h2>IMPORTANTE - LEGGERE ATTENTAMENTE</h2>
+            </div>
             
-            <div class="legal-box">
-                <h3>⚖️ AVVISO LEGALE</h3>
+            <div class="disclaimer-text">
+                <p><strong>Questo è uno strumento di autovalutazione didattica.</strong></p>
                 
-                <div class="legal-section">
-                    <h4>🚫 DIVIETI:</h4>
-                    <ul>
-                        <li><strong>Vietata</strong> la diffusione non autorizzata</li>
-                        <li><strong>Vietato</strong> l'uso senza autorizzazione del Dott. Salvatore Trono</li>
-                        <li><strong>Vietata</strong> la riproduzione anche parziale</li>
-                    </ul>
-                </div>
-
-                <div class="legal-section">
-                    <h4>📌 FINALITÀ:</h4>
-                    <ul>
-                        <li>Questo test è <strong>esclusivamente a scopo formativo</strong></li>
-                        <li><strong>NON costituisce</strong> formazione obbligatoria ai sensi del D.Lgs. 81/2008</li>
-                        <li><strong>NON sostituisce</strong> corsi certificati da enti accreditati</li>
-                    </ul>
-                </div>
-
-                <div class="legal-section">
-                    <h4>✅ AUTORIZZAZIONE RICHIESTA:</h4>
-                    <p>Per l'uso di questo materiale è necessaria <strong>autorizzazione scritta</strong></p>
-                </div>
+                <p>✅ <strong>Finalità:</strong> Verificare la propria preparazione sulla normativa 
+                D.Lgs. 81/2008 in materia di sicurezza sul lavoro.</p>
+                
+                <p>❌ <strong>NON È:</strong></p>
+                <ul>
+                    <li>Un test ufficiale valido ai fini di legge</li>
+                    <li>Sostitutivo della formazione obbligatoria</li>
+                    <li>Certificazione riconosciuta</li>
+                </ul>
+                
+                <p>📚 <strong>Consiglio:</strong> Utilizzare questo simulatore come strumento 
+                di ripasso prima di sostenere eventuali test ufficiali.</p>
+                
+                <p><strong>Procedendo accetti di aver compreso quanto sopra.</strong></p>
             </div>
 
-            <div class="credits-modal">
-                <p><strong>Credits:</strong> Dott. Salvatore Trono</p>
-                <p class="credits-subtitle">Laureato in Servizi Giuridici per l'Impresa • Formatore • Esperto in Sicurezza sui Luoghi di Lavoro</p>
-            </div>
-
-            <div class="modal-buttons">
-                <button id="cancelBtn" class="btn btn-danger">❌ ANNULLA</button>
-                <button id="acceptBtn" class="btn-primary">ACCETTO E PROCEDO</button>
+            <div class="modal-actions">
+                <button id="cancelBtn" class="btn btn-danger">
+                    ❌ ANNULLA
+                </button>
+                <button id="acceptBtn" class="btn btn-primary">
+                    ✅ ACCETTO E PROCEDO
+                </button>
             </div>
         </div>
     </div>
-
-    <!-- Quiz Screen -->
-    <div id="quizScreen" class="screen">
-        <div class="quiz-container">
-            <!-- Timer e Progress -->
-            <div class="quiz-header">
-                <div class="timer-box">
-                    <span class="timer-icon">⏱️</span>
-                    <span id="timer">20:00</span>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div id="progressFill" class="progress-fill"></div>
-                    </div>
-                    <span id="progressText" class="progress-text">Domanda 1 di 15</span>
-                </div>
-            </div>
-
-            <!-- Domanda -->
-            <div class="question-container">
-                <h2 id="questionText" class="question-text"></h2>
-                <div id="optionsContainer" class="options-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Riepilogo Screen -->
-    <div id="summaryScreen" class="screen">
-        <div class="container">
-            <div class="summary-header">
-                <h1>📊 Risultati del Test</h1>
-                <div id="scoreCard" class="score-card"></div>
-            </div>
-
-            <div id="reviewContainer" class="review-container"></div>
-
-            <div class="action-buttons">
-                <button id="repeatBtn" class="btn-secondary">🔄 RIPETI TEST</button>
-                <button id="newTestBtn" class="btn-primary">🎲 NUOVO TEST</button>
-                <button id="homeBtn" class="btn-secondary">🏠 HOME</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-        <p>👤 <strong>Dott. Salvatore Trono</strong> - Esperto in SSL - Docente Formatore</p>
-        <p class="footer-credits">Laureato in Servizi Giuridici per l'Impresa • Formatore • Esperto in Sicurezza sui Luoghi di Lavoro</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
