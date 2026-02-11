@@ -1039,121 +1039,186 @@
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
+// ==========================================
+// 🎯 SIMULATORE TEST - SCRIPT.JS COMPLETO
+// ==========================================
 
 // ========== VARIABILI GLOBALI ==========
-let currentQuestions = [];
-let currentQuestionIndex = 0;
-let userAnswers = [];
-let timeLeft = 1800; // 30 minuti in secondi
-let timerInterval = null;
+let allQuestions = []; // Tutte le domande caricate
+let currentQuestions = []; // Domande del test corrente
+let currentIndex = 0; // Indice domanda corrente
+let userAnswers = []; // Risposte dell'utente
+let timeLeft = 0; // Tempo rimanente
+let timerInterval = null; // Intervallo timer
+let testStartTime = null; // Timestamp inizio test
+let testMode = 'sequenziale'; // Modalità test
+
+// ========== CARICAMENTO DOMANDE ==========
+async function loadQuestions() {
+    try {
+        console.log('📥 Caricamento domande...');
+        const response = await fetch('domande.json');
+        if (!response.ok) throw new Error('Errore caricamento JSON');
+        
+        allQuestions = await response.json();
+        console.log(`✅ ${allQuestions.length} domande caricate`);
+        
+        // Popola statistiche
+        updateStats();
+        
+    } catch (error) {
+        console.error('❌ Errore:', error);
+        alert('⚠️ Impossibile caricare le domande. Verifica che domande.json sia presente.');
+    }
+}
+
+// ========== AGGIORNA STATISTICHE ==========
+function updateStats() {
+    document.getElementById('totalQuestions').textContent = allQuestions.length;
+}
 
 // ========== AVVIO TEST ==========
 function startTest() {
-    if (questionBank.length === 0) {
-        alert('❌ ERRORE: Nessuna domanda nel paniere!');
+    console.log('🚀 Avvio test...');
+    
+    // Verifica domande caricate
+    if (allQuestions.length === 0) {
+        alert('⚠️ Nessuna domanda disponibile!');
         return;
     }
     
-    document.getElementById('disclaimerModal').classList.add('hidden');
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('quizScreen').classList.remove('hidden');
+    // Leggi parametri
+    const numQuestions = parseInt(document.getElementById('numQuestions').value) || 50;
+    testMode = document.getElementById('testMode').value;
+    const timeLimit = parseInt(document.getElementById('timeLimit').value) || 60;
     
-    const shuffledBank = [...questionBank].sort(() => Math.random() - 0.5);
-    const numQuestions = Math.min(15, questionBank.length);
-    currentQuestions = shuffledBank.slice(0, numQuestions);
+    console.log(`📊 Parametri: ${numQuestions} domande, ${timeLimit} minuti, modalità ${testMode}`);
     
-    currentQuestions = currentQuestions.map(q => {
-        const answers = q.options.map((opt, idx) => ({
-            text: opt,
-            isCorrect: idx === q.correct
-        }));
-        
-        const shuffled = answers.sort(() => Math.random() - 0.5);
-        
-        return {
-            question: q.question,
-            suggestion: q.suggestion || '',
-            correctAnswer: q.options[q.correct],
-            shuffledAnswers: shuffled
-        };
-    });
+    // Seleziona domande
+    currentQuestions = selectQuestions(numQuestions);
     
-    userAnswers = new Array(currentQuestions.length).fill(null);
-    currentQuestionIndex = 0;
-    timeLeft = 1800;
+    if (currentQuestions.length === 0) {
+        alert('⚠️ Errore nella selezione delle domande!');
+        return;
+    }
     
-    createQuestionMap();
-    displayQuestion(); // ✅ CORRETTO
-    updateQuestionMap();
+    console.log(`✅ ${currentQuestions.length} domande selezionate`);
+    
+    // Reset variabili
+    currentIndex = 0;
+    userAnswers = new Array(currentQuestions.length).fill(undefined);
+    timeLeft = timeLimit * 60;
+    testStartTime = Date.now();
+    
+    // Nascondi setup, mostra test
+    document.getElementById('setupArea').classList.add('hidden');
+    document.getElementById('testArea').classList.remove('hidden');
+    
+    // Avvia timer e mostra prima domanda
     startTimer();
+    displayQuestion();
+    updateQuestionMap();
+    
+    console.log('✅ Test avviato!');
+}
+
+// ========== SELEZIONE DOMANDE ==========
+function selectQuestions(num) {
+    const questions = [...allQuestions];
+    
+    if (testMode === 'casuale') {
+        // Mescola array
+        for (let i = questions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questions[i], questions[j]] = [questions[j], questions[i]];
+        }
+    }
+    
+    return questions.slice(0, Math.min(num, questions.length));
 }
 
 // ========== TIMER ==========
 function startTimer() {
+    const timerDisplay = document.getElementById('timer');
+    
     timerInterval = setInterval(() => {
         timeLeft--;
-        updateTimerDisplay();
         
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Avviso ultimi 5 minuti
+        if (timeLeft === 300) {
+            timerDisplay.classList.add('text-yellow-400', 'animate-pulse');
+        }
+        
+        // Avviso ultimo minuto
+        if (timeLeft === 60) {
+            timerDisplay.classList.remove('text-yellow-400');
+            timerDisplay.classList.add('text-red-500');
+        }
+        
+        // Tempo scaduto
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            submitTest();
+            alert('⏰ Tempo scaduto!');
+            endTest();
         }
     }, 1000);
 }
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    const timer = document.getElementById('timer');
-    timer.textContent = `⏱️ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
-    if (timeLeft <= 300) {
-        timer.classList.add('timer-warning');
-    }
-}
-
 // ========== VISUALIZZAZIONE DOMANDA ==========
 function displayQuestion() {
+    console.log('🔥 displayQuestion() chiamata - Index:', currentIndex);
+    
     const question = currentQuestions[currentIndex];
     
-    console.log('📝 Visualizzo domanda:', currentIndex + 1);
-    console.log('❓ Domanda:', question.question);
-    console.log('📋 Opzioni:', question.options);
-
+    if (!question) {
+        console.error('❌ Domanda non trovata!');
+        return;
+    }
+    
+    console.log('📝 Domanda:', question.question);
+    
     // Aggiorna numero domanda
     document.getElementById('questionNumber').textContent = currentIndex + 1;
+    document.getElementById('totalQuestionsTest').textContent = currentQuestions.length;
     
-    // Aggiorna testo domanda
+    // Mostra testo domanda
     document.getElementById('questionText').textContent = question.question;
     
-    // Container opzioni
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = ''; // Pulisce opzioni precedenti
+    // Mostra immagine se presente
+    const imgContainer = document.getElementById('questionImage');
+    if (question.image) {
+        imgContainer.innerHTML = `<img src="${question.image}" alt="Immagine domanda" class="max-w-full h-auto rounded-lg shadow-lg">`;
+        imgContainer.classList.remove('hidden');
+    } else {
+        imgContainer.classList.add('hidden');
+    }
     
-    // Crea le 4 opzioni
+    // Genera opzioni
+    const optionsContainer = document.getElementById('optionsContainer');
+    optionsContainer.innerHTML = '';
+    
     question.options.forEach((option, index) => {
         const optionDiv = document.createElement('div');
-        optionDiv.className = 'option-item p-4 rounded-lg border-2 border-gray-200 cursor-pointer transition-all hover:border-blue-500 hover:bg-blue-50';
+        optionDiv.className = 'option-card p-4 rounded-lg border-2 border-gray-600 bg-gray-700/50 cursor-pointer transition-all hover:border-orange-500 hover:bg-orange-500/10';
         
-        // Se già risposto, evidenzia la scelta
-        if (userAnswers[currentIndex] !== undefined && userAnswers[currentIndex] === index) {
-            optionDiv.classList.add('bg-blue-100', 'border-blue-500');
+        // Se già risposto, evidenzia
+        if (userAnswers[currentIndex] === index) {
+            optionDiv.classList.add('bg-orange-500/20', 'border-orange-500');
         }
         
         optionDiv.innerHTML = `
             <div class="flex items-start gap-3">
-                <span class="font-bold text-blue-600">${String.fromCharCode(65 + index)}.</span>
-                <span class="flex-1">${option}</span>
+                <span class="font-bold text-orange-400">${String.fromCharCode(65 + index)}.</span>
+                <span class="flex-1 text-white">${option}</span>
             </div>
         `;
         
-        // Event listener per selezione
-        optionDiv.addEventListener('click', function() {
-            selectAnswer(index);
-        });
-        
+        optionDiv.addEventListener('click', () => selectAnswer(index));
         optionsContainer.appendChild(optionDiv);
-        console.log(`✅ Opzione ${index + 1} aggiunta:`, option);
     });
     
     // Aggiorna pulsanti navigazione
@@ -1163,288 +1228,241 @@ function displayQuestion() {
     // Aggiorna mappa domande
     updateQuestionMap();
     
-    console.log('✅ Domanda visualizzata completamente');
+    console.log('✅ Domanda visualizzata');
 }
 
 // ========== SELEZIONE RISPOSTA ==========
 function selectAnswer(optionIndex) {
-    console.log('👆 Risposta selezionata:', optionIndex);
+    console.log(`✅ Risposta selezionata: ${optionIndex}`);
     
     userAnswers[currentIndex] = optionIndex;
     
     // Rimuovi evidenziazione precedente
-    document.querySelectorAll('.option-item').forEach(opt => {
-        opt.classList.remove('bg-blue-100', 'border-blue-500');
-        opt.classList.add('border-gray-200');
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('bg-orange-500/20', 'border-orange-500');
     });
     
     // Evidenzia opzione selezionata
-    const selectedOption = document.querySelectorAll('.option-item')[optionIndex];
-    selectedOption.classList.add('bg-blue-100', 'border-blue-500');
-    selectedOption.classList.remove('border-gray-200');
+    const selectedCard = document.querySelectorAll('.option-card')[optionIndex];
+    selectedCard.classList.add('bg-orange-500/20', 'border-orange-500');
     
-    // Aggiorna mappa domande
+    // Aggiorna mappa
     updateQuestionMap();
-    
-    // Vai automaticamente alla domanda successiva dopo 0.5s
-    setTimeout(() => {
-        if (currentIndex < currentQuestions.length - 1) {
-            nextQuestion();
-        }
-    }, 500);
 }
-
 
 // ========== NAVIGAZIONE ==========
 function nextQuestion() {
-    if (currentQuestionIndex < currentQuestions.length - 1) {
-        currentQuestionIndex++;
-        showQuestion();
-        updateQuestionMap();
+    if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        displayQuestion();
     }
 }
 
-function previousQuestion() {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        showQuestion();
-        updateQuestionMap();
+function prevQuestion() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        displayQuestion();
     }
 }
 
-function jumpToQuestion(index) {
-    currentQuestionIndex = index;
-    showQuestion();
-    updateQuestionMap();
+function goToQuestion(index) {
+    currentIndex = index;
+    displayQuestion();
 }
 
 // ========== MAPPA DOMANDE ==========
-function createQuestionMap() {
-    const map = document.getElementById('questionMap');
-    map.innerHTML = '';
-    
-    for (let i = 0; i < currentQuestions.length; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'question-num';
-        btn.textContent = i + 1;
-        btn.onclick = () => jumpToQuestion(i);
-        map.appendChild(btn);
-    }
-}
-
 function updateQuestionMap() {
-    const map = document.getElementById('questionMap');
-    const buttons = map.querySelectorAll('.question-num');
+    const mapContainer = document.getElementById('questionMap');
+    mapContainer.innerHTML = '';
     
-    buttons.forEach((btn, i) => {
-        btn.classList.remove('question-answered', 'question-current');
+    currentQuestions.forEach((_, index) => {
+        const button = document.createElement('button');
+        button.className = 'w-10 h-10 rounded-lg font-bold transition-all';
+        button.textContent = index + 1;
         
-        if (userAnswers[i] !== null) {
-            btn.classList.add('question-answered');
+        // Stato: non risposta / risposta / corrente
+        if (index === currentIndex) {
+            button.className += ' bg-orange-500 text-white scale-110 shadow-lg';
+        } else if (userAnswers[index] !== undefined) {
+            button.className += ' bg-green-600 text-white';
+        } else {
+            button.className += ' bg-gray-700 text-gray-400 hover:bg-gray-600';
         }
         
-        if (i === currentQuestionIndex) {
-            btn.classList.add('question-current');
-        }
+        button.addEventListener('click', () => goToQuestion(index));
+        mapContainer.appendChild(button);
     });
-}
-
-// ========== CONFERMA TERMINE ==========
-function confirmEnd() {
-    const answered = userAnswers.filter(a => a !== null).length;
+    
+    // Aggiorna contatore risposte
+    const answered = userAnswers.filter(a => a !== undefined).length;
     document.getElementById('answeredCount').textContent = answered;
-    document.getElementById('confirmModal').classList.remove('hidden');
 }
 
-function closeConfirmModal() {
-    document.getElementById('confirmModal').classList.add('hidden');
-}
-
-// ========== INVIO TEST ==========
-function submitTest() {
+// ========== FINE TEST ==========
+function endTest() {
     clearInterval(timerInterval);
     
+    // Calcola risultati
     let correct = 0;
     let wrong = 0;
-    const totalQuestions = currentQuestions.length;
+    let unanswered = 0;
     
-    currentQuestions.forEach((q, idx) => {
-        const userAnswerIndex = userAnswers[idx];
-        if (userAnswerIndex !== null && q.shuffledAnswers[userAnswerIndex].isCorrect) {
+    currentQuestions.forEach((question, index) => {
+        if (userAnswers[index] === undefined) {
+            unanswered++;
+        } else if (userAnswers[index] === question.correct) {
             correct++;
         } else {
             wrong++;
         }
     });
     
-    const percentage = Math.round((correct / totalQuestions) * 100);
-    const passThreshold = Math.ceil(totalQuestions * 0.8);
-    const passed = correct >= passThreshold;
+    const score = ((correct / currentQuestions.length) * 100).toFixed(1);
+    const timeElapsed = Math.floor((Date.now() - testStartTime) / 1000);
+    const minutes = Math.floor(timeElapsed / 60);
+    const seconds = timeElapsed % 60;
     
-    document.getElementById('quizScreen').classList.add('hidden');
-    document.getElementById('confirmModal').classList.add('hidden');
-    document.getElementById('resultScreen').classList.remove('hidden');
+    // Nascondi test, mostra risultati
+    document.getElementById('testArea').classList.add('hidden');
+    document.getElementById('resultsArea').classList.remove('hidden');
     
-    document.getElementById('resultIcon').textContent = passed ? '🎉' : '😔';
-    document.getElementById('resultTitle').textContent = passed ? 'TEST SUPERATO!' : 'TEST NON SUPERATO';
-    document.getElementById('scoreDisplay').textContent = `${correct}/${totalQuestions}`;
-    document.getElementById('correctCount').textContent = correct;
-    document.getElementById('wrongCount').textContent = wrong;
-    document.getElementById('percentage').textContent = `${percentage}%`;
+    // Mostra statistiche
+    document.getElementById('finalScore').textContent = `${score}%`;
+    document.getElementById('correctAnswers').textContent = correct;
+    document.getElementById('wrongAnswers').textContent = wrong;
+    document.getElementById('unansweredQuestions').textContent = unanswered;
+    document.getElementById('timeElapsed').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     
-    const suggestionBox = document.getElementById('suggestionBox');
-    if (!passed) {
-        const wrongQuestions = currentQuestions.filter((q, idx) => {
-            const userAnswerIndex = userAnswers[idx];
-            return userAnswerIndex === null || !q.shuffledAnswers[userAnswerIndex].isCorrect;
-        });
-        
-        if (wrongQuestions.length > 0) {
-            suggestionBox.innerHTML = '<h4 class="text-lg font-bold mb-2 text-blue-300">💡 Suggerimenti per le domande sbagliate:</h4>';
-            wrongQuestions.forEach((q, idx) => {
-                if (q.suggestion) {
-                    const suggestionItem = document.createElement('div');
-                    suggestionItem.className = 'mb-3 p-3 bg-blue-900/30 border border-blue-500/50 rounded-lg';
-                    suggestionItem.innerHTML = `
-                        <p class="text-sm text-gray-300 mb-1"><strong>Domanda:</strong> ${q.question}</p>
-                        <p class="text-sm text-blue-300"><strong>Suggerimento:</strong> ${q.suggestion}</p>
-                    `;
-                    suggestionBox.appendChild(suggestionItem);
-                }
-            });
-        }
+    // Determina esito
+    const outcomeElement = document.getElementById('testOutcome');
+    if (score >= 80) {
+        outcomeElement.textContent = '✅ PROMOSSO!';
+        outcomeElement.className = 'text-4xl font-bold text-green-400';
     } else {
-        suggestionBox.innerHTML = '<p class="text-green-300">✅ Ottimo lavoro! Hai superato il test.</p>';
+        outcomeElement.textContent = '❌ NON PROMOSSO';
+        outcomeElement.className = 'text-4xl font-bold text-red-400';
     }
     
-    showReview();
+    // Genera revisione
+    generateReview();
 }
 
-function showReview() {
+// ========== REVISIONE RISPOSTE ==========
+function generateReview() {
     const reviewContainer = document.getElementById('reviewContainer');
     reviewContainer.innerHTML = '';
     
-    currentQuestions.forEach((q, idx) => {
-        const userAnswerIndex = userAnswers[idx];
-        const isCorrect = userAnswerIndex !== null && q.shuffledAnswers[userAnswerIndex].isCorrect;
-        const userAnswerText = userAnswerIndex !== null ? q.shuffledAnswers[userAnswerIndex].text : 'Non risposto';
+    currentQuestions.forEach((question, index) => {
+        const userAnswer = userAnswers[index];
+        const isCorrect = userAnswer === question.correct;
+        const isUnanswered = userAnswer === undefined;
         
-        const reviewItem = document.createElement('div');
-        reviewItem.className = 'review-item';
-        reviewItem.innerHTML = `
-            <div class="flex items-start gap-3">
-                <span class="text-2xl">${isCorrect ? '✅' : '❌'}</span>
+        const reviewCard = document.createElement('div');
+        reviewCard.className = `p-6 rounded-lg border-2 ${
+            isUnanswered ? 'border-gray-600 bg-gray-800/50' :
+            isCorrect ? 'border-green-600 bg-green-900/20' :
+            'border-red-600 bg-red-900/20'
+        }`;
+        
+        reviewCard.innerHTML = `
+            <div class="flex items-start gap-4 mb-4">
+                <span class="text-2xl">${
+                    isUnanswered ? '⚪' :
+                    isCorrect ? '✅' : '❌'
+                }</span>
                 <div class="flex-1">
-                    <p class="font-bold text-white mb-2">Domanda ${idx + 1}: ${q.question}</p>
-                    <p class="text-gray-300">La tua risposta: <span class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${userAnswerText}</span></p>
-                    ${userAnswerIndex === null ? '<p class="text-yellow-400 mt-1">⚠️ Non hai risposto</p>' : ''}
-                    ${!isCorrect ? `
-                        <p class="text-green-400 mt-1">✅ Risposta corretta: ${q.correctAnswer}</p>
-                        ${q.suggestion ? `
-                            <div class="mt-3 p-3 bg-blue-900/30 border border-blue-500/50 rounded-lg">
-                                <p class="text-blue-300 text-sm"><strong>💡 Suggerimento:</strong> ${q.suggestion}</p>
+                    <h3 class="font-bold text-lg text-white mb-2">Domanda ${index + 1}</h3>
+                    <p class="text-gray-300 mb-4">${question.question}</p>
+                    
+                    ${question.image ? `<img src="${question.image}" class="max-w-md h-auto rounded-lg mb-4">` : ''}
+                    
+                    <div class="space-y-2">
+                        ${question.options.map((opt, i) => `
+                            <div class="p-3 rounded ${
+                                i === question.correct ? 'bg-green-600/30 border-2 border-green-500' :
+                                i === userAnswer && i !== question.correct ? 'bg-red-600/30 border-2 border-red-500' :
+                                'bg-gray-700/50'
+                            }">
+                                <span class="font-bold ${i === question.correct ? 'text-green-400' : 'text-gray-400'}">
+                                    ${String.fromCharCode(65 + i)}.
+                                </span>
+                                <span class="text-white ml-2">${opt}</span>
+                                ${i === question.correct ? ' <span class="text-green-400 font-bold">✓ CORRETTA</span>' : ''}
+                                ${i === userAnswer && i !== question.correct ? ' <span class="text-red-400 font-bold">✗ TUA RISPOSTA</span>' : ''}
                             </div>
-                        ` : ''}
+                        `).join('')}
+                    </div>
+                    
+                    ${question.explanation ? `
+                        <div class="mt-4 p-4 bg-blue-900/30 border-l-4 border-blue-500 rounded">
+                            <p class="text-sm text-blue-200"><strong>💡 Spiegazione:</strong> ${question.explanation}</p>
+                        </div>
                     ` : ''}
                 </div>
             </div>
         `;
         
-        reviewContainer.appendChild(reviewItem);
+        reviewContainer.appendChild(reviewCard);
     });
 }
 
-// ========== RIPETI TEST ==========
-function repeatSameTest() {
-    currentQuestionIndex = 0;
-    userAnswers = new Array(currentQuestions.length).fill(null);
-    timeLeft = 1800;
+// ========== RESET TEST ==========
+function resetTest() {
+    clearInterval(timerInterval);
     
-    if (timerInterval) {
-        clearInterval(timerInterval);
-    }
+    document.getElementById('resultsArea').classList.add('hidden');
+    document.getElementById('setupArea').classList.remove('hidden');
     
-    const timer = document.getElementById('timer');
-    timer.textContent = '⏱️ 30:00';
-    timer.classList.remove('timer-warning');
-    
-    document.getElementById('resultScreen').classList.add('hidden');
-    document.getElementById('quizScreen').classList.remove('hidden');
-    
-    showQuestion();
-    updateQuestionMap();
-    startTimer();
-}
-
-function generateNewTest() {
     currentQuestions = [];
-    currentQuestionIndex = 0;
+    currentIndex = 0;
     userAnswers = [];
-    timeLeft = 1800;
-    
-    if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-    }
-    
-    const timer = document.getElementById('timer');
-    timer.textContent = '⏱️ 30:00';
-    timer.classList.remove('timer-warning');
-    
-    document.getElementById('questionMap').innerHTML = '';
-    document.getElementById('answersContainer').innerHTML = '';
-    
-    document.getElementById('resultScreen').classList.add('hidden');
-    document.getElementById('welcomeScreen').classList.remove('hidden');
+    timeLeft = 0;
 }
+
 // ========== EVENT LISTENERS ==========
-document.addEventListener('DOMContentLoaded', function() {
-    // PROVA ENTRAMBI GLI ID
-    const startBtn = document.getElementById('startTestBtn') || document.getElementById('avvia il test');
-    const disclaimerModal = document.getElementById('disclaimerModal');
-    const closeDisclaimer = document.getElementById('closeDisclaimer');
-    const acceptDisclaimer = document.getElementById('acceptDisclaimer');
-
-    console.log('🔍 Pulsante trovato:', startBtn);
-    console.log('🔍 Modal trovato:', disclaimerModal);
-
-    if (!startBtn) {
-        console.error('❌ ERRORE: Pulsante non trovato! Controlla ID in HTML');
-        return;
-    }
-
-    if (!disclaimerModal) {
-        console.error('❌ ERRORE: Modal non trovato! Controlla ID in HTML');
-        return;
-    }
-
-    startBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('✅ Click sul pulsante START rilevato!');
-        disclaimerModal.classList.remove('hidden');
-        disclaimerModal.style.display = 'flex';
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 App inizializzata');
+    
+    // Carica domande
+    loadQuestions();
+    
+    // Pulsante START con disclaimer
+    const startBtn = document.getElementById('startTestBtn');
+    const modal = document.getElementById('disclaimerModal');
+    const acceptBtn = document.getElementById('acceptDisclaimer');
+    const cancelBtn = document.getElementById('cancelDisclaimer');
+    
+    startBtn.addEventListener('click', () => {
+        console.log('✅ Click START');
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
     });
-
-    closeDisclaimer.addEventListener('click', function(e) {
-        e.preventDefault();
-        disclaimerModal.classList.add('hidden');
-        disclaimerModal.style.display = 'none';
-    });
-
-    acceptDisclaimer.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('✅ Accettato disclaimer, avvio test...');
-        disclaimerModal.classList.add('hidden');
-        disclaimerModal.style.display = 'none';
+    
+    acceptBtn.addEventListener('click', () => {
+        console.log('✅ Disclaimer accettato');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
         startTest();
     });
     
+    cancelBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+    });
+    
+    // Navigazione
     document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-    document.getElementById('prevBtn').addEventListener('click', previousQuestion);
-    document.getElementById('endBtn').addEventListener('click', confirmEnd);
-    document.getElementById('cancelEnd').addEventListener('click', closeConfirmModal);
-    document.getElementById('confirmEnd').addEventListener('click', submitTest);
-    document.getElementById('repeatTest').addEventListener('click', repeatSameTest);
-    document.getElementById('newTest').addEventListener('click', generateNewTest);
+    document.getElementById('prevBtn').addEventListener('click', prevQuestion);
+    document.getElementById('endTestBtn').addEventListener('click', () => {
+        if (confirm('⚠️ Vuoi terminare il test?')) {
+            endTest();
+        }
+    });
+    
+    // Reset
+    document.getElementById('restartBtn').addEventListener('click', resetTest);
+    
+    console.log('✅ Event listeners registrati');
 });
+
 
