@@ -1157,12 +1157,34 @@ function showQuestion() {
         currentQuestionIndex === currentQuestions.length - 1 ? 'Termina →' : 'Successiva →';
 }
 
-// ========== SELEZIONE RISPOSTA ==========
+// ========== SELEZIONE RISPOSTA CON AUTO-AVANZAMENTO ==========
 function selectAnswer(index) {
+    // Salva risposta
     userAnswers[currentQuestionIndex] = index;
     updateQuestionMap();
-    showQuestion();
+    
+    // ✅ EVIDENZIA RISPOSTA SELEZIONATA
+    const buttons = document.querySelectorAll('.answer-btn');
+    buttons.forEach((btn, i) => {
+        btn.classList.remove('answer-selected');
+        if (i === index) {
+            btn.classList.add('answer-selected');
+        }
+    });
+    
+    // ✅ AVANZA AUTOMATICAMENTE DOPO 300ms
+    setTimeout(() => {
+        if (currentQuestionIndex < currentQuestions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+            updateQuestionMap();
+        } else {
+            // Ultima domanda: mostra conferma termine
+            confirmEnd();
+        }
+    }, 300);
 }
+
 
 // ========== NAVIGAZIONE ==========
 function nextQuestion() {
