@@ -60,34 +60,34 @@
     color: #ef4444 !important;
 }
 
-/* ========== PULSANTI RISPOSTA ========== */
+/* ========== BOTTONI RISPOSTA (4 RIGHE) ========== */
 .answer-btn {
-    @apply w-full text-left p-4 rounded-lg border-2 transition-all duration-300 font-medium;
-    background: rgba(55, 65, 81, 0.5);
-    border-color: rgba(107, 114, 128, 0.5);
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(249, 115, 22, 0.3);
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    margin-bottom: 12px; /* ✅ SPAZIO TRA LE RIGHE */
 }
 
 .answer-btn:hover {
-    background: rgba(75, 85, 99, 0.7);
-    border-color: rgba(156, 163, 175, 0.7);
-    transform: translateX(5px);
+    background: rgba(249, 115, 22, 0.2);
+    border-color: rgba(249, 115, 22, 0.6);
+    transform: translateX(8px);
 }
 
-.answer-selected {
-    background: rgba(249, 115, 22, 0.3) !important;
-    border-color: rgb(249, 115, 22) !important;
-    box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+.answer-btn.answer-selected {
+    background: rgba(249, 115, 22, 0.3);
+    border-color: #f97316;
+    border-width: 3px;
 }
 
-.answer-correct {
-    background: rgba(34, 197, 94, 0.3) !important;
-    border-color: rgb(34, 197, 94) !important;
-}
-
-.answer-wrong {
-    background: rgba(239, 68, 68, 0.3) !important;
-    border-color: rgb(239, 68, 68) !important;
-}
 
 /* ========== MAPPA DOMANDE ========== */
 .question-num {
