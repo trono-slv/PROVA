@@ -1078,55 +1078,63 @@ function startTest() {
         return;
     }
     
-    if (questionBank.length < 15) {
-        if (!confirm(`⚠️ ATTENZIONE: Il paniere contiene solo ${questionBank.length} domande.\n\nIl test sarà composto da ${questionBank.length} domande invece di 15.\n\nContinuare?`)) {
-            return;
-        }
+    // ========== AVVIO TEST ==========
+function startTest() {
+    if (questionBank.length === 0) {
+        alert('❌ ERRORE: Nessuna domanda nel paniere!');
+        return;
     }
     
-    // NASCONDE MODAL
+    // NASCONDE INTERFACCIA INIZIALE
     document.getElementById('disclaimerModal').classList.add('hidden');
-    
-    // NASCONDE WELCOME
     document.getElementById('welcomeScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
     
-    // Mescola domande
+    // PREPARA DOMANDE
     const shuffledBank = [...questionBank].sort(() => Math.random() - 0.5);
     const numQuestions = Math.min(15, questionBank.length);
     currentQuestions = shuffledBank.slice(0, numQuestions);
-    
-    // Mescola risposte per ogni domanda
-    currentQuestions = currentQuestions.map(q => {
-        const shuffledOptions = q.options.map((opt, idx) => ({
-            text: opt,
-            isCorrect: idx === q.correct
-        })).sort(() => Math.random() - 0.5);
-        
-        return {
-            ...q,
-            shuffledAnswers: shuffledOptions,
-            correctAnswer: q.options[q.correct],
-            suggestion: q.suggestion
-        };
-    });
-    
+    userAnswers = new Array(currentQuestions.length).fill(null);
     currentQuestionIndex = 0;
-    userAnswers = new Array(numQuestions).fill(null);
-    
-    // RESET TIMER
     timeLeft = 1800;
-    if (timerInterval) clearInterval(timerInterval);
     
-    // MOSTRA QUIZ
-    document.getElementById('quizScreen').classList.remove('hidden');
-    
-    // ✅ AGGIORNA TOTALE DOMANDE
-    document.getElementById('totalQuestions').textContent = numQuestions;
-    
+    // INIZIALIZZA INTERFACCIA
+    createQuestionMap();
     showQuestion();
     updateQuestionMap();
     startTimer();
 }
+
+// ========== TIMER ==========
+function startTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        
+        if (timeLeft <= 300 && timeLeft > 0) {
+            document.getElementById('timer').classList.add('timer-warning');
+        }
+        
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            submitTest();
+        }
+    }, 1000);
+    
+    updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('timer').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
 
 // ========== MOSTRA DOMANDA ==========
 function showQuestion() {
