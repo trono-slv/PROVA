@@ -1065,17 +1065,17 @@ function startTest(numQuestions = 20) {
     console.log(`🚀 Test avviato con ${numQuestions} domande`);
     
     // ✅ Validazione numero domande
-    if (!numQuestions || numQuestions < 1 || numQuestions > questionsDatabase.length) {
+    if (!numQuestions || numQuestions < 1 || numQuestions > questions.length) {
         numQuestions = 20;
         console.warn(`⚠️ Numero domande non valido, uso default: ${numQuestions}`);
     }
     
     // ✅ Filtra domande per materia selezionata
     const selectedSubject = document.getElementById('subjectFilter')?.value || 'all';
-    let filteredQuestions = questionsDatabase;
+    let filteredQuestions = questions; // ✅ CORRETTO
     
     if (selectedSubject !== 'all') {
-        filteredQuestions = questionsDatabase.filter(q => q.subject === selectedSubject);
+        filteredQuestions = questions.filter(q => q.subject === selectedSubject);
         console.log(`📚 Filtrate ${filteredQuestions.length} domande per materia: ${selectedSubject}`);
     }
     
@@ -1096,9 +1096,9 @@ function startTest(numQuestions = 20) {
     userAnswers = new Array(selectedQuestions.length).fill(null);
     testStartTime = Date.now();
     
-    // ✅ Nascondi form iniziale, mostra test
-    document.getElementById('initialForm').classList.add('hidden');
-    document.getElementById('testContainer').classList.remove('hidden');
+    // ✅ Nascondi welcome, mostra test
+    document.getElementById('welcomeScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
     
     // ✅ Avvia timer
     startTimer();
