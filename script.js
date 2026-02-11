@@ -1065,17 +1065,17 @@ function startTest(numQuestions = 20) {
     console.log(`🚀 Test avviato con ${numQuestions} domande`);
     
     // ✅ Validazione numero domande
-    if (!numQuestions || numQuestions < 1 || numQuestions > questionsBank.length) {
+    if (!numQuestions || numQuestions < 1 || numQuestions > questionBank.length) {
         numQuestions = 20;
         console.warn(`⚠️ Numero domande non valido, uso default: ${numQuestions}`);
     }
     
     // ✅ Filtra domande per materia selezionata
     const selectedSubject = document.getElementById('subjectFilter')?.value || 'all';
-    let filteredQuestions = questions; // ✅ CORRETTO
+    let filteredQuestions = questionBank; // ✅ CORRETTO
     
     if (selectedSubject !== 'all') {
-        filteredQuestions = questions.filter(q => q.subject === selectedSubject);
+        filteredQuestions = questionBank.filter(q => q.subject === selectedSubject);
         console.log(`📚 Filtrate ${filteredQuestions.length} domande per materia: ${selectedSubject}`);
     }
     
@@ -1090,6 +1090,29 @@ function startTest(numQuestions = 20) {
         .slice(0, numQuestions);
     
     console.log(`✅ Selezionate ${selectedQuestions.length} domande`);
+    
+    // ✅ Reset stato test
+    currentQuestionIndex = 0;
+    userAnswers = new Array(selectedQuestions.length).fill(null);
+    testStartTime = Date.now();
+    
+    // ✅ Nascondi welcome, mostra test
+    document.getElementById('welcomeScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
+    
+    // ✅ Avvia timer
+    startTimer();
+    
+    // ✅ Mostra prima domanda
+    displayQuestion();
+    
+    // ✅ Aggiorna UI
+    updateProgress();
+    updateNavigationButtons();
+    
+    console.log('✅ Test pronto!');
+}
+
     
     // ✅ Reset stato test
     currentQuestionIndex = 0;
