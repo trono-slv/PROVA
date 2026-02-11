@@ -1083,7 +1083,7 @@ function startTest() {
     timeLeft = 1800;
     
     createQuestionMap();
-    showQuestion();
+    displayQuestion(); // ✅ CORRETTO
     updateQuestionMap();
     startTimer();
 }
