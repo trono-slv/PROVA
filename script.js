@@ -1043,16 +1043,6 @@
 // 🎯 SIMULATORE TEST - SCRIPT.JS COMPLETO
 // ==========================================
 
-// ========== PANIERE DOMANDE (ESEMPIO) ==========
-const questionBank = [
-    {
-        question: "Chi deve autorizzare l'uso di attrezzature particolari?",
-        options: ["Datore dopo verifica idoneità e formazione", "Chiunque", "Solo il preposto", "Nessuno"],
-        correct: 0,
-        explanation: "Attrezzature specifiche (carrelli, PLE, gru): autorizzazione scritta previo corso abilitante e verifica idoneità sanitaria."
-    },
-    // ✅ AGGIUNGI QUI TUTTE LE TUE DOMANDE CON STESSO FORMATO
-];
 
 // ========== VARIABILI GLOBALI ==========
 let currentQuestions = []; // Domande del test corrente
