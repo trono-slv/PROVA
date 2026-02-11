@@ -1061,49 +1061,58 @@ function updateStats() {
     }
         }
 // ========== AVVIO TEST ==========
-function startTest() {
-    console.log('🚀 Avvio test...');
+function startTest(numQuestions = 20) {
+    console.log(`🚀 Test avviato con ${numQuestions} domande`);
     
-    // Verifica domande caricate
-    if (questionBank.length === 0) {
-        alert('⚠️ Nessuna domanda disponibile nel paniere!');
-        return;
+    // ✅ Validazione numero domande
+    if (!numQuestions || numQuestions < 1 || numQuestions > questionsDatabase.length) {
+        numQuestions = 20;
+        console.warn(`⚠️ Numero domande non valido, uso default: ${numQuestions}`);
     }
     
-    // Leggi parametri
-    const numQuestions = parseInt(document.getElementById('numQuestions').value) || 50;
-    testMode = document.getElementById('testMode').value;
-    const timeLimit = parseInt(document.getElementById('timeLimit').value) || 60;
+    // ✅ Filtra domande per materia selezionata
+    const selectedSubject = document.getElementById('subjectFilter')?.value || 'all';
+    let filteredQuestions = questionsDatabase;
     
-    console.log(`📊 Parametri: ${numQuestions} domande, ${timeLimit} minuti, modalità ${testMode}`);
-    
-    // ✅ Seleziona domande da questionBank
-    currentQuestions = selectQuestions(numQuestions);
-    
-    if (currentQuestions.length === 0) {
-        alert('⚠️ Errore nella selezione delle domande!');
-        return;
+    if (selectedSubject !== 'all') {
+        filteredQuestions = questionsDatabase.filter(q => q.subject === selectedSubject);
+        console.log(`📚 Filtrate ${filteredQuestions.length} domande per materia: ${selectedSubject}`);
     }
     
-    console.log(`✅ ${currentQuestions.length} domande selezionate`);
+    // ✅ Seleziona domande random
+    if (filteredQuestions.length < numQuestions) {
+        numQuestions = filteredQuestions.length;
+        console.warn(`⚠️ Disponibili solo ${numQuestions} domande per questa materia`);
+    }
     
-    // Reset variabili
-    currentIndex = 0;
-    userAnswers = new Array(currentQuestions.length).fill(undefined);
-    timeLeft = timeLimit * 60;
+    selectedQuestions = filteredQuestions
+        .sort(() => Math.random() - 0.5)
+        .slice(0, numQuestions);
+    
+    console.log(`✅ Selezionate ${selectedQuestions.length} domande`);
+    
+    // ✅ Reset stato test
+    currentQuestionIndex = 0;
+    userAnswers = new Array(selectedQuestions.length).fill(null);
     testStartTime = Date.now();
     
-    // Nascondi setup, mostra test
-    document.getElementById('setupArea').classList.add('hidden');
-    document.getElementById('testArea').classList.remove('hidden');
+    // ✅ Nascondi form iniziale, mostra test
+    document.getElementById('initialForm').classList.add('hidden');
+    document.getElementById('testContainer').classList.remove('hidden');
     
-    // ✅ Avvia timer AUTOMATICAMENTE e mostra prima domanda
+    // ✅ Avvia timer
     startTimer();
-    displayQuestion();
-    updateQuestionMap();
     
-    console.log('✅ Test avviato con timer automatico!');
+    // ✅ Mostra prima domanda
+    displayQuestion();
+    
+    // ✅ Aggiorna UI
+    updateProgress();
+    updateNavigationButtons();
+    
+    console.log('✅ Test pronto!');
 }
+
 
 // ========== SELEZIONE DOMANDE ==========
 function selectQuestions(num) {
@@ -1477,11 +1486,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     acceptBtn.addEventListener('click', () => {
-        console.log('✅ Disclaimer accettato');
-        modal.classList.add('hidden');
-        modal.style.display = 'none';
-        startTest(); // ✅ Timer parte automaticamente qui
-    });
+    console.log('✅ Disclaimer accettato');
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+    
+    // ✅ Leggi il valore dall'input PRIMA di avviare
+    const numQuestionsInput = document.getElementById('numQuestions');
+    const numQuestions = parseInt(numQuestionsInput?.value) || 20;
+    
+    console.log(`📝 Avvio con ${numQuestions} domande`);
+    startTest(numQuestions);
+});
+
     
     cancelBtn.addEventListener('click', () => {
         modal.classList.add('hidden');
