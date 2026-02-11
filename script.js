@@ -1059,6 +1059,7 @@ function updateStats() {
     if (totalQuestionsElement) {
         totalQuestionsElement.textContent = questionBank.length;
     }
+        }
 // ========== AVVIO TEST ==========
 function startTest() {
     console.log('🚀 Avvio test...');
