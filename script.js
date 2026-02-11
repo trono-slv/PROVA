@@ -1367,20 +1367,33 @@ function generateNewTest() {
 
 // ========== EVENT LISTENERS ==========
 document.addEventListener('DOMContentLoaded', function() {
-    const startBtn = document.getElementById('startTestBtn');
+    // ✅ CERCA IL PULSANTE CON VARI ID POSSIBILI
+    const startBtn = document.getElementById('startTestBtn') || 
+                     document.getElementById('startQuizBtn') || 
+                     document.querySelector('[onclick*="startTest"]');
+    
+    if (!startBtn) {
+        console.error('❌ ERRORE: Pulsante "Inizia Quiz" non trovato!');
+        return;
+    }
+    
     const disclaimerModal = document.getElementById('disclaimerModal');
     const closeDisclaimer = document.getElementById('closeDisclaimer');
     const acceptDisclaimer = document.getElementById('acceptDisclaimer');
 
-    startBtn.addEventListener('click', function() {
+    startBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('✅ Click su Inizia Quiz rilevato!');
         disclaimerModal.classList.remove('hidden');
     });
 
-    closeDisclaimer.addEventListener('click', function() {
+    closeDisclaimer.addEventListener('click', function(e) {
+        e.preventDefault();
         disclaimerModal.classList.add('hidden');
     });
 
-    acceptDisclaimer.addEventListener('click', function() {
+    acceptDisclaimer.addEventListener('click', function(e) {
+        e.preventDefault();
         startTest();
     });
     
@@ -1392,3 +1405,4 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('repeatTest').addEventListener('click', repeatSameTest);
     document.getElementById('newTest').addEventListener('click', generateNewTest);
 });
+
