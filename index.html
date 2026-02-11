@@ -3,285 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Rischi Specifici in Magazzino - Dott. Salvatore Trono</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
+    <title>Test Analisi dei Rischi Specifici in Magazzino</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-white">
-
-    <!-- ========== WELCOME SCREEN ========== -->
-    <div id="welcomeScreen" class="container mx-auto px-4 py-8 max-w-4xl">
-        <div class="glass-effect rounded-2xl shadow-2xl p-8 border-orange-500/30 animate-slide-in">
-            
-            <!-- PRESENTAZIONE AUTORE -->
-            <div class="text-center mb-8 pb-6 border-b border-orange-500/30">
-                <div class="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text">
-                    <h2 class="text-2xl font-bold">👤 Dott. Salvatore Trono</h2>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="screen active">
+        <div class="container">
+            <header class="welcome-header">
+                <h1>📦 Test Analisi dei Rischi Specifici in Magazzino</h1>
+                <p class="test-description">15 domande casuali per valutare la conoscenza dei rischi specifici nei magazzini</p>
+                <div class="instructions">
+                    <h3>📋 Istruzioni:</h3>
+                    <ul>
+                        <li>⏱️ Tempo disponibile: <strong>20 minuti</strong></li>
+                        <li>🔀 Le domande e le risposte sono randomizzate</li>
+                        <li>➡️ Avanzamento automatico al click della risposta</li>
+                        <li>🚫 Non è possibile tornare indietro</li>
+                        <li>📊 Al termine vedrai il riepilogo completo</li>
+                    </ul>
                 </div>
-                <p class="text-gray-300 mt-2">Esperto in SSL - Docente Formatore</p>
-            </div>
+            </header>
 
-            <!-- TITOLO QUIZ -->
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text">
-                    📦 Test Rischi Specifici in Magazzino
-                </h1>
-                <p class="text-gray-300 text-lg">Verifica le tue conoscenze sulla sicurezza nel settore logistico</p>
-            </div>
-
-            <!-- LINK MATERIALE DIDATTICO -->
-            <div class="mb-8 p-6 glass-effect rounded-lg border border-orange-500/30">
-                <h3 class="text-xl font-semibold mb-4 text-orange-400">📚 Materiale Didattico</h3>
-                <p class="text-gray-300 mb-4">
-                    Prima di affrontare il test, consulta il materiale teorico per prepararti al meglio:
-                </p>
-                <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" 
-                   target="_blank"
-                   class="inline-block px-6 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-orange-500/50">
-                    🔗 Accedi al Materiale Didattico
-                </a>
-            </div>
-
-            <!-- LINK QUIZ BASE -->
-            <div class="mb-8 p-6 glass-effect rounded-lg border border-blue-500/30">
-                <h3 class="text-xl font-semibold mb-4 text-blue-400">🎯 Quiz Correlati</h3>
-                <p class="text-gray-300 mb-4">
-                    Hai già completato il test di formazione base? Se non l'hai fatto, inizia da qui:
-                </p>
-                <a href="https://trono-slv.github.io/test-SSL---BASE/" 
-                   target="_blank"
-                   class="inline-block px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/50">
-                    🔗 Test Formazione Base SSL
-                </a>
-            </div>
-
-            <!-- INFO TEST -->
-            <div class="grid md:grid-cols-3 gap-4 mb-8">
-                <div class="glass-effect p-4 rounded-lg text-center border border-orange-500/30">
-                    <div class="text-3xl mb-2">📝</div>
-                    <div class="text-orange-400 font-bold">15 Domande</div>
-                    <div class="text-gray-400 text-sm">Estratte casualmente</div>
-                </div>
-                <div class="glass-effect p-4 rounded-lg text-center border border-orange-500/30">
-                    <div class="text-3xl mb-2">⏱️</div>
-                    <div class="text-orange-400 font-bold">30 Minuti</div>
-                    <div class="text-gray-400 text-sm">Tempo disponibile</div>
-                </div>
-                <div class="glass-effect p-4 rounded-lg text-center border border-orange-500/30">
-                    <div class="text-3xl mb-2">✅</div>
-                    <div class="text-orange-400 font-bold">80% Superamento</div>
-                    <div class="text-gray-400 text-sm">12/15 risposte corrette</div>
+            <!-- Link Esterni -->
+            <div class="resource-section">
+                <h2>📚 Prima di iniziare, ti consigliamo:</h2>
+                <div class="resource-cards">
+                    <a href="https://trono-slv.github.io/Valutazione-dei-rischi-in-magazzino/" target="_blank" class="resource-card">
+                        <div class="card-icon">📖</div>
+                        <h3>Teoria Rischi Specifici</h3>
+                        <p>Leggi il materiale didattico prima del test</p>
+                    </a>
+                    <a href="https://trono-slv.github.io/test-SSL---BASE" target="_blank" class="resource-card">
+                        <div class="card-icon">📝</div>
+                        <h3>Quiz Formazione Base</h3>
+                        <p>Formazione generale (D.Lgs. 81/08)</p>
+                    </a>
                 </div>
             </div>
 
-            <!-- PULSANTE START -->
-            <button id="startTestBtn" 
-                    class="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold py-4 px-8 rounded-lg shadow-2xl shadow-orange-500/50 transition-all duration-300 text-xl hover:scale-105">
-                🚀 AVVIA IL TEST
-            </button>
+            <button id="startBtn" class="btn-primary">▶️ INIZIA TEST</button>
         </div>
     </div>
 
-    <!-- ========== POP-UP DISCLAIMER (NASCOSTO) ========== -->
-    <div id="disclaimerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in"></div>
+    <!-- Disclaimer Popup -->
+    <div id="disclaimerModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">⚠️ ATTENZIONE</h2>
+            
+            <div class="legal-box">
+                <h3>⚖️ AVVISO LEGALE</h3>
+                
+                <div class="legal-section">
+                    <h4>🚫 DIVIETI:</h4>
+                    <ul>
+                        <li><strong>Vietata</strong> la diffusione non autorizzata</li>
+                        <li><strong>Vietato</strong> l'uso senza autorizzazione del Dott. Salvatore Trono</li>
+                        <li><strong>Vietata</strong> la riproduzione anche parziale</li>
+                    </ul>
+                </div>
 
-        <!-- Modale -->
-        <div class="relative glass-effect bg-gray-900/90 border-2 border-orange-500 rounded-2xl shadow-2xl shadow-orange-500/50 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
-            <div class="p-8">
-                <!-- Titolo -->
-                <h2 class="text-3xl font-bold text-orange-400 mb-2 flex items-center gap-3">
-                    ⚠️ ATTENZIONE
-                </h2>
-                <div class="h-1 bg-gradient-to-r from-orange-500 to-transparent mb-6"></div>
+                <div class="legal-section">
+                    <h4>📌 FINALITÀ:</h4>
+                    <ul>
+                        <li>Questo test è <strong>esclusivamente a scopo formativo</strong></li>
+                        <li><strong>NON costituisce</strong> formazione obbligatoria ai sensi del D.Lgs. 81/2008</li>
+                        <li><strong>NON sostituisce</strong> corsi certificati da enti accreditati</li>
+                    </ul>
+                </div>
 
-                <!-- Box Legale Rosso -->
-                <div class="bg-red-900/40 border-2 border-red-500 rounded-xl p-6 mb-6">
-                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        ⚖️ Avvertenze Legali
-                    </h3>
-                    <div class="text-gray-100 space-y-4 leading-relaxed">
-                        <p>
-                            <strong>📜 Riferimento normativo:</strong> Art. 37 D.Lgs. 81/2008 - 
-                            La formazione obbligatoria deve essere erogata da enti accreditati.
-                        </p>
-                        <p>
-                            <strong>⚠️ Sanzioni penali:</strong> L'uso improprio di materiale didattico 
-                            per sostituire la formazione obbligatoria espone a responsabilità penali 
-                            (art. 55 D.Lgs. 81/2008).
-                        </p>
-                        <p class="font-bold text-red-300">
-                            <strong>❌ È VIETATO:</strong>
-                        </p>
-                        <ul class="list-none space-y-2 ml-4">
-                            <li>❌ Utilizzare questo test come certificazione ufficiale</li>
-                            <li>❌ Distribuire senza autorizzazione scritta</li>
-                            <li>❌ Modificare o alterare i contenuti</li>
-                            <li>❌ Uso commerciale non autorizzato</li>
-                        </ul>
-                        <p class="text-yellow-300 font-semibold">
-                            ✅ <strong>Autorizzazione richiesta:</strong> Per qualsiasi utilizzo diverso 
-                            dall'auto-formazione personale, contattare l'autore.
-                        </p>
+                <div class="legal-section">
+                    <h4>✅ AUTORIZZAZIONE RICHIESTA:</h4>
+                    <p>Per l'uso di questo materiale è necessaria <strong>autorizzazione scritta</strong></p>
+                </div>
+            </div>
+
+            <div class="credits-modal">
+                <p><strong>Credits:</strong> Dott. Salvatore Trono</p>
+                <p class="credits-subtitle">Laureato in Servizi Giuridici per l'Impresa • Formatore • Esperto in Sicurezza sui Luoghi di Lavoro</p>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="cancelBtn" class="btn-secondary">ANNULLA</button>
+                <button id="acceptBtn" class="btn-primary">ACCETTO E PROCEDO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quizScreen" class="screen">
+        <div class="quiz-container">
+            <!-- Timer e Progress -->
+            <div class="quiz-header">
+                <div class="timer-box">
+                    <span class="timer-icon">⏱️</span>
+                    <span id="timer">20:00</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
                     </div>
+                    <span id="progressText" class="progress-text">Domanda 1 di 15</span>
                 </div>
+            </div>
 
-                <!-- Info Quiz -->
-                <div class="text-gray-300 space-y-3 mb-8">
-                    <p class="flex items-start gap-2">
-                        <span class="text-orange-400">•</span>
-                        <span>Questo test è uno <strong>strumento di verifica personale</strong></span>
-                    </p>
-                    <p class="flex items-start gap-2">
-                        <span class="text-orange-400">•</span>
-                        <span>Ha finalità <strong>esclusivamente didattiche</strong></span>
-                    </p>
-                    <p class="flex items-start gap-2">
-                        <span class="text-orange-400">•</span>
-                        <span>Non sostituisce la formazione obbligatoria ex D.Lgs. 81/2008</span>
-                    </p>
-                    <p class="flex items-start gap-2">
-                        <span class="text-orange-400">•</span>
-                        <span>I risultati sono <strong>indicativi</strong> del livello di preparazione</span>
-                    </p>
-                </div>
-
-                <!-- Pulsanti -->
-                <div class="flex gap-4 flex-col sm:flex-row">
-                    <button id="closeDisclaimer"
-                            class="flex-1 bg-gray-700 hover:bg-red-600 border-2 border-gray-500 hover:border-red-500 text-white font-bold py-4 px-8 rounded-lg transition-all text-lg">
-                        ❌ ANNULLA
-                    </button>
-                    <button id="acceptDisclaimer"
-                            class="flex-1 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-400 hover:to-yellow-400 text-white font-bold py-4 px-8 rounded-lg shadow-lg shadow-orange-500/50 transition-all text-lg">
-                        ✅ ACCETTO E PROCEDO
-                    </button>
-                </div>
+            <!-- Domanda -->
+            <div class="question-container">
+                <h2 id="questionText" class="question-text"></h2>
+                <div id="optionsContainer" class="options-container"></div>
             </div>
         </div>
     </div>
 
-    <!-- ========== QUIZ SCREEN (NASCOSTO) ========== -->
-    <div id="quizScreen" class="hidden container mx-auto px-4 py-8 max-w-6xl">
-        
-        <!-- HEADER CON TIMER -->
-        <div class="glass-effect rounded-xl p-4 mb-6 flex justify-between items-center border border-orange-500/30">
-            <div class="text-orange-400 font-bold">
-                📦 Domanda <span id="currentQuestion">1</span> di 15
-            </div>
-            <div id="timer" class="text-2xl font-bold text-orange-400">
-                ⏱️ 30:00
-            </div>
-        </div>
-
-        <!-- AREA DOMANDA -->
-        <div class="grid lg:grid-cols-4 gap-6">
-            
-            <!-- DOMANDA E RISPOSTE -->
-            <div class="lg:col-span-3">
-                <div class="glass-effect rounded-xl p-8 mb-6 border border-orange-500/30">
-                    <h2 id="questionText" class="text-xl font-semibold mb-6 text-white leading-relaxed"></h2>
-                    <div id="optionsContainer" class="space-y-3"></div>
-                </div>
-
-                <!-- PULSANTI NAVIGAZIONE -->
-                <div class="flex gap-4">
-                    <button id="prevBtn" 
-                            class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed">
-                        ← Precedente
-                    </button>
-                    <button id="nextBtn" 
-                            class="flex-1 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-all">
-                        Successiva →
-                    </button>
-                </div>
+    <!-- Riepilogo Screen -->
+    <div id="summaryScreen" class="screen">
+        <div class="container">
+            <div class="summary-header">
+                <h1>📊 Risultati del Test</h1>
+                <div id="scoreCard" class="score-card"></div>
             </div>
 
-            <!-- MAPPA DOMANDE -->
-            <div class="lg:col-span-1">
-                <div class="glass-effect rounded-xl p-6 border border-orange-500/30 sticky top-4">
-                    <h3 class="font-bold mb-4 text-orange-400">📋 Mappa Domande</h3>
-                    <div id="questionMap" class="grid grid-cols-5 gap-2 mb-6"></div>
-                    <button id="endBtn" 
-                            class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-lg">
-                        ✅ TERMINA TEST
-                    </button>
-                </div>
+            <div id="reviewContainer" class="review-container"></div>
+
+            <div class="action-buttons">
+                <button id="repeatBtn" class="btn-secondary">🔄 RIPETI TEST</button>
+                <button id="newTestBtn" class="btn-primary">🎲 NUOVO TEST</button>
+                <button id="homeBtn" class="btn-secondary">🏠 HOME</button>
             </div>
         </div>
     </div>
 
-    <!-- ========== MODALE CONFERMA TERMINE ========== -->
-    <div id="confirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-        <div class="relative glass-effect bg-gray-900/90 border-2 border-orange-500 rounded-2xl shadow-2xl p-8 max-w-md w-full">
-            <h3 class="text-2xl font-bold mb-4 text-orange-400">⚠️ Conferma Termine</h3>
-            <p class="text-gray-300 mb-6">Hai risposto a <span id="answeredCount" class="text-orange-400 font-bold"></span> domande su 15.</p>
-            <p class="text-yellow-300 mb-6">Vuoi terminare il test?</p>
-            <div class="flex gap-4">
-                <button id="cancelEnd" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all">
-                    Annulla
-                </button>
-                <button id="confirmEnd" class="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-all">
-                    Conferma
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========== RESULT SCREEN (NASCOSTO) ========== -->
-    <div id="resultScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
-        <div class="glass-effect rounded-2xl p-8 border-orange-500/30">
-            
-            <!-- RISULTATO -->
-            <div class="text-center mb-8">
-                <div id="resultIcon" class="text-8xl mb-4"></div>
-                <h2 id="resultTitle" class="text-4xl font-bold mb-4"></h2>
-                <div id="scoreDisplay" class="text-6xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text mb-4"></div>
-            </div>
-
-            <!-- STATISTICHE -->
-            <div class="grid md:grid-cols-3 gap-4 mb-8">
-                <div class="glass-effect p-6 rounded-lg text-center border border-green-500/30">
-                    <div class="text-4xl mb-2">✅</div>
-                    <div id="correctCount" class="text-3xl font-bold text-green-400">0</div>
-                    <div class="text-gray-400">Corrette</div>
-                </div>
-                <div class="glass-effect p-6 rounded-lg text-center border border-red-500/30">
-                    <div class="text-4xl mb-2">❌</div>
-                    <div id="wrongCount" class="text-3xl font-bold text-red-400">0</div>
-                    <div class="text-gray-400">Errate</div>
-                </div>
-                <div class="glass-effect p-6 rounded-lg text-center border border-orange-500/30">
-                    <div class="text-4xl mb-2">📊</div>
-                    <div id="percentage" class="text-3xl font-bold text-orange-400">0%</div>
-                    <div class="text-gray-400">Percentuale</div>
-                </div>
-            </div>
-
-            <!-- SUGGERIMENTI -->
-            <div id="suggestionBox" class="glass-effect p-6 rounded-lg mb-8 border"></div>
-
-            <!-- REVISIONE RISPOSTE -->
-            <div class="glass-effect p-6 rounded-lg mb-8 border border-orange-500/30">
-                <h3 class="text-2xl font-bold mb-4 text-orange-400">📝 Revisione Risposte</h3>
-                <div id="reviewContainer" class="space-y-4"></div>
-            </div>
-
-            <!-- PULSANTI AZIONE -->
-            <div class="flex gap-4 flex-col sm:flex-row">
-                <button id="repeatTest" 
-                        class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-lg transition-all shadow-lg">
-                    🔄 Ripeti Stesso Test
-                </button>
-                <button id="newTest" 
-                        class="flex-1 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold py-4 px-8 rounded-lg transition-all shadow-lg">
-                    🎲 Genera Nuovo Test
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>👤 <strong>Dott. Salvatore Trono</strong> - Esperto in SSL - Docente Formatore</p>
+        <p class="footer-credits">Laureato in Servizi Giuridici per l'Impresa • Formatore • Esperto in Sicurezza sui Luoghi di Lavoro</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
