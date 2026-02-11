@@ -1065,7 +1065,7 @@ function startTest(numQuestions = 20) {
     console.log(`🚀 Test avviato con ${numQuestions} domande`);
     
     // ✅ Validazione numero domande
-    if (!numQuestions || numQuestions < 1 || numQuestions > questions.length) {
+    if (!numQuestions || numQuestions < 1 || numQuestions > questionsBank.length) {
         numQuestions = 20;
         console.warn(`⚠️ Numero domande non valido, uso default: ${numQuestions}`);
     }
