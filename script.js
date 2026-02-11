@@ -1,5 +1,126 @@
 // ===== QUESTIONS DATABASE =====
-        const questionBank = [            
+// ==================== PANIERE DOMANDE ====================
+const questionBank = [
+    {
+        question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
+        options: ["D.Lgs. 81/2008", "Legge 626/94", "D.Lgs. 152/2006", "Legge 300/70"],
+        correct: 0,
+        suggestion: "Il Testo Unico sulla Sicurezza (D.Lgs. 81/2008) è la normativa di riferimento per la salute e sicurezza sul lavoro in Italia."
+    },
+    {
+        question: "Qual è il principale rischio nei magazzini con scaffalature alte?",
+        options: ["Caduta dall'alto", "Rumore eccessivo", "Radiazioni ionizzanti", "Temperatura elevata"],
+        correct: 0,
+        suggestion: "Le scaffalature alte comportano rischio di caduta dall'alto durante le operazioni di stoccaggio e prelievo merci. È obbligatorio l'uso di DPI anticaduta quando si superano i 2 metri di altezza (art. 115 D.Lgs. 81/08)."
+    },
+    {
+        question: "Chi è il responsabile della valutazione dei rischi in azienda?",
+        options: ["Il lavoratore", "Il Datore di Lavoro", "Il RLS", "Il medico competente"],
+        correct: 1,
+        suggestion: "Ai sensi dell'art. 17 del D.Lgs. 81/2008, la valutazione dei rischi è obbligo non delegabile del Datore di Lavoro."
+    },
+    {
+        question: "Quale DPI è obbligatorio per la movimentazione manuale di carichi pesanti?",
+        options: ["Guanti antitaglio", "Scarpe antinfortunistiche", "Cintura di sicurezza", "Maschera antipolvere"],
+        correct: 1,
+        suggestion: "Le scarpe antinfortunistiche proteggono da schiacciamento e caduta oggetti durante la movimentazione carichi (art. 169 D.Lgs. 81/08)."
+    },
+    {
+        question: "A quale temperatura deve essere conservata la merce deperibile secondo il HACCP?",
+        options: ["Tra 0°C e 4°C", "Tra 5°C e 10°C", "Sotto i -18°C", "Dipende dal prodotto"],
+        correct: 3,
+        suggestion: "La temperatura di conservazione varia in base al tipo di alimento (freschi: 0-4°C, surgelati: -18°C). Il Reg. CE 852/2004 stabilisce i parametri specifici."
+    },
+    {
+        question: "Quale segnaletica è obbligatoria nelle vie di fuga?",
+        options: ["Cartello rosso con scritta", "Cartello verde con freccia", "Striscia gialla sul pavimento", "Luce lampeggiante"],
+        correct: 1,
+        suggestion: "I cartelli di salvataggio sono verdi con pittogramma bianco (uscita di emergenza, freccia direzione). D.Lgs. 81/08 Allegato XXV."
+    },
+    {
+        question: "Ogni quanto va effettuata la formazione sulla sicurezza per i lavoratori?",
+        options: ["Ogni anno", "Ogni 5 anni", "Solo all'assunzione", "Mai, se già formati"],
+        correct: 1,
+        suggestion: "L'aggiornamento della formazione è obbligatorio ogni 5 anni (Accordo Stato-Regioni 21/12/2011)."
+    },
+    {
+        question: "Qual è il peso massimo sollevabile manualmente da un lavoratore maschio adulto?",
+        options: ["15 kg", "25 kg", "30 kg", "Non c'è limite se addestrato"],
+        correct: 1,
+        suggestion: "La norma ISO 11228-1 indica 25 kg come peso massimo in condizioni ideali. Il D.Lgs. 81/08 (Titolo VI) richiede valutazione del rischio."
+    },
+    {
+        question: "Quale organo di vigilanza controlla il rispetto della sicurezza sul lavoro?",
+        options: ["INPS", "ASL/ATS", "Vigili del Fuoco", "Protezione Civile"],
+        correct: 1,
+        suggestion: "L'ASL (o ATS) tramite lo SPSAL (Servizio Prevenzione Sicurezza Ambienti Lavoro) effettua ispezioni e controlli (art. 13 D.Lgs. 81/08)."
+    },
+    {
+        question: "Cosa indica il pittogramma GHS con la fiamma?",
+        options: ["Sostanza infiammabile", "Sostanza corrosiva", "Sostanza tossica", "Sostanza esplosiva"],
+        correct: 0,
+        suggestion: "Il simbolo della fiamma indica materiali infiammabili o comburenti. Regolamento CLP (CE) 1272/2008."
+    },
+    {
+        question: "Chi può utilizzare il carrello elevatore in azienda?",
+        options: ["Chiunque abbia patente B", "Solo lavoratori con patentino", "Solo lavoratori over 21", "Il datore di lavoro decide"],
+        correct: 1,
+        suggestion: "È richiesto il patentino rilasciato da ente accreditato dopo corso di 12 ore (Accordo Stato-Regioni 22/02/2012)."
+    },
+    {
+        question: "Qual è la distanza minima tra una via di fuga e un ostacolo?",
+        options: ["60 cm", "80 cm", "120 cm", "150 cm"],
+        correct: 2,
+        suggestion: "Il D.M. 3/08/2015 (Codice Prevenzione Incendi) prevede larghezza minima 120 cm per le vie di esodo."
+    },
+    {
+        question: "Quando è obbligatoria la sorveglianza sanitaria?",
+        options: ["Per tutti i lavoratori", "Solo per lavori usuranti", "Quando prevista dal DVR", "Mai nei magazzini"],
+        correct: 2,
+        suggestion: "La sorveglianza sanitaria è obbligatoria quando il DVR identifica rischi specifici (es. MMC, rumore >80dB, videoterminali >20h/sett). Art. 41 D.Lgs. 81/08."
+    },
+    {
+        question: "Quale attrezzatura NON richiede verifica periodica ASL?",
+        options: ["Carrello elevatore", "Scala portatile", "Transpallet elettrico", "Piattaforma aerea"],
+        correct: 1,
+        suggestion: "Le scale portatili sono escluse dalle verifiche periodiche ASL. Allegato VII D.Lgs. 81/08 elenca le attrezzature soggette."
+    },
+    {
+        question: "Cosa deve fare il lavoratore in caso di pericolo grave e immediato?",
+        options: ["Aspettare ordini del capo", "Interrompere e allontanarsi", "Chiamare i Vigili del Fuoco", "Continuare fino a fine turno"],
+        correct: 1,
+        suggestion: "Il lavoratore ha diritto di allontanarsi dal posto di lavoro in caso di pericolo grave, immediato e inevitabile (art. 44 D.Lgs. 81/08)."
+    },
+    {
+        question: "Ogni quanto va controllato l'estintore portatile?",
+        options: ["Ogni mese", "Ogni 6 mesi", "Ogni anno", "Ogni 5 anni"],
+        correct: 1,
+        suggestion: "Il controllo semestrale è obbligatorio (D.M. 20/12/1982). La revisione completa è ogni 18 mesi, il collaudo ogni 5 anni."
+    },
+    {
+        question: "Quale documentazione deve essere sempre presente in magazzino?",
+        options: ["DVR, POS, PSC", "DVR, Piano emergenza, Registro infortuni", "Solo il DVR", "Nessuna, basta tenerla in ufficio"],
+        correct: 1,
+        suggestion: "Il DVR, il piano di emergenza e il registro infortuni devono essere accessibili ai lavoratori e agli organi di vigilanza (art. 28 e 53 D.Lgs. 81/08)."
+    },
+    {
+        question: "Chi nomina il Rappresentante dei Lavoratori per la Sicurezza (RLS)?",
+        options: ["Il Datore di Lavoro", "I lavoratori tramite elezione", "L'ASL", "Il medico competente"],
+        correct: 1,
+        suggestion: "L'RLS è eletto dai lavoratori (art. 47 D.Lgs. 81/08). Nelle aziende <15 dipendenti può essere territoriale o di comparto."
+    },
+    {
+        question: "Qual è la sanzione per il datore che non effettua la valutazione dei rischi?",
+        options: ["Multa fino a 500€", "Arresto da 3 a 6 mesi", "Solo richiamo scritto", "Chiusura attività"],
+        correct: 1,
+        suggestion: "L'omessa valutazione rischi è reato penale punito con arresto da 3 a 6 mesi o ammenda da 2.500€ a 6.400€ (art. 55 D.Lgs. 81/08)."
+    },
+    {
+        question: "Quale comportamento è VIETATO durante la movimentazione carichi?",
+        options: ["Usare guanti", "Piegare le ginocchia", "Sollevare con la schiena curva", "Chiedere aiuto a un collega"],
+        correct: 2,
+        suggestion: "Sollevare con schiena curva aumenta il rischio di lesioni lombari. Tecnica corretta: ginocchia piegate, schiena dritta (Titolo VI D.Lgs. 81/08)."
+    },        
                 {
                 question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
                 options: ["D.Lgs. 81/2008", "Legge 626/94", "D.Lgs. 152/2006", "Legge 300/70"],
