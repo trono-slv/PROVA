@@ -1044,7 +1044,7 @@ let currentQuestions = [];
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let timerInterval;
-let timeLeft = 1800; // 30 minuti in secondi
+let timeLeft = 1800;
 
 // ========== FUNZIONI TIMER ==========
 function startTimer() {
@@ -1052,7 +1052,7 @@ function startTimer() {
         timeLeft--;
         updateTimerDisplay();
         
-        if (timeLeft <= 300) { // Ultimi 5 minuti
+        if (timeLeft <= 300) {
             document.getElementById('timer').classList.add('timer-warning');
         }
         
@@ -1072,6 +1072,18 @@ function updateTimerDisplay() {
 
 // ========== AVVIO TEST ==========
 function startTest() {
+    // ✅ CONTROLLO SICUREZZA
+    if (questionBank.length === 0) {
+        alert('❌ ERRORE: Nessuna domanda nel paniere!');
+        return;
+    }
+    
+    if (questionBank.length < 15) {
+        if (!confirm(`⚠️ ATTENZIONE: Il paniere contiene solo ${questionBank.length} domande.\n\nIl test sarà composto da ${questionBank.length} domande invece di 15.\n\nContinuare?`)) {
+            return;
+        }
+    }
+    
     // NASCONDE MODAL
     document.getElementById('disclaimerModal').classList.add('hidden');
     
@@ -1080,7 +1092,8 @@ function startTest() {
     
     // Mescola domande
     const shuffledBank = [...questionBank].sort(() => Math.random() - 0.5);
-    currentQuestions = shuffledBank.slice(0, 15);
+    const numQuestions = Math.min(15, questionBank.length);
+    currentQuestions = shuffledBank.slice(0, numQuestions);
     
     // Mescola risposte per ogni domanda
     currentQuestions = currentQuestions.map(q => {
@@ -1093,12 +1106,12 @@ function startTest() {
             ...q,
             shuffledAnswers: shuffledOptions,
             correctAnswer: q.options[q.correct],
-            suggestion: q.suggestion // MANTIENE IL SUGGESTION
+            suggestion: q.suggestion
         };
     });
     
     currentQuestionIndex = 0;
-    userAnswers = new Array(15).fill(null);
+    userAnswers = new Array(numQuestions).fill(null);
     
     // RESET TIMER
     timeLeft = 1800;
@@ -1106,6 +1119,9 @@ function startTest() {
     
     // MOSTRA QUIZ
     document.getElementById('quizScreen').classList.remove('hidden');
+    
+    // ✅ AGGIORNA TOTALE DOMANDE
+    document.getElementById('totalQuestions').textContent = numQuestions;
     
     showQuestion();
     updateQuestionMap();
@@ -1138,7 +1154,7 @@ function showQuestion() {
     // Gestione pulsanti navigazione
     document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
     document.getElementById('nextBtn').textContent = 
-        currentQuestionIndex === 14 ? 'Termina →' : 'Successiva →';
+        currentQuestionIndex === currentQuestions.length - 1 ? 'Termina →' : 'Successiva →';
 }
 
 // ========== SELEZIONE RISPOSTA ==========
@@ -1150,7 +1166,7 @@ function selectAnswer(index) {
 
 // ========== NAVIGAZIONE ==========
 function nextQuestion() {
-    if (currentQuestionIndex < 14) {
+    if (currentQuestionIndex < currentQuestions.length - 1) {
         currentQuestionIndex++;
         showQuestion();
         updateQuestionMap();
@@ -1178,7 +1194,7 @@ function updateQuestionMap() {
     const map = document.getElementById('questionMap');
     map.innerHTML = '';
     
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < currentQuestions.length; i++) {
         const btn = document.createElement('button');
         btn.className = 'question-num';
         btn.textContent = i + 1;
@@ -1213,6 +1229,7 @@ function submitTest() {
     
     let correct = 0;
     let wrong = 0;
+    const totalQuestions = currentQuestions.length;
     
     currentQuestions.forEach((q, idx) => {
         const userAnswerIndex = userAnswers[idx];
@@ -1223,8 +1240,9 @@ function submitTest() {
         }
     });
     
-    const percentage = Math.round((correct / 15) * 100);
-    const passed = correct >= 12;
+    const percentage = Math.round((correct / totalQuestions) * 100);
+    const passThreshold = Math.ceil(totalQuestions * 0.8); // 80%
+    const passed = correct >= passThreshold;
     
     // Mostra risultati
     document.getElementById('quizScreen').classList.add('hidden');
@@ -1235,7 +1253,7 @@ function submitTest() {
     document.getElementById('resultIcon').textContent = passed ? '🎉' : '😔';
     document.getElementById('resultTitle').textContent = 
         passed ? 'TEST SUPERATO!' : 'TEST NON SUPERATO';
-    document.getElementById('scoreDisplay').textContent = `${correct}/15`;
+    document.getElementById('scoreDisplay').textContent = `${correct}/${totalQuestions}`;
     document.getElementById('correctCount').textContent = correct;
     document.getElementById('wrongCount').textContent = wrong;
     document.getElementById('percentage').textContent = `${percentage}%`;
@@ -1306,7 +1324,7 @@ function submitTest() {
 // ========== RIPETI TEST ==========
 function repeatSameTest() {
     currentQuestionIndex = 0;
-    userAnswers = new Array(15).fill(null);
+    userAnswers = new Array(currentQuestions.length).fill(null);
     timeLeft = 1800;
     
     document.getElementById('resultScreen').classList.add('hidden');
@@ -1329,22 +1347,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeDisclaimer = document.getElementById('closeDisclaimer');
     const acceptDisclaimer = document.getElementById('acceptDisclaimer');
 
-    // MOSTRA MODAL
     startBtn.addEventListener('click', function() {
         disclaimerModal.classList.remove('hidden');
     });
 
-    // CHIUDE MODAL
     closeDisclaimer.addEventListener('click', function() {
         disclaimerModal.classList.add('hidden');
     });
 
-    // AVVIA TEST
     acceptDisclaimer.addEventListener('click', function() {
         startTest();
     });
     
-    // Gestione pulsanti navigazione
     document.getElementById('nextBtn').addEventListener('click', nextQuestion);
     document.getElementById('prevBtn').addEventListener('click', previousQuestion);
     document.getElementById('endBtn').addEventListener('click', confirmEnd);
