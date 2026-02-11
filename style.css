@@ -780,3 +780,13 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-dark);
 }
+@media (max-width: 768px) {
+    .modal-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-actions .btn {
+        padding: 18px 24px;
+        font-size: 1rem;
+    }
+}
