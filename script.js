@@ -1043,8 +1043,18 @@
 // 🎯 SIMULATORE TEST - SCRIPT.JS COMPLETO
 // ==========================================
 
+// ========== PANIERE DOMANDE (ESEMPIO) ==========
+const questionBank = [
+    {
+        question: "Chi deve autorizzare l'uso di attrezzature particolari?",
+        options: ["Datore dopo verifica idoneità e formazione", "Chiunque", "Solo il preposto", "Nessuno"],
+        correct: 0,
+        explanation: "Attrezzature specifiche (carrelli, PLE, gru): autorizzazione scritta previo corso abilitante e verifica idoneità sanitaria."
+    },
+    // ✅ AGGIUNGI QUI TUTTE LE TUE DOMANDE CON STESSO FORMATO
+];
+
 // ========== VARIABILI GLOBALI ==========
-let allQuestions = []; // Tutte le domande caricate
 let currentQuestions = []; // Domande del test corrente
 let currentIndex = 0; // Indice domanda corrente
 let userAnswers = []; // Risposte dell'utente
@@ -1053,28 +1063,9 @@ let timerInterval = null; // Intervallo timer
 let testStartTime = null; // Timestamp inizio test
 let testMode = 'sequenziale'; // Modalità test
 
-// ========== CARICAMENTO DOMANDE ==========
-async function loadQuestions() {
-    try {
-        console.log('📥 Caricamento domande...');
-        const response = await fetch('domande.json');
-        if (!response.ok) throw new Error('Errore caricamento JSON');
-        
-        allQuestions = await response.json();
-        console.log(`✅ ${allQuestions.length} domande caricate`);
-        
-        // Popola statistiche
-        updateStats();
-        
-    } catch (error) {
-        console.error('❌ Errore:', error);
-        alert('⚠️ Impossibile caricare le domande. Verifica che domande.json sia presente.');
-    }
-}
-
 // ========== AGGIORNA STATISTICHE ==========
 function updateStats() {
-    document.getElementById('totalQuestions').textContent = allQuestions.length;
+    document.getElementById('totalQuestions').textContent = questionBank.length;
 }
 
 // ========== AVVIO TEST ==========
@@ -1082,8 +1073,8 @@ function startTest() {
     console.log('🚀 Avvio test...');
     
     // Verifica domande caricate
-    if (allQuestions.length === 0) {
-        alert('⚠️ Nessuna domanda disponibile!');
+    if (questionBank.length === 0) {
+        alert('⚠️ Nessuna domanda disponibile nel paniere!');
         return;
     }
     
@@ -1094,7 +1085,7 @@ function startTest() {
     
     console.log(`📊 Parametri: ${numQuestions} domande, ${timeLimit} minuti, modalità ${testMode}`);
     
-    // Seleziona domande
+    // ✅ Seleziona domande da questionBank
     currentQuestions = selectQuestions(numQuestions);
     
     if (currentQuestions.length === 0) {
@@ -1114,20 +1105,21 @@ function startTest() {
     document.getElementById('setupArea').classList.add('hidden');
     document.getElementById('testArea').classList.remove('hidden');
     
-    // Avvia timer e mostra prima domanda
+    // ✅ Avvia timer AUTOMATICAMENTE e mostra prima domanda
     startTimer();
     displayQuestion();
     updateQuestionMap();
     
-    console.log('✅ Test avviato!');
+    console.log('✅ Test avviato con timer automatico!');
 }
 
 // ========== SELEZIONE DOMANDE ==========
 function selectQuestions(num) {
-    let questions = [...allQuestions];
+    let questions = [...questionBank]; // ✅ Usa questionBank
     
     // ✅ RANDOMIZZAZIONE PANIERE (se modalità casuale)
     if (testMode === 'casuale') {
+        console.log('🔀 Randomizzazione paniere...');
         for (let i = questions.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [questions[i], questions[j]] = [questions[j], questions[i]];
@@ -1168,12 +1160,14 @@ function startTimer() {
         // Avviso ultimi 5 minuti
         if (timeLeft === 300) {
             timerDisplay.classList.add('text-yellow-400', 'animate-pulse');
+            alert('⚠️ Restano 5 minuti!');
         }
         
         // Avviso ultimo minuto
         if (timeLeft === 60) {
             timerDisplay.classList.remove('text-yellow-400');
             timerDisplay.classList.add('text-red-500');
+            alert('🚨 ULTIMO MINUTO!');
         }
         
         // Tempo scaduto
@@ -1234,7 +1228,18 @@ function displayQuestion() {
             </div>
         `;
         
-        optionDiv.addEventListener('click', () => selectAnswer(index));
+        // ✅ AVANZAMENTO AUTOMATICO AL CLICK
+        optionDiv.addEventListener('click', () => {
+            selectAnswer(index);
+            
+            // Vai alla domanda successiva dopo 500ms
+            setTimeout(() => {
+                if (currentIndex < currentQuestions.length - 1) {
+                    nextQuestion();
+                }
+            }, 500);
+        });
+        
         optionsContainer.appendChild(optionDiv);
     });
     
@@ -1410,7 +1415,7 @@ function generateReview() {
                         `).join('')}
                     </div>
                     
-                    ${question.explanation ? `
+                    ${!isCorrect && question.explanation ? `
                         <div class="mt-4 p-4 bg-blue-900/30 border-l-4 border-blue-500 rounded">
                             <p class="text-sm text-blue-200"><strong>💡 Spiegazione:</strong> ${question.explanation}</p>
                         </div>
@@ -1464,8 +1469,8 @@ function generateNewTest() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 App inizializzata');
     
-    // Carica domande
-    loadQuestions();
+    // ✅ Aggiorna stats con questionBank
+    updateStats();
     
     // ✅ POPUP DISCLAIMER OBBLIGATORIO
     const startBtn = document.getElementById('startTestBtn');
@@ -1483,7 +1488,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ Disclaimer accettato');
         modal.classList.add('hidden');
         modal.style.display = 'none';
-        startTest();
+        startTest(); // ✅ Timer parte automaticamente qui
     });
     
     cancelBtn.addEventListener('click', () => {
@@ -1506,4 +1511,3 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('✅ Event listeners registrati');
 });
-
