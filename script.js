@@ -1124,17 +1124,34 @@ function startTest() {
 
 // ========== SELEZIONE DOMANDE ==========
 function selectQuestions(num) {
-    const questions = [...allQuestions];
+    let questions = [...allQuestions];
     
+    // ✅ RANDOMIZZAZIONE PANIERE (se modalità casuale)
     if (testMode === 'casuale') {
-        // Mescola array
         for (let i = questions.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [questions[i], questions[j]] = [questions[j], questions[i]];
         }
     }
     
-    return questions.slice(0, Math.min(num, questions.length));
+    // Prendi le prime N domande
+    questions = questions.slice(0, Math.min(num, questions.length));
+    
+    // ✅ RANDOMIZZAZIONE OPZIONI per ogni domanda
+    questions.forEach(q => {
+        const correctAnswer = q.options[q.correct]; // Salva risposta corretta
+        
+        // Mescola opzioni
+        for (let i = q.options.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+        }
+        
+        // Trova nuovo indice risposta corretta
+        q.correct = q.options.indexOf(correctAnswer);
+    });
+    
+    return questions;
 }
 
 // ========== TIMER ==========
@@ -1406,13 +1423,37 @@ function generateReview() {
     });
 }
 
-// ========== RESET TEST ==========
-function resetTest() {
+// ========== RESET TEST (RIPETI STESSO TEST) ==========
+function repeatTest() {
     clearInterval(timerInterval);
     
+    // Reset variabili MA mantieni le stesse domande
+    currentIndex = 0;
+    userAnswers = new Array(currentQuestions.length).fill(undefined);
+    
+    const timeLimit = parseInt(document.getElementById('timeLimit').value) || 60;
+    timeLeft = timeLimit * 60;
+    testStartTime = Date.now();
+    
+    // Torna al test
+    document.getElementById('resultsArea').classList.add('hidden');
+    document.getElementById('testArea').classList.remove('hidden');
+    
+    // Riavvia
+    startTimer();
+    displayQuestion();
+    updateQuestionMap();
+}
+
+// ========== GENERA NUOVO TEST ==========
+function generateNewTest() {
+    clearInterval(timerInterval);
+    
+    // Torna al setup
     document.getElementById('resultsArea').classList.add('hidden');
     document.getElementById('setupArea').classList.remove('hidden');
     
+    // Reset completo
     currentQuestions = [];
     currentIndex = 0;
     userAnswers = [];
@@ -1426,7 +1467,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carica domande
     loadQuestions();
     
-    // Pulsante START con disclaimer
+    // ✅ POPUP DISCLAIMER OBBLIGATORIO
     const startBtn = document.getElementById('startTestBtn');
     const modal = document.getElementById('disclaimerModal');
     const acceptBtn = document.getElementById('acceptDisclaimer');
@@ -1459,10 +1500,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Reset
-    document.getElementById('restartBtn').addEventListener('click', resetTest);
+    // ✅ 2 PULSANTI FINALI
+    document.getElementById('repeatTestBtn').addEventListener('click', repeatTest);
+    document.getElementById('newTestBtn').addEventListener('click', generateNewTest);
     
     console.log('✅ Event listeners registrati');
 });
-
 
