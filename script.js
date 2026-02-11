@@ -1055,9 +1055,10 @@ let testMode = 'sequenziale'; // Modalità test
 
 // ========== AGGIORNA STATISTICHE ==========
 function updateStats() {
-    document.getElementById('totalQuestions').textContent = questionBank.length;
-}
-
+    const totalQuestionsElement = document.getElementById('totalQuestions');
+    if (totalQuestionsElement) {
+        totalQuestionsElement.textContent = questionBank.length;
+    }
 // ========== AVVIO TEST ==========
 function startTest() {
     console.log('🚀 Avvio test...');
