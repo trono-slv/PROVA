@@ -1112,45 +1112,88 @@ function updateTimerDisplay() {
     }
 }
 
-// ========== MOSTRA DOMANDA ==========
-function showQuestion() {
-    const q = currentQuestions[currentQuestionIndex];
+// ========== VISUALIZZAZIONE DOMANDA ==========
+function displayQuestion() {
+    const question = currentQuestions[currentIndex];
     
-    document.getElementById('questionText').textContent = q.question;
-    document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
-    document.getElementById('totalQuestions').textContent = currentQuestions.length;
+    console.log('📝 Visualizzo domanda:', currentIndex + 1);
+    console.log('❓ Domanda:', question.question);
+    console.log('📋 Opzioni:', question.options);
+
+    // Aggiorna numero domanda
+    document.getElementById('questionNumber').textContent = currentIndex + 1;
     
-    const answersContainer = document.getElementById('answersContainer');
-    answersContainer.innerHTML = '';
+    // Aggiorna testo domanda
+    document.getElementById('questionText').textContent = question.question;
     
-    q.shuffledAnswers.forEach((answer, index) => {
-        const answerBtn = document.createElement('button');
-        answerBtn.className = 'answer-option';
-        answerBtn.textContent = answer.text;
-        answerBtn.onclick = () => selectAnswer(index);
+    // Container opzioni
+    const optionsContainer = document.getElementById('optionsContainer');
+    optionsContainer.innerHTML = ''; // Pulisce opzioni precedenti
+    
+    // Crea le 4 opzioni
+    question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option-item p-4 rounded-lg border-2 border-gray-200 cursor-pointer transition-all hover:border-blue-500 hover:bg-blue-50';
         
-        if (userAnswers[currentQuestionIndex] === index) {
-            answerBtn.classList.add('answer-selected');
+        // Se già risposto, evidenzia la scelta
+        if (userAnswers[currentIndex] !== undefined && userAnswers[currentIndex] === index) {
+            optionDiv.classList.add('bg-blue-100', 'border-blue-500');
         }
         
-        answersContainer.appendChild(answerBtn);
+        optionDiv.innerHTML = `
+            <div class="flex items-start gap-3">
+                <span class="font-bold text-blue-600">${String.fromCharCode(65 + index)}.</span>
+                <span class="flex-1">${option}</span>
+            </div>
+        `;
+        
+        // Event listener per selezione
+        optionDiv.addEventListener('click', function() {
+            selectAnswer(index);
+        });
+        
+        optionsContainer.appendChild(optionDiv);
+        console.log(`✅ Opzione ${index + 1} aggiunta:`, option);
     });
     
-    document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-    document.getElementById('nextBtn').disabled = currentQuestionIndex === currentQuestions.length - 1;
+    // Aggiorna pulsanti navigazione
+    document.getElementById('prevBtn').disabled = currentIndex === 0;
+    document.getElementById('nextBtn').disabled = currentIndex === currentQuestions.length - 1;
+    
+    // Aggiorna mappa domande
+    updateQuestionMap();
+    
+    console.log('✅ Domanda visualizzata completamente');
 }
 
 // ========== SELEZIONE RISPOSTA ==========
-function selectAnswer(index) {
-    userAnswers[currentQuestionIndex] = index;
+function selectAnswer(optionIndex) {
+    console.log('👆 Risposta selezionata:', optionIndex);
     
-    const buttons = document.querySelectorAll('.answer-option');
-    buttons.forEach((btn, i) => {
-        btn.classList.toggle('answer-selected', i === index);
+    userAnswers[currentIndex] = optionIndex;
+    
+    // Rimuovi evidenziazione precedente
+    document.querySelectorAll('.option-item').forEach(opt => {
+        opt.classList.remove('bg-blue-100', 'border-blue-500');
+        opt.classList.add('border-gray-200');
     });
     
+    // Evidenzia opzione selezionata
+    const selectedOption = document.querySelectorAll('.option-item')[optionIndex];
+    selectedOption.classList.add('bg-blue-100', 'border-blue-500');
+    selectedOption.classList.remove('border-gray-200');
+    
+    // Aggiorna mappa domande
     updateQuestionMap();
+    
+    // Vai automaticamente alla domanda successiva dopo 0.5s
+    setTimeout(() => {
+        if (currentIndex < currentQuestions.length - 1) {
+            nextQuestion();
+        }
+    }, 500);
 }
+
 
 // ========== NAVIGAZIONE ==========
 function nextQuestion() {
