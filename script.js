@@ -1039,16 +1039,6 @@
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
-// ========== PANIERE DOMANDE ==========
-const questionBank = [
-    // ✅ INSERISCI QUI LE TUE DOMANDE CON FORMATO:
-    // {
-    //     question: "Testo domanda?",
-    //     options: ["Opzione 1", "Opzione 2", "Opzione 3", "Opzione 4"],
-    //     correct: 0,
-    //     suggestion: "Testo suggerimento"
-    // },
-];
 
 // ========== VARIABILI GLOBALI ==========
 let currentQuestions = [];
