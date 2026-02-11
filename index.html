@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Rischi Specifici in Magazzino - Dott. Salvatore Trono</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-white">
+
+    <!-- ========== WELCOME SCREEN ========== -->
+    <div id="welcomeScreen" class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 border-orange-500/30 animate-slide-in">
+            
+            <!-- PRESENTAZIONE AUTORE -->
+            <div class="text-center mb-8 pb-6 border-b border-orange-500/30">
+                <div class="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text">
+                    <h2 class="text-2xl font-bold">👤 Dott. Salvatore Trono</h2>
+                </div>
+                <p class="text-gray-300 mt-2">Esperto in SSL - Docente Formatore</p>
+            </div>
+
+            <!-- TITOLO QUIZ -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text">
+                    📦 Test Rischi Specifici in Magazzino
+                </h1>
+                <p class="text-gray-300 text-lg">Verifica le tue conoscenze sulla sicurezza nel settore logistico</p>
+            </div>
+
+            <!-- LINK MATERIALE DIDATTICO -->
+            <div class="mb-8 p-6 glass-effect rounded-lg border border-orange-500/30">
+                <h3 class="text-xl font-semibold mb-3 text-orange-400">📚 Materiale Didattico</h3>
+                <p class="text-gray-300 mb-4">
+                    Consulta il materiale teorico completo prima di iniziare il test
+                </p>
+                <a href="https://sites.google.com/view/sicurezzasullavoro-trono/home" 
+                   target="_blank"
+                   class="inline-block px-6 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-orange-500/50">
+                    🔗 Accedi al Materiale Didattico
+                </a>
+
+                <!-- LINK FORMAZIONE BASE -->
+                <div class="mt-6 p-4 glass-effect rounded-lg border border-blue-500/30">
+                    <p class="text-gray-300 mb-3">
+                        Prima di affrontare i rischi specifici, assicurati di conoscere le basi della sicurezza sul lavoro
+                    </p>
+                    <a href="https://trono-slv.github.io/test-SSL---BASE/" 
+                       target="_blank"
+                       class="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-all duration-300 shadow-lg">
+                        📖 Test Formazione Base - Sicurezza nei Luoghi di Lavoro
+                    </a>
+                </div>
+            </div>
+
+            <!-- ISTRUZIONI -->
+            <div class="mb-8 p-6 glass-effect rounded-lg border border-orange-500/30">
+                <h3 class="text-xl font-semibold mb-3 text-orange-400">📋 Istruzioni del Test</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-start">
+                        <span class="mr-2">⏱️</span>
+                        <span><strong>Durata:</strong> 30 minuti (1800 secondi)</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-2">❓</span>
+                        <span><strong>Domande:</strong> 15 domande a risposta multipla estratte casualmente</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-2">✅</span>
+                        <span><strong>Superamento:</strong> Almeno 10 risposte corrette su 15 (66.67%)</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-2">🔄</span>
+                        <span><strong>Navigazione:</strong> Puoi tornare indietro e modificare le risposte</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-2">⚠️</span>
+                        <span><strong>Attenzione:</strong> Il timer si azzera automaticamente allo scadere del tempo</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- PULSANTE START -->
+            <div class="text-center">
+                <button id="startTestBtn" class="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-lg font-bold text-xl transition-all duration-300 shadow-2xl hover:shadow-orange-500/50 animate-pulse-slow">
+                    🚀 Inizia il Test
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== QUIZ SCREEN ========== -->
+    <div id="quizScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 border-orange-500/30">
+            
+            <!-- HEADER CON TIMER E PROGRESSO -->
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-orange-500/30">
+                <div class="text-lg font-semibold">
+                    <span class="text-orange-400">Domanda</span>
+                    <span id="questionNumber" class="text-white">1</span>
+                    <span class="text-gray-400">/ 15</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-lg font-semibold">
+                        <span class="text-orange-400">⏱️ Tempo:</span>
+                        <span id="timerDisplay" class="text-white">30:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BARRA PROGRESSO -->
+            <div class="mb-6">
+                <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full bg-gradient-to-r from-orange-500 to-yellow-500 transition-all duration-300" style="width: 6.67%"></div>
+                </div>
+            </div>
+
+            <!-- DOMANDA -->
+            <div id="questionContainer" class="mb-8 p-6 glass-effect rounded-lg border border-orange-500/30 animate-fade-in">
+                <h3 class="text-xl font-semibold mb-4 text-white" id="questionText"></h3>
+                <div id="answersContainer" class="space-y-3"></div>
+            </div>
+
+            <!-- NAVIGAZIONE -->
+            <div class="flex justify-between items-center">
+                <button id="prevBtn" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    ← Precedente
+                </button>
+                
+                <button id="nextBtn" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-lg font-semibold transition-all duration-300">
+                    Successiva →
+                </button>
+                
+                <button id="endBtn" class="hidden px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-lg font-semibold transition-all duration-300">
+                    ✓ Termina Test
+                </button>
+            </div>
+
+            <!-- MAPPA DOMANDE -->
+            <div class="mt-6 p-4 glass-effect rounded-lg border border-orange-500/30">
+                <h4 class="text-sm font-semibold mb-3 text-orange-400">Mappa Risposte</h4>
+                <div id="questionsMap" class="flex flex-wrap gap-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== RESULTS SCREEN ========== -->
+    <div id="resultsScreen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 border-orange-500/30 animate-scale-in">
+            
+            <!-- RISULTATO FINALE -->
+            <div class="text-center mb-8">
+                <div id="resultIcon" class="text-8xl mb-4"></div>
+                <h2 id="resultTitle" class="text-4xl font-bold mb-4"></h2>
+                <p id="resultMessage" class="text-xl text-gray-300 mb-6"></p>
+                
+                <!-- STATISTICHE -->
+                <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+                    <div class="p-4 glass-effect rounded-lg border border-orange-500/30">
+                        <div class="text-3xl font-bold text-green-400" id="correctCount">0</div>
+                        <div class="text-sm text-gray-400">Corrette</div>
+                    </div>
+                    <div class="p-4 glass-effect rounded-lg border border-orange-500/30">
+                        <div class="text-3xl font-bold text-red-400" id="wrongCount">0</div>
+                        <div class="text-sm text-gray-400">Errate</div>
+                    </div>
+                    <div class="p-4 glass-effect rounded-lg border border-orange-500/30">
+                        <div class="text-3xl font-bold text-orange-400" id="percentageScore">0%</div>
+                        <div class="text-sm text-gray-400">Punteggio</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVISIONE RISPOSTE -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-orange-400">📝 Revisione Risposte</h3>
+                <div id="reviewContainer" class="space-y-4"></div>
+            </div>
+
+            <!-- PULSANTI FINALI -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="repeatSameTest()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-all duration-300">
+                    🔄 Ripeti Stesso Test
+                </button>
+                <button onclick="generateNewTest()" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-lg font-semibold transition-all duration-300">
+                    🎲 Genera Nuovo Test
+                </button>
+                <button onclick="location.reload()" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition-all duration-300">
+                    🏠 Torna alla Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MODAL DISCLAIMER ========== -->
+    <div id="disclaimerModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="glass-effect rounded-2xl p-8 max-w-2xl w-full border border-orange-500/30 animate-scale-in">
+            <h3 class="text-2xl font-bold mb-4 text-orange-400">⚠️ Disclaimer Importante</h3>
+            <div class="text-gray-300 space-y-3 mb-6">
+                <p>Questo test è stato creato a scopo <strong>puramente didattico ed educativo</strong> dal Dott. Salvatore Trono.</p>
+                <p><strong>NON costituisce</strong> una certificazione ufficiale e non ha valore legale ai fini della formazione obbligatoria prevista dal D.Lgs. 81/2008.</p>
+                <p>Le domande sono estratte casualmente da un paniere e mescolate ad ogni sessione per garantire varietà nell'apprendimento.</p>
+                <p>Per la formazione ufficiale, rivolgersi ad enti accreditati.</p>
+            </div>
+            <div class="flex gap-4">
+                <button id="closeDisclaimer" class="flex-1 px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition-all duration-300">
+                    Annulla
+                </button>
+                <button id="acceptDisclaimer" class="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-lg font-semibold transition-all duration-300">
+                    Ho Capito, Inizia
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MODAL CONFERMA FINE TEST ========== -->
+    <div id="confirmModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="glass-effect rounded-2xl p-8 max-w-md w-full border border-orange-500/30 animate-scale-in">
+            <h3 class="text-2xl font-bold mb-4 text-orange-400">⚠️ Conferma Invio</h3>
+            <p class="text-gray-300 mb-2">Sei sicuro di voler terminare il test?</p>
+            <p id="unansweredWarning" class="text-yellow-400 text-sm mb-6"></p>
+            <div class="flex gap-4">
+                <button onclick="closeConfirmModal()" class="flex-1 px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition-all duration-300">
+                    Annulla
+                </button>
+                <button onclick="submitTest()" class="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-lg font-semibold transition-all duration-300">
+                    Conferma
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
