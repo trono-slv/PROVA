@@ -321,7 +321,14 @@ body {
     margin-top: 2rem;
     flex-wrap: wrap;
 }
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
 
+.btn-danger:hover {
+    background: #c82333;
+}
 .btn-cancel,
 .btn-accept {
     flex: 1;
