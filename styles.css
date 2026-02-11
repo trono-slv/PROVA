@@ -1,29 +1,131 @@
-@keyframes slideIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-.animate-slide-in { animation: slideIn 0.3s ease-out; }
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-.animate-pulse-slow { animation: pulse 2s infinite; }
-
-@keyframes fadeIn {
+/* ========== ANIMAZIONI ========== */
+@keyframes fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
 }
-.animate-fade-in { animation: fadeIn 0.3s ease-out; }
 
-@keyframes scaleIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-.animate-scale-in { animation: scaleIn 0.3s ease-out; }
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(249, 115, 22, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(249, 115, 22, 0.8);
+    }
+}
+
+/* ========== CLASSI UTILITY ========== */
+.animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+}
+
+.animate-slide-in {
+    animation: slide-in 0.5s ease-out;
+}
+
+.animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+}
 
 .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(31, 41, 55, 0.7);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+/* ========== TIMER PULSANTE ========== */
+.timer-warning {
+    animation: pulse-glow 1.5s infinite;
+    color: #ef4444 !important;
+}
+
+/* ========== PULSANTI RISPOSTA ========== */
+.answer-btn {
+    @apply w-full text-left p-4 rounded-lg border-2 transition-all duration-300 font-medium;
+    background: rgba(55, 65, 81, 0.5);
+    border-color: rgba(107, 114, 128, 0.5);
+}
+
+.answer-btn:hover {
+    background: rgba(75, 85, 99, 0.7);
+    border-color: rgba(156, 163, 175, 0.7);
+    transform: translateX(5px);
+}
+
+.answer-selected {
+    background: rgba(249, 115, 22, 0.3) !important;
+    border-color: rgb(249, 115, 22) !important;
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+}
+
+.answer-correct {
+    background: rgba(34, 197, 94, 0.3) !important;
+    border-color: rgb(34, 197, 94) !important;
+}
+
+.answer-wrong {
+    background: rgba(239, 68, 68, 0.3) !important;
+    border-color: rgb(239, 68, 68) !important;
+}
+
+/* ========== MAPPA DOMANDE ========== */
+.question-num {
+    @apply w-10 h-10 flex items-center justify-center rounded-lg font-bold cursor-pointer transition-all;
+    background: rgba(55, 65, 81, 0.5);
+    border: 2px solid rgba(107, 114, 128, 0.5);
+}
+
+.question-num:hover {
+    background: rgba(75, 85, 99, 0.7);
+    transform: scale(1.1);
+}
+
+.question-answered {
+    background: rgba(249, 115, 22, 0.3) !important;
+    border-color: rgb(249, 115, 22) !important;
+}
+
+.question-current {
+    background: rgba(34, 197, 94, 0.3) !important;
+    border-color: rgb(34, 197, 94) !important;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(31, 41, 55, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(249, 115, 22, 0.5);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(249, 115, 22, 0.8);
 }
