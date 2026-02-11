@@ -1187,7 +1187,7 @@ function jumpToQuestion(index) {
 
 
 // ========== MAPPA DOMANDE ==========
-function updateQuestionMap() {
+function createQuestionMap() {
     const map = document.getElementById('questionMap');
     map.innerHTML = '';
     
@@ -1196,6 +1196,16 @@ function updateQuestionMap() {
         btn.className = 'question-num';
         btn.textContent = i + 1;
         btn.onclick = () => jumpToQuestion(i);
+        map.appendChild(btn);
+    }
+}
+
+function updateQuestionMap() {
+    const map = document.getElementById('questionMap');
+    const buttons = map.querySelectorAll('.question-num');
+    
+    buttons.forEach((btn, i) => {
+        btn.classList.remove('question-answered', 'question-current');
         
         if (userAnswers[i] !== null) {
             btn.classList.add('question-answered');
@@ -1204,9 +1214,7 @@ function updateQuestionMap() {
         if (i === currentQuestionIndex) {
             btn.classList.add('question-current');
         }
-        
-        map.appendChild(btn);
-    }
+    });
 }
 
 // ========== CONFERMA TERMINE ==========
@@ -1238,7 +1246,7 @@ function submitTest() {
     });
     
     const percentage = Math.round((correct / totalQuestions) * 100);
-    const passThreshold = Math.ceil(totalQuestions * 0.8); // 80%
+    const passThreshold = Math.ceil(totalQuestions * 0.8);
     const passed = correct >= passThreshold;
     
     // Mostra risultati
@@ -1324,6 +1332,14 @@ function repeatSameTest() {
     userAnswers = new Array(currentQuestions.length).fill(null);
     timeLeft = 1800;
     
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    
+    const timer = document.getElementById('timer');
+    timer.textContent = '⏱️ 30:00';
+    timer.classList.remove('timer-warning');
+    
     document.getElementById('resultScreen').classList.add('hidden');
     document.getElementById('quizScreen').classList.remove('hidden');
     
@@ -1333,34 +1349,28 @@ function repeatSameTest() {
 }
 
 function generateNewTest() {
+    // RESET COMPLETO STATO
+    currentQuestions = [];
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    timeLeft = 1800;
+    
+    // FERMA TIMER
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    
+    // RESET UI
+    const timer = document.getElementById('timer');
+    timer.textContent = '⏱️ 30:00';
+    timer.classList.remove('timer-warning');
+    
+    document.getElementById('questionMap').innerHTML = '';
+    document.getElementById('answersContainer').innerHTML = '';
+    
+    // CAMBIA SCHERMATA
     document.getElementById('resultScreen').classList.add('hidden');
     document.getElementById('welcomeScreen').classList.remove('hidden');
 }
 
-// ========== EVENT LISTENERS ==========
-document.addEventListener('DOMContentLoaded', function() {
-    const startBtn = document.getElementById('startTestBtn');
-    const disclaimerModal = document.getElementById('disclaimerModal');
-    const closeDisclaimer = document.getElementById('closeDisclaimer');
-    const acceptDisclaimer = document.getElementById('acceptDisclaimer');
-
-    startBtn.addEventListener('click', function() {
-        disclaimerModal.classList.remove('hidden');
-    });
-
-    closeDisclaimer.addEventListener('click', function() {
-        disclaimerModal.classList.add('hidden');
-    });
-
-    acceptDisclaimer.addEventListener('click', function() {
-        startTest();
-    });
-    
-    document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-    document.getElementById('prevBtn').addEventListener('click', previousQuestion);
-    document.getElementById('endBtn').addEventListener('click', confirmEnd);
-    document.getElementById('cancelEnd').addEventListener('click', closeConfirmModal);
-    document.getElementById('confirmEnd').addEventListener('click', submitTest);
-    document.getElementById('repeatTest').addEventListener('click', repeatSameTest);
-    document.getElementById('newTest').addEventListener('click', generateNewTest);
-});
