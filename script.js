@@ -1,5 +1,6 @@
 // ===== QUESTIONS DATABASE =====
-        const questions = [            {
+        const questionBank = [            
+                {
                 question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
                 options: ["D.Lgs. 81/2008", "Legge 626/94", "D.Lgs. 152/2006", "Legge 300/70"],
                 correct: 0,
