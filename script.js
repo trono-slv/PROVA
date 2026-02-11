@@ -1039,66 +1039,20 @@
             }
         ];
 // ========== VARIABILI GLOBALI ==========
-let testQuestions = [];
+let currentQuestions = [];
 let currentQuestionIndex = 0;
-let userAnswers = new Array(15).fill(null);
+let userAnswers = [];
 let timerInterval;
-let timeLeft = 1800; // 30 minuti
+let timeLeft = 1800; // 30 minuti in secondi
 
-// ========== FUNZIONE START TEST ==========
-function startTest() {
-    // Mescola paniere
-    const shuffledBank = [...questionBank].sort(() => Math.random() - 0.5);
-    
-    // ✅ CORREZIONE: Estrai 15 domande e mescola risposte
-    testQuestions = shuffledBank.slice(0, 15).map(q => {
-        // Crea array con tutte le opzioni
-        const allOptions = q.options.map((opt, idx) => ({
-            text: opt,
-            isCorrect: idx === q.correct
-        }));
-        
-        // Mescola le opzioni
-        const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
-        
-        return {
-            question: q.question,
-            shuffledAnswers: shuffledOptions,
-            correctAnswer: q.options[q.correct],
-            suggestion: q.suggestion
-        };
-    });
-    
-    // Reset
-    currentQuestionIndex = 0;
-    userAnswers = new Array(15).fill(null);
-    timeLeft = 1800;
-    
-    // UI
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('disclaimerModal').classList.add('hidden');
-    document.getElementById('quizScreen').classList.remove('hidden');
-    
-    showQuestion();
-    updateQuestionMap();
-    startTimer();
-}
-
-// ========== TIMER ==========
+// ========== FUNZIONI TIMER ==========
 function startTimer() {
-    if (timerInterval) clearInterval(timerInterval);
-    
     timerInterval = setInterval(() => {
         timeLeft--;
+        updateTimerDisplay();
         
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        
-        document.getElementById('timerDisplay').textContent = display;
-        
-        if (timeLeft <= 300) {
-            document.getElementById('timerDisplay').classList.add('text-red-500');
+        if (timeLeft <= 300) { // Ultimi 5 minuti
+            document.getElementById('timer').classList.add('timer-warning');
         }
         
         if (timeLeft <= 0) {
@@ -1108,31 +1062,82 @@ function startTimer() {
     }, 1000);
 }
 
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('timer').textContent = 
+        `⏱️ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// ========== AVVIO TEST ==========
+function startTest() {
+    // NASCONDE MODAL
+    document.getElementById('disclaimerModal').classList.add('hidden');
+    
+    // NASCONDE WELCOME
+    document.getElementById('welcomeScreen').classList.add('hidden');
+    
+    // Mescola domande
+    const shuffledBank = [...questionBank].sort(() => Math.random() - 0.5);
+    currentQuestions = shuffledBank.slice(0, 15);
+    
+    // Mescola risposte per ogni domanda
+    currentQuestions = currentQuestions.map(q => {
+        const shuffledOptions = q.options.map((opt, idx) => ({
+            text: opt,
+            isCorrect: idx === q.correct
+        })).sort(() => Math.random() - 0.5);
+        
+        return {
+            ...q,
+            shuffledAnswers: shuffledOptions,
+            correctAnswer: q.options[q.correct],
+            suggestion: q.suggestion // MANTIENE IL SUGGESTION
+        };
+    });
+    
+    currentQuestionIndex = 0;
+    userAnswers = new Array(15).fill(null);
+    
+    // RESET TIMER
+    timeLeft = 1800;
+    if (timerInterval) clearInterval(timerInterval);
+    
+    // MOSTRA QUIZ
+    document.getElementById('quizScreen').classList.remove('hidden');
+    
+    showQuestion();
+    updateQuestionMap();
+    startTimer();
+}
+
 // ========== MOSTRA DOMANDA ==========
 function showQuestion() {
-    const q = testQuestions[currentQuestionIndex];
+    const q = currentQuestions[currentQuestionIndex];
     
-    document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+    document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
     document.getElementById('questionText').textContent = q.question;
     
-    // ✅ CORREZIONE: Usa shuffledAnswers
-    const answersHtml = q.shuffledAnswers.map((answer, index) => `
-        <button onclick="selectAnswer(${index})" 
-                class="answer-btn w-full text-left p-4 glass-effect rounded-lg border border-gray-600 hover:border-orange-500 transition-all duration-300 ${userAnswers[currentQuestionIndex] === index ? 'border-orange-500 bg-orange-500/20' : ''}">
-            <span class="font-semibold">${String.fromCharCode(65 + index)})</span> ${answer.text}
-        </button>
-    `).join('');
+    const container = document.getElementById('answersContainer');
+    container.innerHTML = '';
     
-    document.getElementById('answersContainer').innerHTML = answersHtml;
+    q.shuffledAnswers.forEach((answer, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = answer.text;
+        btn.onclick = () => selectAnswer(index);
+        
+        if (userAnswers[currentQuestionIndex] === index) {
+            btn.classList.add('answer-selected');
+        }
+        
+        container.appendChild(btn);
+    });
     
-    // Aggiorna progresso
-    const progress = ((currentQuestionIndex + 1) / 15) * 100;
-    document.getElementById('progressBar').style.width = `${progress}%`;
-    
-    // Gestione pulsanti
+    // Gestione pulsanti navigazione
     document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-    document.getElementById('nextBtn').classList.toggle('hidden', currentQuestionIndex === 14);
-    document.getElementById('endBtn').classList.toggle('hidden', currentQuestionIndex !== 14);
+    document.getElementById('nextBtn').textContent = 
+        currentQuestionIndex === 14 ? 'Termina →' : 'Successiva →';
 }
 
 // ========== SELEZIONE RISPOSTA ==========
@@ -1147,6 +1152,9 @@ function nextQuestion() {
     if (currentQuestionIndex < 14) {
         currentQuestionIndex++;
         showQuestion();
+        updateQuestionMap();
+    } else {
+        confirmEnd();
     }
 }
 
@@ -1154,37 +1162,43 @@ function previousQuestion() {
     if (currentQuestionIndex > 0) {
         currentQuestionIndex--;
         showQuestion();
+        updateQuestionMap();
     }
-}
-
-// ========== MAPPA DOMANDE ==========
-function updateQuestionMap() {
-    const mapHtml = userAnswers.map((answer, index) => {
-        const status = answer !== null ? 'bg-green-500' : 'bg-gray-600';
-        const isCurrent = index === currentQuestionIndex ? 'ring-2 ring-orange-500' : '';
-        
-        return `<button onclick="jumpToQuestion(${index})" 
-                        class="w-10 h-10 ${status} ${isCurrent} rounded-lg font-semibold hover:scale-110 transition-all duration-300">
-                    ${index + 1}
-                </button>`;
-    }).join('');
-    
-    document.getElementById('questionsMap').innerHTML = mapHtml;
 }
 
 function jumpToQuestion(index) {
     currentQuestionIndex = index;
     showQuestion();
+    updateQuestionMap();
 }
 
-// ========== CONFERMA FINE TEST ==========
-function confirmEnd() {
-    const unanswered = userAnswers.filter(a => a === null).length;
-    const warning = unanswered > 0 
-        ? `⚠️ Hai ${unanswered} domande senza risposta!` 
-        : '✅ Tutte le domande hanno una risposta';
+// ========== MAPPA DOMANDE ==========
+function updateQuestionMap() {
+    const map = document.getElementById('questionMap');
+    map.innerHTML = '';
     
-    document.getElementById('unansweredWarning').textContent = warning;
+    for (let i = 0; i < 15; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'question-num';
+        btn.textContent = i + 1;
+        btn.onclick = () => jumpToQuestion(i);
+        
+        if (userAnswers[i] !== null) {
+            btn.classList.add('question-answered');
+        }
+        
+        if (i === currentQuestionIndex) {
+            btn.classList.add('question-current');
+        }
+        
+        map.appendChild(btn);
+    }
+}
+
+// ========== CONFERMA TERMINE ==========
+function confirmEnd() {
+    const answered = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answeredCount').textContent = answered;
     document.getElementById('confirmModal').classList.remove('hidden');
 }
 
@@ -1195,62 +1209,96 @@ function closeConfirmModal() {
 // ========== INVIO TEST ==========
 function submitTest() {
     clearInterval(timerInterval);
-    closeConfirmModal();
     
-    // ✅ CORREZIONE: Calcolo risultati con shuffledAnswers
-    let correctCount = 0;
-    testQuestions.forEach((q, i) => {
-        const userAnswerIndex = userAnswers[i];
-        if (userAnswerIndex !== undefined && q.shuffledAnswers[userAnswerIndex].isCorrect) {
-            correctCount++;
+    let correct = 0;
+    let wrong = 0;
+    
+    currentQuestions.forEach((q, idx) => {
+        const userAnswerIndex = userAnswers[idx];
+        if (userAnswerIndex !== null && q.shuffledAnswers[userAnswerIndex].isCorrect) {
+            correct++;
+        } else {
+            wrong++;
         }
     });
     
-    const wrongCount = 15 - correctCount - userAnswers.filter(a => a === null).length;
-    const percentage = ((correctCount / 15) * 100).toFixed(1);
-    const passed = correctCount >= 10;
+    const percentage = Math.round((correct / 15) * 100);
+    const passed = correct >= 12;
     
     // Mostra risultati
     document.getElementById('quizScreen').classList.add('hidden');
-    document.getElementById('resultsScreen').classList.remove('hidden');
+    document.getElementById('confirmModal').classList.add('hidden');
+    document.getElementById('resultScreen').classList.remove('hidden');
     
+    // Risultato
     document.getElementById('resultIcon').textContent = passed ? '🎉' : '😔';
-    document.getElementById('resultTitle').textContent = passed ? 'TEST SUPERATO!' : 'TEST NON SUPERATO';
-    document.getElementById('resultTitle').className = `text-4xl font-bold mb-4 ${passed ? 'text-green-400' : 'text-red-400'}`;
-    document.getElementById('resultMessage').textContent = passed 
-        ? 'Congratulazioni! Hai dimostrato una buona conoscenza della materia.' 
-        : 'Non hai raggiunto il punteggio minimo. Ripassa il materiale e riprova.';
+    document.getElementById('resultTitle').textContent = 
+        passed ? 'TEST SUPERATO!' : 'TEST NON SUPERATO';
+    document.getElementById('scoreDisplay').textContent = `${correct}/15`;
+    document.getElementById('correctCount').textContent = correct;
+    document.getElementById('wrongCount').textContent = wrong;
+    document.getElementById('percentage').textContent = `${percentage}%`;
     
-    document.getElementById('correctCount').textContent = correctCount;
-    document.getElementById('wrongCount').textContent = wrongCount;
-    document.getElementById('percentageScore').textContent = `${percentage}%`;
+    // Suggerimenti
+    const suggestionBox = document.getElementById('suggestionBox');
+    if (passed) {
+        suggestionBox.className = 'glass-effect p-6 rounded-lg mb-8 border border-green-500';
+        suggestionBox.innerHTML = `
+            <div class="flex items-start gap-3">
+                <div class="text-3xl">✅</div>
+                <div>
+                    <h4 class="text-xl font-bold text-green-400 mb-2">Complimenti!</h4>
+                    <p class="text-gray-300">Hai dimostrato una buona conoscenza dei rischi specifici in magazzino.</p>
+                </div>
+            </div>
+        `;
+    } else {
+        suggestionBox.className = 'glass-effect p-6 rounded-lg mb-8 border border-red-500';
+        suggestionBox.innerHTML = `
+            <div class="flex items-start gap-3">
+                <div class="text-3xl">📚</div>
+                <div>
+                    <h4 class="text-xl font-bold text-red-400 mb-2">Continua a studiare</h4>
+                    <p class="text-gray-300">Ti consigliamo di rivedere il materiale didattico e ripetere il test.</p>
+                </div>
+            </div>
+        `;
+    }
     
-    // ✅ CORREZIONE: Revisione risposte
+    // Revisione risposte
     const reviewContainer = document.getElementById('reviewContainer');
     reviewContainer.innerHTML = '';
     
-    testQuestions.forEach((q, index) => {
-        const userAnswer = userAnswers[index];
+    currentQuestions.forEach((q, idx) => {
+        const userAnswer = userAnswers[idx];
         const isCorrect = userAnswer !== null && q.shuffledAnswers[userAnswer].isCorrect;
         
-        const reviewDiv = document.createElement('div');
-        reviewDiv.className = `p-4 glass-effect rounded-lg border ${isCorrect ? 'border-green-500/50' : 'border-red-500/50'}`;
+        const reviewItem = document.createElement('div');
+        reviewItem.className = `glass-effect p-4 rounded-lg border-2 ${
+            isCorrect ? 'border-green-500' : 'border-red-500'
+        }`;
         
-        reviewDiv.innerHTML = `
-            <div class="flex items-start mb-3">
-                <span class="text-2xl mr-3">${isCorrect ? '✅' : '❌'}</span>
+        reviewItem.innerHTML = `
+            <div class="flex items-start gap-3 mb-2">
+                <span class="text-2xl">${isCorrect ? '✅' : '❌'}</span>
                 <div class="flex-1">
-                    <p class="font-semibold text-white mb-2">Domanda ${index + 1}: ${q.question}</p>
-                    <div class="space-y-2 text-sm">
-                        ${userAnswer !== null ? `<div class="text-gray-300">La tua risposta: <strong class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${q.shuffledAnswers[userAnswer].text}</strong></div>` : '<div class="text-yellow-400">Nessuna risposta</div>'}
-                        ${!isCorrect ? `<div class="text-green-400">Risposta corretta: <strong>${q.correctAnswer}</strong></div>` : ''}
-                        ${q.suggestion ? `<div class="text-gray-400 italic mt-2">💡 ${q.suggestion}</div>` : ''}
-                    </div>
+                    <p class="font-semibold text-white mb-2">${idx + 1}. ${q.question}</p>
+                    ${userAnswer !== null ? `
+                        <p class="text-gray-300">Tua risposta: <span class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${q.shuffledAnswers[userAnswer].text}</span></p>
+                    ` : '<p class="text-yellow-400">Non hai risposto</p>'}
+                    ${!isCorrect ? `
+                        <p class="text-green-400 mt-1">✅ Risposta corretta: ${q.correctAnswer}</p>
+                        ${q.suggestion ? `
+                            <div class="mt-3 p-3 bg-blue-900/30 border border-blue-500/50 rounded-lg">
+                                <p class="text-blue-300 text-sm"><strong>💡 Suggerimento:</strong> ${q.suggestion}</p>
+                            </div>
+                        ` : ''}
+                    ` : ''}
                 </div>
             </div>
         `;
         
-        reviewContainer.appendChild(reviewDiv);
+        reviewContainer.appendChild(reviewItem);
     });
 }
 
@@ -1260,27 +1308,17 @@ function repeatSameTest() {
     userAnswers = new Array(15).fill(null);
     timeLeft = 1800;
     
-    document.getElementById('timerDisplay').textContent = '30:00';
-    document.getElementById('timerDisplay').classList.remove('text-red-500');
-    
-    if (timerInterval) clearInterval(timerInterval);
-    
-    document.getElementById('resultsScreen').classList.add('hidden');
+    document.getElementById('resultScreen').classList.add('hidden');
     document.getElementById('quizScreen').classList.remove('hidden');
     
     showQuestion();
+    updateQuestionMap();
     startTimer();
 }
 
 function generateNewTest() {
-    if (timerInterval) clearInterval(timerInterval);
-    
-    document.getElementById('timerDisplay').textContent = '30:00';
-    document.getElementById('timerDisplay').classList.remove('text-red-500');
-    
-    document.getElementById('resultsScreen').classList.add('hidden');
-    
-    startTest();
+    document.getElementById('resultScreen').classList.add('hidden');
+    document.getElementById('welcomeScreen').classList.remove('hidden');
 }
 
 // ========== EVENT LISTENERS ==========
@@ -1290,14 +1328,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeDisclaimer = document.getElementById('closeDisclaimer');
     const acceptDisclaimer = document.getElementById('acceptDisclaimer');
 
+    // MOSTRA MODAL
     startBtn.addEventListener('click', function() {
         disclaimerModal.classList.remove('hidden');
     });
 
+    // CHIUDE MODAL
     closeDisclaimer.addEventListener('click', function() {
         disclaimerModal.classList.add('hidden');
     });
 
+    // AVVIA TEST
     acceptDisclaimer.addEventListener('click', function() {
         startTest();
     });
@@ -1306,4 +1347,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('nextBtn').addEventListener('click', nextQuestion);
     document.getElementById('prevBtn').addEventListener('click', previousQuestion);
     document.getElementById('endBtn').addEventListener('click', confirmEnd);
+    document.getElementById('cancelEnd').addEventListener('click', closeConfirmModal);
+    document.getElementById('confirmEnd').addEventListener('click', submitTest);
+    document.getElementById('repeatTest').addEventListener('click', repeatSameTest);
+    document.getElementById('newTest').addEventListener('click', generateNewTest);
 });
