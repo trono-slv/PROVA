@@ -1,5 +1,4 @@
-// ===== QUESTIONS DATABASE =====
-// ==================== PANIERE DOMANDE ====================
+// ==================== VARIABILI GLOBALI ====================
 const questionBank = [
     {
         question: "Quale norma disciplina la sicurezza nei luoghi di lavoro in Italia?",
@@ -1160,236 +1159,291 @@ const questionBank = [
                 suggestion: "Accessibilità: rampe ≤8%, ascensori, bagni attrezzati, parcheggi riservati, segnaletica tattile, piano evacuazione."
             }
         ];
-// ==================== VARIABILI GLOBALI ====================
-let currentQuestions = [];
-let currentIndex = 0;
+let selectedQuestions = [];
+let currentQuestion = 0;
 let userAnswers = [];
-let timeRemaining = 1200;
+let timeLeft = 900; // 15 minuti in secondi
 let timerInterval = null;
 let testStartTime = null;
 
-// ==================== GESTIONE MODAL DISCLAIMER ====================
-function showDisclaimer() {
-    const modal = document.getElementById('disclaimerModal');
-    modal.classList.add('active');
-}
-
-function hideDisclaimer() {
-    const modal = document.getElementById('disclaimerModal');
-    modal.classList.remove('active');
-}
-
-function acceptAndStart() {
-    initQuestions();
-    
-    if (currentQuestions.length === 0) {
-        alert('⚠️ Impossibile avviare il test: paniere vuoto o insufficiente!');
-        hideDisclaimer();
-        return;
+// ==================== UTILITY FUNCTIONS ====================
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-    
-    hideDisclaimer();
-    startQuiz();
+    return newArray;
 }
 
-// ==================== INIZIALIZZAZIONE DOMANDE ====================
-function initQuestions() {
-    if (questionBank.length < 15) {
-        console.error('Paniere insufficiente');
-        currentQuestions = [];
-        return;
-    }
-    
-    const shuffled = [...questionBank].sort(() => Math.random() - 0.5);
-    currentQuestions = shuffled.slice(0, 15);
-    
-    currentQuestions = currentQuestions.map(q => {
-        const shuffledOptions = [...q.options];
-        const correctAnswer = q.options[q.correct];
-        
-        for (let i = shuffledOptions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
-        }
-        
-        return {
-            ...q,
-            shuffledOptions,
-            shuffledCorrect: shuffledOptions.indexOf(correctAnswer)
-        };
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
     });
-    
-    currentIndex = 0;
-    userAnswers = [];
+    document.getElementById(screenId).classList.add('active');
 }
 
-// ==================== AVVIO QUIZ ====================
-function startQuiz() {
-    document.getElementById('welcomeScreen').classList.remove('active');
-    document.getElementById('quizScreen').classList.add('active');
-    
-    testStartTime = Date.now();
-    startTimer();
-    showQuestion();
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
 // ==================== TIMER ====================
 function startTimer() {
-    if (timerInterval) clearInterval(timerInterval);
-    
-    updateTimerDisplay();
-    
+    testStartTime = new Date();
     timerInterval = setInterval(() => {
-        timeRemaining--;
+        timeLeft--;
         updateTimerDisplay();
         
-        if (timeRemaining <= 0) {
+        if (timeLeft <= 60) {
+            document.getElementById('timer').classList.add('warning');
+        }
+        
+        if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            endQuiz();
+            submitQuiz();
         }
     }, 1000);
 }
 
 function updateTimerDisplay() {
-    const minutes = Math.floor(timeRemaining / 60);
-    const seconds = timeRemaining % 60;
-    const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    document.getElementById('timer').textContent = display;
-    
-    const timerEl = document.getElementById('timer');
-    if (timeRemaining <= 300) {
-        timerEl.classList.add('warning');
-    } else {
-        timerEl.classList.remove('warning');
-    }
+    document.getElementById('timer').textContent = `⏱️ ${formatTime(timeLeft)}`;
 }
 
-// ==================== VISUALIZZAZIONE DOMANDA ====================
-function showQuestion() {
-    const question = currentQuestions[currentIndex];
+// ==================== QUIZ LOGIC ====================
+function startQuiz() {
+    if (questionBank.length < 15) {
+        alert('❌ Errore: il paniere deve contenere almeno 15 domande!');
+        return;
+    }
+
+    // Estrae 15 domande casuali
+    const shuffled = shuffleArray(questionBank);
+    selectedQuestions = shuffled.slice(0, 15).map(q => {
+        // Salva la risposta corretta PRIMA di mescolare
+        const correctAnswer = q.options[q.correct];
+        const shuffledOptions = shuffleArray([...q.options]);
+        
+        return {
+            question: q.question,
+            options: shuffledOptions,
+            correctAnswer: correctAnswer, // Risposta come TESTO
+            originalCorrectIndex: q.correct,
+            suggestion: q.suggestion
+        };
+    });
+
+    userAnswers = new Array(15).fill(null);
+    currentQuestion = 0;
+    timeLeft = 900;
     
-    document.getElementById('questionNumber').textContent = currentIndex + 1;
+    showScreen('quizScreen');
+    startTimer();
+    displayQuestion();
+}
+
+function displayQuestion() {
+    const question = selectedQuestions[currentQuestion];
+    
+    document.getElementById('currentQuestionNum').textContent = currentQuestion + 1;
     document.getElementById('questionText').textContent = question.question;
-    
-    const progress = ((currentIndex + 1) / currentQuestions.length) * 100;
-    document.getElementById('progressBar').style.width = `${progress}%`;
     
     const optionsContainer = document.getElementById('optionsContainer');
     optionsContainer.innerHTML = '';
     
-    question.shuffledOptions.forEach((option, index) => {
+    question.options.forEach((option, index) => {
         const button = document.createElement('button');
         button.className = 'option-btn';
-        button.textContent = option;
+        button.innerHTML = `
+            <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+            <span class="option-text">${option}</span>
+        `;
+        
+        if (userAnswers[currentQuestion] === index) {
+            button.classList.add('selected');
+        }
+        
         button.onclick = () => selectAnswer(index);
         optionsContainer.appendChild(button);
     });
+    
+    // Gestione pulsanti navigazione
+    document.getElementById('prevBtn').disabled = currentQuestion === 0;
+    document.getElementById('nextBtn').textContent = 
+        currentQuestion === 14 ? '✅ TERMINA TEST' : 'AVANTI ➡️';
 }
 
-// ==================== SELEZIONE RISPOSTA ====================
-function selectAnswer(selectedIndex) {
-    const question = currentQuestions[currentIndex];
+function selectAnswer(optionIndex) {
+    userAnswers[currentQuestion] = optionIndex;
     
-    userAnswers.push({
-        question: question.question,
-        selected: selectedIndex,
-        correct: question.shuffledCorrect,
-        options: question.shuffledOptions,
-        suggestion: question.suggestion
+    // Aggiorna UI
+    document.querySelectorAll('.option-btn').forEach((btn, idx) => {
+        btn.classList.toggle('selected', idx === optionIndex);
     });
     
-    currentIndex++;
-    
-    if (currentIndex < currentQuestions.length) {
-        showQuestion();
-    } else {
-        endQuiz();
+    updateAnsweredCount();
+}
+
+function updateAnsweredCount() {
+    const answered = userAnswers.filter(a => a !== null).length;
+    document.getElementById('answeredCount').textContent = answered;
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
     }
 }
 
-// ==================== FINE QUIZ ====================
-function endQuiz() {
-    clearInterval(timerInterval);
-    
-    document.getElementById('quizScreen').classList.remove('active');
-    document.getElementById('summaryScreen').classList.add('active');
-    
-    showSummary();
+function nextQuestion() {
+    if (currentQuestion < 14) {
+        currentQuestion++;
+        displayQuestion();
+    } else {
+        confirmSubmit();
+    }
 }
 
-// ==================== RIEPILOGO ====================
-function showSummary() {
-    const correctCount = userAnswers.filter(a => a.selected === a.correct).length;
-    const wrongCount = userAnswers.length - correctCount;
-    const percentage = Math.round((correctCount / userAnswers.length) * 100);
-    const passed = percentage >= 60;
+function confirmSubmit() {
+    const unanswered = userAnswers.filter(a => a === null).length;
     
-    const timeSpent = Math.floor((Date.now() - testStartTime) / 1000);
-    const minutesSpent = Math.floor(timeSpent / 60);
-    const secondsSpent = timeSpent % 60;
+    if (unanswered > 0) {
+        const message = `⚠️ Attenzione!\n\nHai risposto solo a ${15 - unanswered} domande su 15.\n\nVuoi davvero terminare il test?`;
+        if (!confirm(message)) return;
+    }
     
-    document.getElementById('finalScore').textContent = `${correctCount}/${userAnswers.length}`;
-    document.getElementById('finalPercentage').textContent = `${percentage}%`;
+    submitQuiz();
+}
+
+function submitQuiz() {
+    clearInterval(timerInterval);
+    calculateResults();
+}
+
+// ==================== RESULTS ====================
+function calculateResults() {
+    let correctCount = 0;
+    const results = [];
     
-    const badge = document.getElementById('passBadge');
-    badge.textContent = passed ? '✅ SUPERATO' : '❌ NON SUPERATO';
-    badge.className = `pass-badge ${passed ? 'passed' : 'failed'}`;
+    selectedQuestions.forEach((question, index) => {
+        const userAnswerIndex = userAnswers[index];
+        const userAnswerText = userAnswerIndex !== null ? question.options[userAnswerIndex] : null;
+        const isCorrect = userAnswerText === question.correctAnswer;
+        
+        if (isCorrect) correctCount++;
+        
+        results.push({
+            question: question.question,
+            userAnswer: userAnswerText,
+            correctAnswer: question.correctAnswer,
+            isCorrect: isCorrect,
+            suggestion: question.suggestion
+        });
+    });
     
-    document.getElementById('correctCount').textContent = correctCount;
-    document.getElementById('wrongCount').textContent = wrongCount;
-    document.getElementById('timeSpent').textContent = `${minutesSpent}m ${secondsSpent}s`;
+    const score = Math.round((correctCount / 15) * 100);
+    const passed = score >= 70;
+    const timeSpent = 900 - timeLeft;
     
+    displayResults(score, correctCount, passed, timeSpent, results);
+}
+
+function displayResults(score, correctCount, passed, timeSpent, results) {
+    showScreen('resultsScreen');
+    
+    // Header risultati
+    document.getElementById('resultStatus').textContent = passed ? '✅ SUPERATO' : '❌ NON SUPERATO';
+    document.getElementById('resultStatus').className = `status ${passed ? 'passed' : 'failed'}`;
+    
+    // Punteggio
+    document.getElementById('scoreText').textContent = `${score}%`;
+    document.getElementById('statCorrect').textContent = correctCount;
+    document.getElementById('statIncorrect').textContent = 15 - correctCount;
+    document.getElementById('statTime').textContent = formatTime(timeSpent);
+    
+    // Revisione risposte
     const reviewContainer = document.getElementById('reviewContainer');
     reviewContainer.innerHTML = '';
     
-    userAnswers.forEach((answer, index) => {
-        const isCorrect = answer.selected === answer.correct;
-        
-        const card = document.createElement('div');
-        card.className = `review-card ${isCorrect ? 'correct' : 'wrong'}`;
-        
-        card.innerHTML = `
-            <div class="review-header">
-                <span class="review-number">Domanda ${index + 1}</span>
-                <span class="review-result">${isCorrect ? '✅ Corretta' : '❌ Errata'}</span>
+    results.forEach((result, index) => {
+        const item = document.createElement('div');
+        item.className = `review-item ${result.isCorrect ? 'correct' : 'incorrect'}`;
+        item.innerHTML = `
+            <div class="review-question">
+                <strong>Domanda ${index + 1}:</strong> ${result.question}
             </div>
-            <p class="review-question">${answer.question}</p>
-            <div class="review-answers">
-                <p class="user-answer ${isCorrect ? 'correct-answer' : 'wrong-answer'}">
-                    Tua risposta: ${answer.options[answer.selected]}
-                </p>
-                ${!isCorrect ? `<p class="correct-answer">Risposta corretta: ${answer.options[answer.correct]}</p>` : ''}
+            <div class="review-answer user">
+                <strong>La tua risposta:</strong> ${result.userAnswer || 'Non risposto'} 
+                ${result.isCorrect ? '✅' : '❌'}
             </div>
-            <p class="suggestion">💡 ${answer.suggestion}</p>
+            ${!result.isCorrect ? `
+                <div class="review-answer correct-answer">
+                    <strong>Risposta corretta:</strong> ${result.correctAnswer} ✅
+                </div>
+            ` : ''}
+            <div class="review-suggestion">
+                💡 <strong>Spiegazione:</strong> ${result.suggestion}
+            </div>
         `;
-        
-        reviewContainer.appendChild(card);
+        reviewContainer.appendChild(item);
     });
 }
 
-// ==================== AZIONI FINALI ====================
 function restartQuiz() {
-    timeRemaining = 1200;
-    currentIndex = 0;
+    showScreen('welcomeScreen');
+    selectedQuestions = [];
     userAnswers = [];
-    testStartTime = null;
-    
-    document.getElementById('summaryScreen').classList.remove('active');
-    document.getElementById('welcomeScreen').classList.add('active');
-}
-
-function reviewAnswers() {
-    document.getElementById('reviewContainer').scrollIntoView({ behavior: 'smooth' });
+    currentQuestion = 0;
+    timeLeft = 900;
 }
 
 function printResults() {
     window.print();
 }
 
+function downloadPDF() {
+    alert('Funzione PDF in sviluppo. Usa la stampa del browser per salvare come PDF.');
+    window.print();
+}
+
+// ==================== MODAL DISCLAIMER ====================
+function showDisclaimer() {
+    document.getElementById('disclaimerModal').classList.add('active');
+}
+
+function closeDisclaimer() {
+    document.getElementById('disclaimerModal').classList.remove('active');
+}
+
+function acceptDisclaimer() {
+    closeDisclaimer();
+    startQuiz();
+}
+
 // ==================== EVENT LISTENERS ====================
-document.getElementById('startBtn').addEventListener('click', showDisclaimer);
-document.getElementById('cancelBtn').addEventListener('click', hideDisclaimer);
-document.getElementById('acceptBtn').addEventListener('click', acceptAndStart);
-document.getElementById('restartBtn').addEventListener('click', restartQuiz);
-document.getElementById('reviewBtn').addEventListener('click', reviewAnswers);
-document.getElementById('printBtn').addEventListener('click', printResults);
+document.addEventListener('DOMContentLoaded', () => {
+    // Welcome screen
+    document.getElementById('startBtn').addEventListener('click', showDisclaimer);
+    
+    // Modal
+    document.getElementById('cancelBtn').addEventListener('click', closeDisclaimer);
+    document.getElementById('acceptBtn').addEventListener('click', acceptDisclaimer);
+    
+    // Quiz navigation
+    document.getElementById('prevBtn').addEventListener('click', previousQuestion);
+    document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    
+    // Results actions
+    document.getElementById('restartBtn').addEventListener('click', restartQuiz);
+    document.getElementById('printBtn').addEventListener('click', printResults);
+    document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
+    
+    // Chiudi modal cliccando fuori
+    document.getElementById('disclaimerModal').addEventListener('click', (e) => {
+        if (e.target.id === 'disclaimerModal') {
+            closeDisclaimer();
+        }
+    });
+});
