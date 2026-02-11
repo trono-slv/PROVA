@@ -1356,29 +1356,43 @@ function generateNewTest() {
 }
 // ========== EVENT LISTENERS ==========
 document.addEventListener('DOMContentLoaded', function() {
-    const startBtn = document.getElementById('avvia il test');
+    // PROVA ENTRAMBI GLI ID
+    const startBtn = document.getElementById('startTestBtn') || document.getElementById('avvia il test');
     const disclaimerModal = document.getElementById('disclaimerModal');
     const closeDisclaimer = document.getElementById('closeDisclaimer');
     const acceptDisclaimer = document.getElementById('acceptDisclaimer');
 
+    console.log('🔍 Pulsante trovato:', startBtn);
+    console.log('🔍 Modal trovato:', disclaimerModal);
+
     if (!startBtn) {
-        console.error('❌ ERRORE: Pulsante non trovato!');
+        console.error('❌ ERRORE: Pulsante non trovato! Controlla ID in HTML');
+        return;
+    }
+
+    if (!disclaimerModal) {
+        console.error('❌ ERRORE: Modal non trovato! Controlla ID in HTML');
         return;
     }
 
     startBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('✅ Click rilevato!');
+        console.log('✅ Click sul pulsante START rilevato!');
         disclaimerModal.classList.remove('hidden');
+        disclaimerModal.style.display = 'flex';
     });
 
     closeDisclaimer.addEventListener('click', function(e) {
         e.preventDefault();
         disclaimerModal.classList.add('hidden');
+        disclaimerModal.style.display = 'none';
     });
 
     acceptDisclaimer.addEventListener('click', function(e) {
         e.preventDefault();
+        console.log('✅ Accettato disclaimer, avvio test...');
+        disclaimerModal.classList.add('hidden');
+        disclaimerModal.style.display = 'none';
         startTest();
     });
     
@@ -1390,3 +1404,4 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('repeatTest').addEventListener('click', repeatSameTest);
     document.getElementById('newTest').addEventListener('click', generateNewTest);
 });
+
