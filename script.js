@@ -1,4 +1,4 @@
-// --- DATABASE COMPLETO DELLE DOMANDE (150 DOMANDE DIGCOMP/ECDL) ---
+// --- DATABASE COMPLETO DELLE DOMANDE ---
 const allQuestions = [
     {q: "Qual è un formato audio comune per la compressione con perdita di qualità minima?", options: ["WAV", "FLAC", "MP3", "AAC"], a: 2},
     {q: "Quale formato di immagine supporta la trasparenza?", options: ["JPG", "GIF", "PNG", "BMP"], a: 2},
