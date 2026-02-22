@@ -1,0 +1,171 @@
+/* Stili di base */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #007bff;
+    text-align: center;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+h4 {
+    margin-top: 20px;
+    color: #555;
+}
+
+/* Stili del Timer */
+.timer-container {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #dc3545; /* Rosso per l'urgenza */
+}
+
+/* Stili del Form Quiz (Domande e Opzioni) */
+#quiz-form {
+    padding: 20px 0;
+}
+
+.question-block {
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+
+/* *** REGOLA CHIAVE PER LE OPZIONI IN COLONNA *** La classe .option-group viene generata dal JS attorno a <label>. 
+   Impostando display: block; ogni label occupa una riga intera.
+*/
+.option-group {
+    display: block; /* Ogni opzione su una riga separata */
+    margin: 10px 0;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s, border-color 0.2s;
+    border: 1px solid transparent;
+}
+
+/* Effetto al passaggio del mouse e al click/selezione */
+.option-group:hover {
+    background-color: #e9ecef;
+}
+
+.option-group input[type="radio"]:checked + span {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Nasconde il radio button nativo */
+.option-group input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* Stili dei risultati */
+#result-area {
+    margin-top: 30px;
+    text-align: center;
+}
+
+#outcome-text {
+    font-size: 1.8em;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.passed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Riepilogo Risposte */
+#summary-area {
+    margin-top: 20px;
+    text-align: left;
+    border-top: 2px solid #e0e0e0;
+    padding-top: 15px;
+}
+
+.summary-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.summary-item strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.summary-item.correct {
+    border-left: 5px solid #28a745; /* Verde per corretto */
+    background-color: #e6ffed;
+}
+
+.summary-item.incorrect {
+    border-left: 5px solid #dc3545; /* Rosso per errato */
+    background-color: #ffe6e6;
+}
+
+.correct-answer {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Pulsanti */
+.button-group button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#restart-new-quiz, #repeat-same-quiz {
+    background-color: #007bff;
+    color: white;
+}
+
+#restart-new-quiz:hover, #repeat-same-quiz:hover {
+    background-color: #0056b3;
+}
+
+/* Stili per elementi nascosti e info di navigazione */
+.hidden {
+    display: none !important;
+}
+
+#navigation-info {
+    text-align: center;
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
