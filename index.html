@@ -1676,7 +1676,8 @@ const STATE = {
   startTime:    null,
   timerInterval:null,
   totalSeconds: 45 * 60,
-  remaining:    45 * 60
+  remaining:    45 * 60,
+  shuffleMap: {}
 };
 
 /* ════════════════════════════════════════════════
@@ -1852,6 +1853,59 @@ function renderQuestion() {
   const q   = STATE.questions[STATE.current];
   const idx = STATE.current;
   const tot = STATE.questions.length;
+
+  // Counter e progress
+  document.getElementById('q-counter').textContent = `Domanda ${idx + 1} di ${tot}`;
+  document.getElementById('progress-fill').style.width = `${((idx + 1) / tot) * 100}%`;
+
+  // Badge e testo
+  document.getElementById('q-number-badge').textContent = `Q ${String(idx + 1).padStart(2, '0')}`;
+  document.getElementById('q-text').textContent         = q.question;
+
+  // Score live
+  const correct = STATE.answers.filter((a, i) => a !== null && a === STATE.questions[i].correct).length;
+  document.getElementById('q-score-live').innerHTML =
+    `<span style="color:var(--success)">✓ ${correct}</span>` +
+    ` <span style="color:var(--muted)">/ ${idx}</span>`;
+
+  // Feedback reset
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'none';
+  fb.textContent   = '';
+
+  // Opzioni
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+
+  // Se non ancora risposto: shuffle e salva ordine
+  if (STATE.answers[idx] === null) {
+    const indexed = q.options.map((opt, i) => ({ opt, i }));
+    const shuffled = shuffleArray(indexed);
+    STATE.shuffleMap[idx] = shuffled.map(x => x.i);
+  }
+
+  // Usa sempre l'ordine salvato in shuffleMap
+  const displayOptions = STATE.shuffleMap[idx].map(i => ({ opt: q.options[i], i }));
+
+  displayOptions.forEach(({ opt, i: optIdx }) => {
+    const btn = document.createElement('button');
+    btn.className   = 'option-btn';
+    btn.textContent = opt;
+    btn.setAttribute('aria-label', `Opzione: ${opt}`);
+
+    // Se già risposto
+    if (STATE.answers[idx] !== null) {
+      btn.disabled = true;
+      if (optIdx === q.correct)                                  btn.classList.add('correct');
+      if (optIdx === STATE.answers[idx] && optIdx !== q.correct) btn.classList.add('wrong');
+      showFeedback(q.explanation, STATE.answers[idx] === q.correct);
+    }
+
+    btn.addEventListener('click', () => answerQuestion(optIdx));
+    container.appendChild(btn);
+  });
+}
+
 
   // Counter e progress
   document.getElementById('q-counter').textContent = `Domanda ${idx + 1} di ${tot}`;
