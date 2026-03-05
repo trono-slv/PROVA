@@ -244,71 +244,60 @@
       </p>
     </div>
 
-    <!-- DISCLAIMER ACCORDION -->
-    <div class="glass rounded-2xl overflow-hidden mb-8 fade-in" style="animation-delay:0.1s">
-      <div style="padding:1rem 1.125rem 0.25rem;border-bottom:1px solid var(--border)">
-        <p class="text-xs uppercase font-semibold tracking-wider" style="color:var(--muted)">
-          📋 Informazioni importanti — leggi prima di iniziare
-        </p>
-      </div>
+<!-- DISCLAIMER SEMPRE VISIBILE -->
+<div class="glass rounded-2xl overflow-hidden mb-8 fade-in" style="animation-delay:0.1s">
+  <div style="padding:1rem 1.125rem 0.25rem;border-bottom:1px solid var(--border)">
+    <p class="text-xs uppercase font-semibold tracking-wider" style="color:var(--muted)">
+      📋 Informazioni importanti — leggi prima di iniziare
+    </p>
+  </div>
 
-      <!-- 1 -->
-      <div style="border-bottom:1px solid var(--border)">
-        <button class="disc-toggle" onclick="toggleDisc(this)" aria-expanded="false">
-          <span>1️⃣ Disclaimer Completo</span>
-          <span class="disc-arrow">▼</span>
-        </button>
-        <div class="disc-content">
-          Questo strumento è realizzato <strong style="color:var(--text)">esclusivamente a scopo didattico e di autovalutazione</strong>.
-          È vietata qualsiasi forma di commercializzazione, riproduzione o distribuzione non autorizzata dei contenuti.
-          Le domande e le risposte presenti nel quiz sono elaborate a fini formativi e non rappresentano
-          materiale ufficiale di esame. L'autore declina ogni responsabilità per un uso improprio dello strumento.
-        </div>
-      </div>
+  <!-- 1 -->
+  <div style="border-bottom:1px solid var(--border); padding:1rem 1.125rem">
+    <p class="font-semibold mb-1" style="color:var(--text)">1️⃣ Disclaimer Completo</p>
+    <p class="text-sm" style="color:var(--muted); line-height:1.6">
+      Questo strumento è realizzato <strong style="color:var(--text)">esclusivamente a scopo didattico e di autovalutazione</strong>.
+      È vietata qualsiasi forma di commercializzazione, riproduzione o distribuzione non autorizzata dei contenuti.
+      Le domande e le risposte presenti nel quiz sono elaborate a fini formativi e non rappresentano
+      materiale ufficiale di esame. L'autore declina ogni responsabilità per un uso improprio dello strumento.
+    </p>
+  </div>
 
-      <!-- 2 -->
-      <div style="border-bottom:1px solid var(--border)">
-        <button class="disc-toggle" onclick="toggleDisc(this)" aria-expanded="false">
-          <span>2️⃣ Credits e Autore</span>
-          <span class="disc-arrow">▼</span>
-        </button>
-        <div class="disc-content">
-          Contenuti elaborati dal <strong style="color:var(--text)">Dott. Salvatore Trono</strong>,
-          Formatore esperto in Salute e Sicurezza sul Lavoro ex D.Lgs. 81/2008.
-          I contenuti riflettono la normativa vigente e la prassi consolidata in materia di SSL.
-          Per informazioni o contatti professionali, rivolgersi direttamente all'autore.
-        </div>
-      </div>
+  <!-- 2 -->
+  <div style="border-bottom:1px solid var(--border); padding:1rem 1.125rem">
+    <p class="font-semibold mb-1" style="color:var(--text)">2️⃣ Credits e Autore</p>
+    <p class="text-sm" style="color:var(--muted); line-height:1.6">
+      Contenuti elaborati dal <strong style="color:var(--text)">Dott. Salvatore Trono</strong>,
+      Formatore esperto in Salute e Sicurezza sul Lavoro ex D.Lgs. 81/2008.
+      I contenuti riflettono la normativa vigente e la prassi consolidata in materia di SSL.
+      Per informazioni o contatti professionali, rivolgersi direttamente all'autore.
+    </p>
+  </div>
 
-      <!-- 3 -->
-      <div style="border-bottom:1px solid var(--border)">
-        <button class="disc-toggle" onclick="toggleDisc(this)" aria-expanded="false">
-          <span>3️⃣ Scopo Didattico</span>
-          <span class="disc-arrow">▼</span>
-        </button>
-        <div class="disc-content">
-          Questo quiz è uno strumento di <strong style="color:var(--text)">apprendimento autonomo</strong> e autoverifica.
-          Consente al discente di testare le proprie conoscenze sui temi della formazione generale
-          prevista dall'Accordo Stato-Regioni del 21/12/2011 (ex art. 37 D.Lgs. 81/2008).
-          I risultati ottenuti hanno valore puramente orientativo e non certificativo.
-        </div>
-      </div>
+  <!-- 3 -->
+  <div style="border-bottom:1px solid var(--border); padding:1rem 1.125rem">
+    <p class="font-semibold mb-1" style="color:var(--text)">3️⃣ Scopo Didattico</p>
+    <p class="text-sm" style="color:var(--muted); line-height:1.6">
+      Questo quiz è uno strumento di <strong style="color:var(--text)">apprendimento autonomo</strong> e autoverifica.
+      Consente al discente di testare le proprie conoscenze sui temi della formazione generale
+      prevista dall'Accordo Stato-Regioni del 21/12/2011 (ex art. 37 D.Lgs. 81/2008).
+      I risultati ottenuti hanno valore puramente orientativo e non certificativo.
+    </p>
+  </div>
 
-      <!-- 4 -->
-      <div>
-        <button class="disc-toggle" onclick="toggleDisc(this)" aria-expanded="false">
-          <span>4️⃣ NON è Formazione Ufficiale</span>
-          <span class="disc-arrow">▼</span>
-        </button>
-        <div class="disc-content">
-          <strong style="color:#fca5a5">⚠️ Attenzione:</strong> questo strumento
-          <strong style="color:var(--text)">NON sostituisce</strong> in alcun modo i corsi di formazione
-          obbligatoria accreditati ai sensi del D.Lgs. 81/2008 e degli Accordi Stato-Regioni.
-          Per adempiere agli obblighi di legge in materia di SSL è necessario frequentare corsi
-          erogati da soggetti formatori riconosciuti e ottenere il relativo attestato certificato.
-        </div>
-      </div>
-    </div>
+  <!-- 4 -->
+  <div style="padding:1rem 1.125rem">
+    <p class="font-semibold mb-1" style="color:var(--text)">4️⃣ NON è Formazione Ufficiale</p>
+    <p class="text-sm" style="color:var(--muted); line-height:1.6">
+      <strong style="color:#fca5a5">⚠️ Attenzione:</strong> questo strumento
+      <strong style="color:var(--text)">NON sostituisce</strong> in alcun modo i corsi di formazione
+      obbligatoria accreditati ai sensi del D.Lgs. 81/2008 e degli Accordi Stato-Regioni.
+      Per adempiere agli obblighi di legge in materia di SSL è necessario frequentare corsi
+      erogati da soggetti formatori riconosciuti e ottenere il relativo attestato certificato.
+    </p>
+  </div>
+</div>
+
 
     <!-- INFO CARDS -->
     <div class="grid grid-cols-3 gap-3 mb-8 fade-in" style="animation-delay:0.2s">
