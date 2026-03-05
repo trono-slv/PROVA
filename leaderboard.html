@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classifica Quiz D.Lgs. 81/2008</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-primary { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e40af 100%); }
+    .glass { backdrop-filter: blur(20px); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+    .neon-blue { box-shadow: 0 0 20px rgba(59,130,246,0.5); }
+    .pulse-glow { animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.5); } 50% { box-shadow: 0 0 40px rgba(59,130,246,0.8); } }
+  </style>
+</head>
+<body class="gradient-primary min-h-screen text-white p-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="glass p-8 rounded-3xl mb-12 text-center backdrop-blur-xl">
+      <h1 class="text-5xl font-black bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-4 pulse-glow">
+        🏆 CLASSIFICA GIORNALIERA
+      </h1>
+      <p class="text-xl text-blue-200">Quiz D.Lgs. 81/2008 - Sicurezza Lavoro</p>
+      <p class="text-sm text-blue-300 mt-2">Reset automatico ogni 24h alle 00:00</p>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="glass p-8 rounded-3xl backdrop-blur-xl" id="leaderboardContainer">
+      <div class="text-center text-blue-300 mb-8">
+        <div class="w-20 h-20 bg-yellow-500/20 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+          <span class="text-3xl">⏳</span>
+        </div>
+        <p>Nessun giocatore oggi... Sii il primo! 🚀</p>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="glass p-6 rounded-2xl mt-12 text-center backdrop-blur-xl">
+      <a href="index.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-8 py-4 rounded-xl font-bold text-lg neon-blue hover:scale-105 transition-all">
+        ← Torna al Quiz
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function renderLeaderboard() {
+      const scores = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+      const todayScores = scores.filter(s => {
+        const today = new Date().setHours(0,0,0,0);
+        const scoreDay = new Date(s.timestamp).setHours(0,0,0,0);
+        return today === scoreDay;
+      }).sort((a, b) => b.score - a.score);
+
+      const container = document.getElementById('leaderboardContainer');
+      
+      if (todayScores.length === 0) {
+        container.innerHTML = `
+          <div class="text-center text-blue-300">
+            <div class="w-20 h-20 bg-yellow-500/20 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+              <span class="text-3xl">⏳</span>
+            </div>
+            <p class="text-2xl font-bold mb-2">Nessun giocatore oggi</p>
+            <p>Sii il primo a completare il quiz! 🚀</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          ${todayScores.slice(0, 9).map((player, index) => `
+            <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition-all ${index < 3 ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-4 border-yellow-400/50' : ''}">
+              <div class="text-4xl mb-2">
+                ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
+              </div>
+              <div class="font-bold text-xl mb-2">${player.name}</div>
+              <div class="font-mono text-2xl font-black text-emerald-400">${player.score.toFixed(2)}pt</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-white/20">
+                <th class="py-4 font-bold">Posizione</th>
+                <th class="py-4 font-bold">Giocatore</th>
+                <th class="py-4 font-bold text-right">Punteggio</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${todayScores.map((player, index) => `
+                <tr class="border-b border-white/10 hover:bg-white/10 transition-all">
+                  <td class="py-4 font-bold">${index + 1}</td>
+                  <td class="py-4 font-semibold">${player.name}</td>
+                  <td class="py-4 font-mono font-bold text-right text-emerald-400">${player.score.toFixed(2)}pt</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center mt-8 p-6 bg-emerald-500/20 rounded-2xl">
+          <p class="font-bold text-lg mb-2">👥 Totale giocatori oggi: ${todayScores.length}</p>
+          <p class="text-sm text-blue-300">Classifica aggiornata in tempo reale</p>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLeaderboard();
+      
+      // Refresh ogni 30s
+      setInterval(renderLeaderboard, 30000);
+      
+      // Reset giornaliero
+      const now = new Date();
+      const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      const timeToMidnight = nextMidnight - now;
+      setTimeout(() => {
+        localStorage.removeItem('leaderboard');
+        renderLeaderboard();
+      }, timeToMidnight);
+    });
+  </script>
+</body>
+</html>
