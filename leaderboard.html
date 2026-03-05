@@ -1,125 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classifica Quiz D.Lgs. 81/2008</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Classifica Giornaliera - Quiz81</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .gradient-primary { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e40af 100%); }
-    .glass { backdrop-filter: blur(20px); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
-    .neon-blue { box-shadow: 0 0 20px rgba(59,130,246,0.5); }
-    .pulse-glow { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.5); } 50% { box-shadow: 0 0 40px rgba(59,130,246,0.8); } }
+    :root{
+      --navy-900:#0f172a;
+      --cyan-500:#0ea5e9;
+      --slate-200:#e2e8f0;
+      --orange-500:#f97316;
+      --emerald-500:#10b981;
+      --glass: rgba(255,255,255,0.06);
+    }
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
   </style>
 </head>
-<body class="gradient-primary min-h-screen text-white p-8">
-  <div class="max-w-4xl mx-auto">
-    <!-- Header -->
-    <div class="glass p-8 rounded-3xl mb-12 text-center backdrop-blur-xl">
-      <h1 class="text-5xl font-black bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-4 pulse-glow">
-        🏆 CLASSIFICA GIORNALIERA
-      </h1>
-      <p class="text-xl text-blue-200">Quiz D.Lgs. 81/2008 - Sicurezza Lavoro</p>
-      <p class="text-sm text-blue-300 mt-2">Reset automatico ogni 24h alle 00:00</p>
-    </div>
+<body class="min-h-screen bg-[var(--navy-900)] text-slate-200 antialiased">
+  <div class="max-w-3xl mx-auto p-4">
+    <header class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-semibold text-white">Classifica Giornaliera — Quiz81</h1>
+      <a href="/index.html" class="px-3 py-2 rounded-md glass">🔙 Torna Quiz</a>
+    </header>
 
-    <!-- Leaderboard -->
-    <div class="glass p-8 rounded-3xl backdrop-blur-xl" id="leaderboardContainer">
-      <div class="text-center text-blue-300 mb-8">
-        <div class="w-20 h-20 bg-yellow-500/20 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-          <span class="text-3xl">⏳</span>
-        </div>
-        <p>Nessun giocatore oggi... Sii il primo! 🚀</p>
+    <section class="glass rounded-xl p-4 mb-4">
+      <p class="text-sm text-slate-300">Classifica aggiornata. La classifica viene azzerata automaticamente ogni giorno (00:00 locale).</p>
+      <p class="text-xs text-slate-400 mt-2" id="todayInfo"></p>
+    </section>
+
+    <section class="glass rounded-xl p-4 mb-4">
+      <h2 class="text-lg text-white font-semibold mb-2">Top 10</h2>
+      <ol id="leaderList" class="list-decimal pl-5 text-sm text-slate-200 space-y-2"></ol>
+    </section>
+
+    <section class="glass rounded-xl p-4">
+      <h3 class="text-sm text-white font-semibold">Cerca la tua posizione</h3>
+      <div class="mt-2 flex gap-2">
+        <input id="searchName" class="flex-1 px-3 py-2 rounded-md bg-transparent border border-white/6" placeholder="Inserisci il nome usato nel quiz" />
+        <button id="searchBtn" class="px-3 py-2 rounded-md bg-[var(--cyan-500)] text-black font-semibold">Cerca</button>
       </div>
-    </div>
+      <div id="searchResult" class="mt-3 text-sm text-slate-300"></div>
+    </section>
 
-    <!-- Back Button -->
-    <div class="glass p-6 rounded-2xl mt-12 text-center backdrop-blur-xl">
-      <a href="index.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-8 py-4 rounded-xl font-bold text-lg neon-blue hover:scale-105 transition-all">
-        ← Torna al Quiz
-      </a>
-    </div>
+    <footer class="mt-6 text-xs text-slate-500">
+      <p>© Quiz81 - Simulazione didattica.</p>
+    </footer>
   </div>
 
   <script>
-    function renderLeaderboard() {
-      const scores = JSON.parse(localStorage.getItem('leaderboard') || '[]');
-      const todayScores = scores.filter(s => {
-        const today = new Date().setHours(0,0,0,0);
-        const scoreDay = new Date(s.timestamp).setHours(0,0,0,0);
-        return today === scoreDay;
-      }).sort((a, b) => b.score - a.score);
+    const STORAGE_LEADERBOARD_KEY = 'quiz81_leaderboard';
+    const STORAGE_DAILYKEY = 'quiz81_leaderboard_date';
 
-      const container = document.getElementById('leaderboardContainer');
-      
-      if (todayScores.length === 0) {
-        container.innerHTML = `
-          <div class="text-center text-blue-300">
-            <div class="w-20 h-20 bg-yellow-500/20 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-              <span class="text-3xl">⏳</span>
-            </div>
-            <p class="text-2xl font-bold mb-2">Nessun giocatore oggi</p>
-            <p>Sii il primo a completare il quiz! 🚀</p>
-          </div>
-        `;
-        return;
+    function dailyResetIfNeeded(){
+      const todayISO = new Date().toISOString().slice(0,10);
+      const storedDate = localStorage.getItem(STORAGE_DAILYKEY);
+      if(storedDate !== todayISO){
+        localStorage.setItem(STORAGE_DAILYKEY, todayISO);
+        localStorage.setItem(STORAGE_LEADERBOARD_KEY, JSON.stringify([]));
       }
-
-      container.innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          ${todayScores.slice(0, 9).map((player, index) => `
-            <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition-all ${index < 3 ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-4 border-yellow-400/50' : ''}">
-              <div class="text-4xl mb-2">
-                ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
-              </div>
-              <div class="font-bold text-xl mb-2">${player.name}</div>
-              <div class="font-mono text-2xl font-black text-emerald-400">${player.score.toFixed(2)}pt</div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b border-white/20">
-                <th class="py-4 font-bold">Posizione</th>
-                <th class="py-4 font-bold">Giocatore</th>
-                <th class="py-4 font-bold text-right">Punteggio</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${todayScores.map((player, index) => `
-                <tr class="border-b border-white/10 hover:bg-white/10 transition-all">
-                  <td class="py-4 font-bold">${index + 1}</td>
-                  <td class="py-4 font-semibold">${player.name}</td>
-                  <td class="py-4 font-mono font-bold text-right text-emerald-400">${player.score.toFixed(2)}pt</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-        <div class="text-center mt-8 p-6 bg-emerald-500/20 rounded-2xl">
-          <p class="font-bold text-lg mb-2">👥 Totale giocatori oggi: ${todayScores.length}</p>
-          <p class="text-sm text-blue-300">Classifica aggiornata in tempo reale</p>
-        </div>
-      `;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderLeaderboard();
-      
-      // Refresh ogni 30s
-      setInterval(renderLeaderboard, 30000);
-      
-      // Reset giornaliero
-      const now = new Date();
-      const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-      const timeToMidnight = nextMidnight - now;
-      setTimeout(() => {
-        localStorage.removeItem('leaderboard');
-        renderLeaderboard();
-      }, timeToMidnight);
+    function loadLeaderboard(){
+      dailyResetIfNeeded();
+      const raw = localStorage.getItem(STORAGE_LEADERBOARD_KEY) || '[]';
+      try { return JSON.parse(raw); } catch(e){ return []; }
+    }
+
+    function render(){
+      const lb = loadLeaderboard();
+      const list = document.getElementById('leaderList');
+      list.innerHTML = '';
+      if(lb.length === 0){
+        list.innerHTML = '<li class="text-slate-400">Nessuna classifica per oggi</li>';
+      } else {
+        lb.slice(0,10).forEach((it, idx)=>{
+          const li = document.createElement('li');
+          li.innerHTML = `<div class="flex justify-between items-center">
+            <div><strong class="text-white">${it.name}</strong> <span class="text-slate-300 text-xs">(${new Date(it.timestamp).toLocaleTimeString()})</span></div>
+            <div class="text-slate-200">${it.score.toFixed(2)}</div>
+          </div>`;
+          list.appendChild(li);
+        });
+      }
+      document.getElementById('todayInfo').textContent = `Data odierna: ${new Date().toLocaleDateString()}`;
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const name = document.getElementById('searchName').value.trim();
+      const out = document.getElementById('searchResult');
+      if(!name){ out.textContent = 'Inserisci un nome.'; return; }
+      const lb = loadLeaderboard();
+      const index = lb.findIndex(it => it.name.toLowerCase() === name.toLowerCase());
+      if(index === -1){ out.textContent = 'Non trovato nella classifica odierna.'; return; }
+      const item = lb[index];
+      out.innerHTML = `<div class="p-3 rounded-md bg-white/3">
+        Posizione: <strong>${index+1}</strong><br/>
+        Nome: <strong>${item.name}</strong><br/>
+        Punteggio: <strong>${item.score.toFixed(2)}</strong><br/>
+        Corrette: ${item.correct} - Sbagliate: ${item.wrong}<br/>
+        Ora: ${new Date(item.timestamp).toLocaleString()}
+      </div>`;
     });
+
+    // Init
+    render();
   </script>
 </body>
 </html>
