@@ -1830,7 +1830,15 @@ document.getElementById('input-name').addEventListener('keydown', e => {
    QUIZ CORE
    ════════════════════════════════════════════════ */
 function startQuiz() {
-  STATE.questions = shuffle(QUESTIONS).slice(0, 30);
+  STATE.questions = shuffle(QUESTIONS).slice(0, 30).map(q => {
+    const opts     = q.options.map((text, i) => ({ text, isCorrect: i === q.correct }));
+    const shuffled = shuffle(opts);
+    return {
+      ...q,
+      options: shuffled.map(o => o.text),
+      correct: shuffled.findIndex(o => o.isCorrect)
+    };
+  });
   STATE.current   = 0;
   STATE.answers   = new Array(30).fill(null);
   STATE.startTime = Date.now();
