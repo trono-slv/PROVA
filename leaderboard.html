@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classifica | Quiz SSL D.Lgs. 81/2008</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --bg:      #0a0f1e;
+      --surface: #111827;
+      --glass:   rgba(255,255,255,0.04);
+      --border:  rgba(255,255,255,0.08);
+      --accent:  #f59e0b;
+      --accent2: #3b82f6;
+      --success: #10b981;
+      --danger:  #ef4444;
+      --text:    #f1f5f9;
+      --muted:   #94a3b8;
+    }
+
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family:'Inter', system-ui, sans-serif;
+      background-color:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    body::before {
+      content:'';
+      position:fixed;
+      inset:0;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(59,130,246,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,158,11,0.06) 0%, transparent 60%);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .glass {
+      background:var(--glass);
+      border:1px solid var(--border);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:3px; }
+
+    .fade-in {
+      animation:fadeIn 0.4s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .lb-row {
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+      padding:0.875rem 1.125rem;
+      border-radius:0.875rem;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.02);
+      margin-bottom:0.5rem;
+      transition:background 0.2s;
+    }
+    .lb-row:hover { background:rgba(255,255,255,0.04); }
+    .lb-row.gold   { border-color:#f59e0b; background:rgba(245,158,11,0.07); }
+    .lb-row.silver { border-color:#94a3b8; background:rgba(148,163,184,0.06); }
+    .lb-row.bronze { border-color:#b45309; background:rgba(180,83,9,0.06); }
+
+    .tab-btn {
+      padding:0.5rem 1.25rem;
+      border-radius:0.625rem;
+      font-size:0.875rem;
+      font-weight:500;
+      cursor:pointer;
+      border:1px solid var(--border);
+      background:transparent;
+      color:var(--muted);
+      transition:all 0.2s;
+    }
+    .tab-btn.active {
+      background:rgba(59,130,246,0.15);
+      border-color:var(--accent2);
+      color:var(--text);
+    }
+
+    .stat-card {
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      border-radius:0.875rem;
+      padding:1rem;
+      text-align:center;
+    }
+
+    .btn-danger {
+      background:rgba(239,68,68,0.1);
+      border:1px solid rgba(239,68,68,0.3);
+      color:#fca5a5;
+      border-radius:0.625rem;
+      padding:0.5rem 1rem;
+      font-size:0.8rem;
+      cursor:pointer;
+      transition:background 0.2s;
+    }
+    .btn-danger:hover { background:rgba(239,68,68,0.2); }
+
+    .btn-back {
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      color:var(--accent2);
+      font-size:0.9rem;
+      text-decoration:none;
+      transition:opacity 0.2s;
+    }
+    .btn-back:hover { opacity:0.75; }
+
+    .podium-bar {
+      border-radius:0.5rem 0.5rem 0 0;
+      width:70px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-end;
+      padding-bottom:0.75rem;
+    }
+
+    @media(max-width:640px) {
+      .lb-row { padding:0.625rem 0.875rem; gap:0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="relative z-10 max-w-3xl mx-auto px-4 py-8 md:py-14">
+
+  <!-- HEADER -->
+  <div class="mb-8 fade-in">
+    <a href="index.html" class="btn-back mb-5 inline-flex">
+      ← Torna al Quiz
+    </a>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-extrabold mb-1">
+          🏆 Classifica
+          <span style="background:linear-gradient(90deg,var(--accent2),var(--accent));
+                       -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+            Giornaliera
+          </span>
+        </h1>
+        <p class="text-sm" style="color:var(--muted)">
+          Quiz SSL — D.Lgs. 81/2008 · Aggiornata in tempo reale
+        </p>
+      </div>
+      <button class="btn-danger self-start sm:self-auto"
+              onclick="confirmReset()"
+              title="Azzera classifica odierna">
+        🗑 Azzera oggi
+      </button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="flex gap-2 mb-6 fade-in" style="animation-delay:0.1s">
+    <button id="tab-today" class="tab-btn active" onclick="setTab('today')">
+      📅 Oggi
+    </button>
+    <button id="tab-all"   class="tab-btn"        onclick="setTab('all')">
+      📊 Tutti i Tempi
+    </button>
+  </div>
+
+  <!-- STATS RAPIDE -->
+  <div id="stats-row" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 fade-in"
+       style="animation-delay:0.15s"></div>
+
+  <!-- PODIO -->
+  <div id="podio-section" class="glass rounded-2xl p-6 mb-6 fade-in"
+       style="animation-delay:0.2s">
+    <h2 class="text-sm font-semibold uppercase tracking-wider mb-5"
+        style="color:var(--muted)">🎖 Podio</h2>
+    <div id="podio-container"
+         class="flex items-end justify-center gap-4 min-h-[120px]"></div>
+  </div>
+
+  <!-- TABELLA COMPLETA -->
+  <div class="glass rounded-2xl p-6 fade-in" style="animation-delay:0.25s">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-sm font-semibold uppercase tracking-wider"
+          style="color:var(--muted)">📋 Classifica Completa</h2>
+      <span id="entry-count" class="text-xs" style="color:var(--muted)"></span>
+    </div>
+    <div id="lb-container"></div>
+    <div id="empty-state" class="text-center py-10" style="display:none">
+      <div class="text-4xl mb-3">🏁</div>
+      <p class="font-medium mb-1">Nessuna entry ancora</p>
+      <p class="text-sm" style="color:var(--muted)">
+        Completa il quiz per apparire in classifica!
+      </p>
+      <a href="index.html" class="btn-back mt-4 inline-flex justify-center">
+        → Vai al Quiz
+      </a>
+    </div>
+  </div>
+
+  <!-- LEGENDA MOLTIPLICATORI -->
+  <div class="glass rounded-2xl p-5 mt-6 fade-in" style="animation-delay:0.3s">
+    <h3 class="text-sm font-semibold mb-3" style="color:var(--muted)">
+      ⚡ Moltiplicatori Punteggio
+    </h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="stat-card">
+        <div class="font-bold" style="color:var(--accent)">×3</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">Meno di 15 min</div>
+      </div>
+      <div class="stat-card">
+        <div class="font-bold" style="color:var(--accent2)">×2</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">15–25 min</div>
+      </div>
+      <div class="stat-card">
+        <div class="font-bold" style="color:var(--success)">×1.5</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">25–35 min</div>
+      </div>
+      <div class="stat-card">
+        <div class="font-bold" style="color:var(--muted)">×1</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">Oltre 35 min</div>
+      </div>
+    </div>
+    <p class="text-xs mt-3" style="color:var(--muted)">
+      Formula: <code style="color:var(--accent)">Punteggio = Risposte corrette × Moltiplicatore × 10</code>
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="text-center mt-10 pb-6 fade-in" style="animation-delay:0.35s">
+    <p class="text-xs" style="color:var(--muted)">
+      Contenuti a cura del
+      <strong style="color:var(--text)">Dott. Salvatore Trono</strong>
+      · Formatore esperto SSL ex D.Lgs. 81/2008<br/>
+      <span style="opacity:0.5">Solo scopo didattico · Non sostituisce formazione obbligatoria certificata</span>
+    </p>
+  </div>
+
+</div>
+
+<script>
+  const LB_KEY = 'ssl_quiz_leaderboard_v1';
+  let currentTab = 'today';
+
+  function loadLeaderboard() {
+    try {
+      const raw = localStorage.getItem(LB_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return { entries: [] };
+  }
+
+  function saveLeaderboard(lb) {
+    try {
+      localStorage.setItem(LB_KEY, JSON.stringify(lb));
+    } catch(e) {}
+  }
+
+  function getToday() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  function formatTime(sec) {
+    if (sec < 60) return `${sec}s`;
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return s > 0 ? `${m}m ${s}s` : `${m}m`;
+  }
+
+  function setTab(tab) {
+    currentTab = tab;
+    document.getElementById('tab-today').classList.toggle('active', tab === 'today');
+    document.getElementById('tab-all').classList.toggle('active',   tab === 'all');
+    render();
+  }
+
+  function render() {
+    const lb      = loadLeaderboard();
+    const today   = getToday();
+    const entries = currentTab === 'today'
+      ? lb.entries.filter(e => e.date === today)
+      : lb.entries;
+
+    renderStats(entries);
+    renderPodio(entries);
+    renderTable(entries);
+  }
+
+  function renderStats(entries) {
+    const row       = document.getElementById('stats-row');
+    const total     = entries.length;
+    const passed    = entries.filter(e => e.passed).length;
+    const avgScore  = total
+      ? Math.round(entries.reduce((a,b) => a + b.raw, 0) / total)
+      : 0;
+    const best      = total
+      ? Math.max(...entries.map(e => e.score))
+      : 0;
+
+    const data = [
+      { label:'Partecipanti', value:total,               color:'var(--accent2)' },
+      { label:'Superati',     value:passed,              color:'var(--success)' },
+      { label:'Media corrette', value:`${avgScore}/30`,  color:'var(--accent)' },
+      { label:'Record',       value:`${best}pt`,         color:'var(--text)' }
+    ];
+
+    row.innerHTML = data.map(d => `
+      <div class="stat-card">
+        <div class="text-xl font-bold" style="color:${d.color}">${d.value}</div>
+        <div class="text-xs mt-1" style="color:var(--muted)">${d.label}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderPodio(entries) {
+    const container = document.getElementById('podio-container');
+    const top3      = entries.slice(0, 3);
+
+    if (top3.length === 0) {
+      container.innerHTML =
+        '<p class="text-sm w-full text-center" style="color:var(--muted)">Nessun dato</p>';
+      return;
+    }
+
+    // Ordine visivo: 2°, 1°, 3°
+    const order  = [top3[1], top3[0], top3[2]].filter(Boolean);
+    const heights = top3[1] ? ['80px','110px','60px'] : ['110px'];
+    const colors  = ['#94a3b8','#f59e0b','#b45309'];
+    const medals  = ['🥈','🥇','🥉'];
+    const origIdx = [1, 0, 2];
+
+    container.innerHTML = order.map((e, vi) => {
+      const oi     = origIdx[vi];
+      const height = heights[vi];
+      const color  = colors[vi];
+      const medal  = medals[vi];
+      return `
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-lg">${medal}</span>
+          <span class="text-xs font-semibold text-center max-w-[80px] truncate"
+                style="color:var(--text)" title="${e.name}">
+            ${e.name.split(' ')[0]}
+          </span>
+          <span class="text-xs font-bold" style="color:${color}">${e.score}pt</span>
+          <div class="podio-bar"
+               style="height:${height};background:${color}22;border:1px solid ${color}44;">
+            <span class="text-xs font-bold" style="color:${color}">#${oi+1}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderTable(entries) {
+    const container  = document.getElementById('lb-container');
+    const emptyState = document.getElementById('empty-state');
+    const countEl    = document.getElementById('entry-count');
+
+    countEl.textContent = `${entries.length} partecipant${entries.length !== 1 ? 'i':'e'}`;
+
+    if (entries.length === 0) {
+      container.innerHTML  = '';
+      emptyState.style.display = 'block';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    const medals = ['🥇','🥈','🥉'];
+
+    container.innerHTML = entries.map((e, i) => {
+      const cls =
+        i === 0 ? 'lb-row gold'   :
+        i === 1 ? 'lb-row silver' :
+        i === 2 ? 'lb-row bronze' : 'lb-row';
+
+      return `
+        <div class="${cls}">
+          <span class="text-base w-7 flex-shrink-0 font-bold"
+                style="color:var(--muted)">
+            ${medals[i] || `<span style="font-size:0.8rem">#${i+1}</span>`}
+          </span>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm truncate">${e.name}</p>
+            <p class="text-xs" style="color:var(--muted)">
+              ${e.raw}/30 corrette · ${formatTime(e.time)} · ×${e.mult}
+              ${currentTab === 'all' ? `· ${e.date}` : ''}
+            </p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <p class="font-bold text-sm" style="color:var(--accent)">${e.score}pt</p>
+            <p class="text-xs" style="color:${e.passed ? 'var(--success)':'var(--danger)'}">
+              ${e.passed ? '✅ Superato' : '❌ Non sup.'}
+            </p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function confirmReset() {
+    const today   = getToday();
+    const lb      = loadLeaderboard();
+    const todayN  = lb.entries.filter(e => e.date === today).length;
+
+    if (todayN === 0) {
+      alert('Nessuna entry da eliminare oggi.');
+      return;
+    }
+    if (confirm(`Eliminare ${todayN} risultat${todayN !== 1 ? 'i':'o'} di oggi dalla classifica?`)) {
+      lb.entries = lb.entries.filter(e => e.date !== today);
+      saveLeaderboard(lb);
+      render();
+    }
+  }
+
+  // Init
+  render();
+
+  // Auto-refresh ogni 30s
+  setInterval(render, 30000);
+</script>
+</body>
+</html>
