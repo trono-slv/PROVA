@@ -1383,9 +1383,8 @@ function renderQuestion() {
     btn.addEventListener('click', () => answerQuestion(optIdx));
     container.appendChild(btn);
   });
-}
 
-function answerQuestion(optIdx) {
+  function answerQuestion(optIdx) {
   const q   = STATE.questions[STATE.current];
   STATE.answers[STATE.current] = optIdx;
 
