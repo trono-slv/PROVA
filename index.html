@@ -1316,7 +1316,7 @@ function renderQuestion() {
   // Se non ancora risposto: shuffle e salva ordine
   if (STATE.answers[idx] === null) {
     const indexed = q.options.map((opt, i) => ({ opt, i }));
-    const shuffled = shuffleArray(indexed);
+    const shuffled = shuffle(indexed);
     STATE.shuffleMap[idx] = shuffled.map(x => x.i);
   }
 
