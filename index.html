@@ -1169,8 +1169,8 @@ function saveLeaderboard(lb) {
 function saveResult(entry) {
   const lb = loadLeaderboard();
   lb.entries.push(entry);
-  lb.entries.sort((a, - => b.score - a.score);
-  saveLeaderboard(lb;
+  lb.entries.sort((a, b) => b.score - a.score);
+  saveLeaderboard(lb);
 }
 
 function renderInlineLeaderboard(myScore) {
