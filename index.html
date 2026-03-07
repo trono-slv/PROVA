@@ -1385,27 +1385,24 @@ function showFeedback(text, isCorrect) {
 function endQuiz(timeout) {
   stopTimer();
 
-  const elapsed   = Math.round((Date.now() - STATE.startTime) / 1000);
-  const timeStr = formatTime(elapsed);
-  const correct   = STATE.answers.filter((a, i) => a !== null && a === STATE.questions[i].correct).length;
-  const answered  = STATE.answers.filter(a => a !== null).length;
-  const pct       = Math.round((correct / 30) * 100);
-  const passed    = pct >= 70;
+  const elapsed  = Math.round((Date.now() - STATE.startTime) / 1000);
+  const timeStr  = formatTime(elapsed);
+  const correct  = STATE.answers.filter((a, i) => a !== null && a === STATE.questions[i].correct).length;
+  const answered = STATE.answers.filter(a => a !== null).length;
+  const pct      = Math.round((correct / 30) * 100);
+  const passed   = pct >= 70;
+  const mult     = elapsed < 900 ? 1.5 : elapsed < 1800 ? 1.2 : 1.0;
+  const score    = Math.round(correct * 10 * mult);
 
-  // Punteggio con moltiplicatore velocità
-  const mult      = elapsed < 900 ? 1.5 : elapsed < 1800 ? 1.2 : 1.0;
-  const score     = Math.round(correct * 10 * mult);
-
-  // Salva in leaderboard
   saveResult({
-    name:   STATE.playerName,
+    name: STATE.playerName,
     score,
-    raw:    correct,
+    raw:  correct,
     pct,
-    time:   timeStr,
+    time: timeStr,
     mult,
     passed,
-    date:   getToday()
+    date: getToday()
   });
 
   showSection('section-result');
@@ -1413,33 +1410,29 @@ function endQuiz(timeout) {
 }
 
 function renderResult({ correct, answered, pct, passed, score, timeStr, mult, timeout }) {
-  // Icon e titolo
-  document.getElementById('result-icon').textContent    = passed ? '🎉' : timeout ? '⏰' : '📚';
-  document.getElementById('result-title').textContent   = passed ? 'Test Superato!' : timeout ? 'Tempo Scaduto' : 'Non Superato';
-  document.getElementById('result-subtitle').textContent =
-    `${STATE.playerName} · ${getToday()} · Durata: ${timeStr}`;
+  document.getElementById('result-icon').textContent     = passed ? '🎉' : timeout ? '⏰' : '📚';
+  document.getElementById('result-title').textContent    = passed ? 'Test Superato!' : timeout ? 'Tempo Scaduto' : 'Non Superato';
+  document.getElementById('result-subtitle').textContent = `${STATE.playerName} · ${getToday()} · Durata: ${timeStr}`;
 
-  // Stats grid
   document.getElementById('result-stats').innerHTML = `
     <div class="glass rounded-xl p-4 text-center">
       <div class="text-2xl font-bold" style="color:var(--success)">${correct}</div>
-      <div class="text-xs mt-1" style="color:var(--mute-">Corrette</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">Corrette</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
       <div class="text-2xl font-bold" style="color:var(--danger)">${30 - correct}</div>
-      <div class="text-xs mt-1" style="color:var(--mute-">Errate/Skip</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">Errate/Skip</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
       <div class="text-2xl font-bold" style="color:var(--accent)">${pct}%</div>
-      <div class="text-xs mt-1" style="color:var(--mute-">Punteggio</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">Punteggio</div>
     </div>
     <div class="glass rounded-xl p-4 text-center">
       <div class="text-2xl font-bold" style="color:var(--accent2)">${score}pt</div>
-      <div class="text-xs mt-1" style="color:var(--mute-">Rank pts</div>
+      <div class="text-xs mt-1" style="color:var(--muted)">Rank pts</div>
     </div>
   `;
 
-  // Badge
   const badge = document.getElementById('result-badge');
   badge.className = `rounded-2xl p-5 mb-8 text-center fade-in ${passed ? 'badge-pass' : 'badge-fail'}`;
   document.getElementById('result-badge-text').textContent =
@@ -1449,21 +1442,18 @@ function renderResult({ correct, answered, pct, passed, score, timeStr, mult, ti
       ? `Ottimo lavoro, ${STATE.playerName}! Moltiplicatore velocità: ×${mult}`
       : `Hai risposto correttamente a ${correct}/30 domande. Riprova!`;
 
-  // Leaderboard inline
   renderInlineLeaderboard(score);
-
-  // Revisione
   renderReview();
 }
 
 function renderReview() {
   const container = document.getElementById('review-container');
   container.innerHTML = STATE.questions.map((q, i) => {
-    const ans      = STATE.answers[i];
+    const ans       = STATE.answers[i];
     const isCorrect = ans === q.correct;
-    const skipped  = ans === null;
-    const cls      = skipped ? 'review-card unanswered-card' : isCorrect ? 'review-card correct-card' : 'review-card wrong-card';
-    const icon     = skipped ? '⬜' : isCorrect ? '✅' : '❌';
+    const skipped   = ans === null;
+    const cls       = skipped ? 'review-card unanswered-card' : isCorrect ? 'review-card correct-card' : 'review-card wrong-card';
+    const icon      = skipped ? '⬜' : isCorrect ? '✅' : '❌';
 
     return `
       <div class="${cls}">
@@ -1477,7 +1467,7 @@ function renderReview() {
         <p style="font-size:0.78rem;color:#6ee7b7;margin-bottom:0.4rem">
           Risposta corretta: ${q.options[q.correct]}
         </p>
-        <p style="font-size:0.76rem;color:var(--mute-;line-height:1.6">
+        <p style="font-size:0.76rem;color:var(--muted);line-height:1.6">
           💡 ${q.explanation}
         </p>
       </div>
@@ -1488,6 +1478,3 @@ function renderReview() {
 function retryQuiz() {
   showSection('section-home');
 }
-</script>
-</body>
-</html>
