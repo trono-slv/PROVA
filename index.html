@@ -75,20 +75,20 @@
     @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
     /* DISCLAIMER ACCORDION */
-    .disc-toggle {
+    -toggle {
       width:100%; text-align:left; background:none; border:none;
       color:var(--text); font-family:inherit; font-size:0.95rem;
       font-weight:600; cursor:pointer;
       display:flex; align-items:center; justify-content:space-between;
       padding:0.875rem 1.125rem;
     }
-    .disc-arrow { transition:transform 0.25s; font-size:0.75rem; color:var(--mute-; }
+    .disc-arrow { transition:transform 0.25s; font-size:0.75rem; color:var(--muted); }
     .disc-toggle.open .disc-arrow { transform:rotate(180deg); }
     .disc-content {
       max-height:0; overflow:hidden;
       transition:max-height 0.35s ease, padding 0.25s;
       padding:0 1.125rem;
-      font-size:0.85rem; color:var(--mute-; line-height:1.7;
+      font-size:0.85rem; color:var(--muted); line-height:1.7;
     }
     .disc-content.open { max-height:400px; padding:0 1.125rem 1rem; }
 
@@ -104,7 +104,7 @@
       transition:background .18s, border-color .18s, transform .12s;
       margin-bottom:0.5rem;
     }
-    .option-btn:hover:not(:disable- {
+    .option-btn:hover:not(:disabled) {
       background:rgba(59,130,246,0.08);
       border-color:rgba(59,130,246,0.4);
       transform:translateX(3px);
@@ -200,7 +200,7 @@
 <div id="modal-name" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-box fade-in">
     <h2 id="modal-title" class="text-xl font-bold mb-1">👤 Come ti chiami?</h2>
-    <p class="text-sm mb-4" style="color:var(--mute-">Il tuo nome apparirà in classifica.</p>
+    <p class="text-sm mb-4" style="color:var(--muted-">Il tuo nome apparirà in classifica.</p>
     <input
       id="input-name"
       type="text"
