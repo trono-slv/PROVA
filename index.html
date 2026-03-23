@@ -3,1243 +3,1465 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy negli uffici</title>
-  <meta name="description" content="Corso base sulla privacy negli uffici per segreteria e reception: teoria, casi pratici e quiz finale." />
+  <title>Corso Online - Protezione dei Dati in Ufficio</title>
   <style>
     :root{
-      --bg: #f4f7f9;
-      --surface: rgba(255,255,255,0.92);
-      --surface-2: #ffffff;
-      --text: #20303c;
-      --muted: #5f7381;
-      --primary: #24465f;
-      --primary-2: #3a657f;
-      --accent: #b88a44;
-      --accent-2: #d8b67c;
-      --border: #d9e3ea;
-      --success: #2f8f5b;
-      --danger: #b94b4b;
-      --shadow: 0 10px 30px rgba(28, 55, 75, 0.10);
-      --radius: 18px;
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --primary:#1d4ed8;
+      --primary-dark:#1e3a8a;
+      --accent:#0ea5e9;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --ok:#16a34a;
+      --bad:#dc2626;
+      --soft:#dbeafe;
+      --border:#dbe3ef;
+      --shadow:0 8px 24px rgba(15, 23, 42, 0.08);
+      --radius:18px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-    body{
-      margin:0;
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background:
-        linear-gradient(rgba(244,247,249,0.86), rgba(244,247,249,0.95)),
-        url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=80") center/cover fixed no-repeat;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    a { color: inherit; text-decoration: none; }
-
-    .container{
-      width:min(1180px, 92%);
-      margin:0 auto;
-    }
-
-    .hero{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      background: linear-gradient(135deg, rgba(255,255,255,0.80), rgba(235,242,247,0.88));
-      backdrop-filter: blur(2px);
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:22px 0;
-    }
-
-    .brand{
-      font-size:1.25rem;
-      font-weight:800;
-      color:var(--primary);
-      letter-spacing:.2px;
-    }
-
-    .nav-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .nav-links a{
-      padding:10px 14px;
-      border:1px solid rgba(36,70,95,.12);
-      border-radius:999px;
-      background:rgba(255,255,255,.55);
-      color:var(--primary);
-      font-weight:600;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.25fr .9fr;
-      gap:28px;
-      align-items:center;
-      padding:30px 0 56px;
-      flex:1;
-    }
-
-    .eyebrow{
-      display:inline-block;
-      margin-bottom:14px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(184,138,68,.12);
-      color:var(--accent);
-      font-weight:700;
-      font-size:.92rem;
-    }
-
-    .hero h1{
-      margin:0 0 16px;
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      line-height:1.08;
-      color:var(--primary);
-    }
-
-    .hero p{
-      color:var(--muted);
-      font-size:1.08rem;
-      max-width:760px;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px;
-      margin-top:24px;
-    }
-
-    .btn{
-      border:none;
-      cursor:pointer;
-      padding:14px 20px;
-      border-radius:14px;
-      font-weight:800;
-      font-size:.98rem;
-      transition:.2s ease;
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 28px 20px;
       box-shadow: var(--shadow);
     }
 
-    .btn:hover{
+    header .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.95;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 18px 60px;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn .25s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-top: 10px;
+    }
+
+    .hero h2 {
+      margin-top: 0;
+      color: var(--primary-dark);
+      font-size: 1.8rem;
+    }
+
+    .hero p {
+      max-width: 900px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: transform .15s ease, opacity .15s ease, background .2s ease;
+    }
+
+    button:hover {
       transform: translateY(-1px);
     }
 
-    .btn-primary{
-      background:var(--primary);
-      color:#fff;
+    .btn-primary {
+      background: var(--primary);
+      color: white;
     }
 
-    .btn-secondary{
-      background:#eef4f8;
-      color:var(--primary);
-      border:1px solid var(--border);
+    .btn-secondary {
+      background: #e5eefc;
+      color: var(--primary-dark);
     }
 
-    .btn-ghost{
-      background:#fff;
-      color:var(--primary);
-      border:1px dashed var(--primary-2);
+    .btn-accent {
+      background: var(--accent);
+      color: white;
     }
 
-    .panel,
-    .card,
-    .source-box,
-    .quiz-container,
-    .quiz-results,
-    .disclaimer-box{
-      background:var(--surface);
-      border:1px solid rgba(255,255,255,.55);
-      box-shadow: var(--shadow);
+    .btn-success {
+      background: var(--ok);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--bad);
+      color: white;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      background: var(--card);
       border-radius: var(--radius);
-      backdrop-filter: blur(8px);
-    }
-
-    .panel{
-      padding:24px;
-    }
-
-    .panel h2{
-      margin-top:0;
-      color:var(--primary);
-      font-size:1.3rem;
-    }
-
-    .panel ul{
-      margin:0;
-      padding-left:20px;
-      color:var(--muted);
-    }
-
-    .hero-mini{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-      margin-top:26px;
-    }
-
-    .mini{
-      background:rgba(255,255,255,.78);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:16px;
       box-shadow: var(--shadow);
+      padding: 20px;
     }
 
-    .mini strong{
-      display:block;
-      color:var(--primary);
-      margin-bottom:6px;
+    .sidebar h3 {
+      margin-top: 0;
+      color: var(--primary-dark);
+      font-size: 1.1rem;
     }
 
-    .section{
-      padding:72px 0;
+    .progress-wrap {
+      margin: 18px 0 20px;
     }
 
-    .section.alt{
-      background: linear-gradient(180deg, rgba(238,244,248,.82), rgba(247,250,252,.9));
+    .progress-label {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 8px;
     }
 
-    .section-tag{
-      display:inline-block;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#e3edf3;
-      color:var(--primary);
-      font-weight:800;
-      margin-bottom:14px;
-      font-size:.88rem;
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e6edf8;
+      border-radius: 999px;
+      overflow: hidden;
     }
 
-    .section h2{
-      margin:0 0 10px;
-      color:var(--primary);
-      font-size:clamp(1.8rem, 3vw, 2.6rem);
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transition: width .25s ease;
     }
 
-    .section-lead{
-      margin:0;
-      max-width:900px;
-      color:var(--muted);
+    .lesson-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 65vh;
+      overflow: auto;
+      padding-right: 4px;
     }
 
-    .disclaimer-box{
-      padding:24px;
-      border-left:6px solid var(--accent);
+    .lesson-link {
+      text-align: left;
+      background: #f2f6fd;
+      color: var(--text);
+      border: 1px solid transparent;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
     }
 
-    .disclaimer-box h3{
-      margin-top:0;
-      color:var(--primary);
+    .lesson-link.active {
+      background: #dbeafe;
+      color: var(--primary-dark);
+      border-color: #bfdbfe;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:22px;
-      margin-top:26px;
+    .content-area {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      min-height: 600px;
     }
 
-    .card{
-      padding:24px;
-      position:relative;
-      overflow:hidden;
+    .lesson-card {
+      display: none;
     }
 
-    .num{
-      width:42px;
-      height:42px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      background:var(--primary);
-      color:#fff;
-      font-weight:900;
-      margin-bottom:14px;
+    .lesson-card.active {
+      display: block;
+      animation: fadeIn .25s ease;
     }
 
-    .card h3{
-      margin:0 0 12px;
-      color:var(--primary);
-      font-size:1.18rem;
+    .lesson-card h2 {
+      margin-top: 0;
+      color: var(--primary-dark);
+      font-size: 1.7rem;
     }
 
-    .label{
-      margin:14px 0 6px;
-      font-weight:800;
-      color:var(--primary-2);
+    .box {
+      margin-top: 18px;
+      padding: 16px;
+      border-left: 5px solid var(--primary);
+      background: #eff6ff;
+      border-radius: 12px;
     }
 
-    .small{
-      font-size:.94rem;
-      color:var(--muted);
+    .box h4 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
     }
 
-    .quiz-toolbar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin:24px 0 18px;
+    .mini-sintesi {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--soft);
+      border-radius: 12px;
+      font-weight: bold;
+      color: var(--primary-dark);
     }
 
-    .quiz-container,
-    .quiz-results{
-      padding:24px;
+    .lesson-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
     }
 
-    .quiz-placeholder{
-      text-align:center;
-      padding:12px;
-      color:var(--muted);
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
-    .progress{
-      margin-bottom:18px;
-      font-weight:700;
-      color:var(--primary);
+    .quiz-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
     }
 
-    .question-card{
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:18px;
-      background:#fff;
-      margin-bottom:18px;
-      box-shadow: 0 6px 18px rgba(28,55,75,.05);
+    .quiz-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
     }
 
-    .question-card h3{
-      margin:0 0 10px;
-      color:var(--primary);
-      font-size:1.05rem;
+    .quiz-question {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
     }
 
-    .options{
-      display:grid;
-      gap:10px;
-      margin-top:10px;
+    .quiz-question:last-child {
+      border-bottom: 0;
     }
 
-    .option{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:12px 14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:#fbfdff;
+    .question-title {
+      font-size: 1.08rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+      color: var(--primary-dark);
     }
 
-    .option input{
-      margin-top:4px;
-      transform: scale(1.08);
+    .options {
+      display: grid;
+      gap: 10px;
     }
 
-    .submit-wrap{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:22px;
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fafcff;
+      transition: background .2s ease, border-color .2s ease;
     }
 
-    .hidden{ display:none; }
-
-    .summary{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-      margin-bottom:22px;
+    .option:hover {
+      background: #f1f7ff;
+      border-color: #bfd4fb;
     }
 
-    .sum-box{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:16px;
+    .option input {
+      margin-top: 3px;
+      transform: scale(1.1);
     }
 
-    .sum-box strong{
-      display:block;
-      color:var(--primary);
-      margin-bottom:4px;
+    .quiz-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
     }
 
-    .review-item{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:14px;
-      margin-bottom:12px;
+    .results {
+      margin-top: 24px;
+      display: none;
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
     }
 
-    .review-item.correct{
-      border-left:6px solid var(--success);
+    .results.active {
+      display: block;
     }
 
-    .review-item.wrong{
-      border-left:6px solid var(--danger);
+    .score-box {
+      background: #eaf4ff;
+      border-left: 6px solid var(--primary);
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: var(--primary-dark);
     }
 
-    .source-box{
-      padding:24px;
-      margin-top:24px;
+    .review-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      background: white;
     }
 
-    .source-box ul{
-      margin:0;
-      padding-left:20px;
+    .review-item.correct {
+      border-left: 6px solid var(--ok);
     }
 
-    footer{
-      background:rgba(27,48,64,.96);
-      color:rgba(255,255,255,.94);
-      padding:42px 0;
+    .review-item.wrong {
+      border-left: 6px solid var(--bad);
     }
 
-    .footer-grid{
-      display:grid;
-      grid-template-columns:1.2fr .9fr 1fr;
-      gap:24px;
+    .review-label {
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
-    footer h3, footer h4{
-      margin-top:0;
-      color:#fff;
+    .correct-text {
+      color: var(--ok);
+      font-weight: bold;
     }
 
-    .foot-note{
-      font-size:.92rem;
-      color:rgba(255,255,255,.78);
+    .wrong-text {
+      color: var(--bad);
+      font-weight: bold;
     }
 
-    @media (max-width: 980px){
-      .hero-grid,
-      .grid,
-      .summary,
-      .footer-grid,
-      .hero-mini{
-        grid-template-columns:1fr;
+    .muted {
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px 40px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
       }
-    }
 
-    @media (max-width: 680px){
-      .topbar{
-        flex-direction:column;
-        align-items:flex-start;
+      .sidebar {
+        position: static;
       }
-      .btn{
-        width:100%;
+
+      header h1 {
+        font-size: 1.6rem;
       }
-      .nav-links{
-        width:100%;
+
+      .content-area,
+      .hero,
+      .quiz-card,
+      .quiz-header {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <header class="hero" id="home">
-    <div class="container">
-      <div class="topbar">
-        <div class="brand">Privacy negli uffici</div>
-        <div class="nav-links">
-          <a href="#home">Home</a>
-          <a href="#teoria">Teoria</a>
-          <a href="#quiz">Quiz</a>
-          <a href="#fonti">Fonti</a>
-        </div>
-      </div>
 
-      <div class="hero-grid">
-        <div>
-          <span class="eyebrow">Corso base • segreteria • reception • ufficio</span>
-          <h1>Privacy negli uffici</h1>
-          <p>
-            Lezione introduttiva con taglio pratico per personale di segreteria e addetti reception.
-            Focus su gestione corretta di documenti, email, telefonate, visitatori, badge, archivi,
-            stampanti condivise, dati dei clienti e misure di riservatezza in ambiente di ufficio.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#teoria">Vai alla teoria</a>
-            <a class="btn btn-secondary" href="#quiz">Vai al quiz</a>
-          </div>
-
-          <div class="hero-mini">
-            <div class="mini">
-              <strong>Durata</strong>
-              <span>2 ore</span>
-            </div>
-            <div class="mini">
-              <strong>Contenuti</strong>
-              <span>10 argomenti pratici</span>
-            </div>
-            <div class="mini">
-              <strong>Quiz finale</strong>
-              <span>10 domande casuali su 30</span>
-            </div>
-          </div>
-        </div>
-
-        <aside class="panel">
-          <h2>Obiettivo del corso</h2>
-          <ul>
-            <li>Comprendere cosa sono i dati personali in ufficio</li>
-            <li>Ridurre errori quotidiani di segreteria e reception</li>
-            <li>Applicare regole semplici di riservatezza</li>
-            <li>Riconoscere comportamenti corretti e scorretti</li>
-            <li>Prepararsi alla verifica finale</li>
-          </ul>
-        </aside>
-      </div>
+  <header>
+    <div class="header-inner">
+      <h1>Corso Online — Protezione dei Dati in Ufficio</h1>
+      <p>Percorso formativo con teoria navigabile, avanzamento e quiz finale a estrazione casuale.</p>
     </div>
   </header>
 
-  <main>
-    <section class="section">
-      <div class="container">
-        <div class="disclaimer-box">
-          <h3>Disclaimer legale</h3>
-          <p><strong>Strumento didattico-informativo ad uso esclusivamente educativo.</strong></p>
-          <p>I contenuti hanno finalità formative e divulgative e non sostituiscono consulenza professionale, legale o organizzativa specifica.</p>
-          <p>È vietata la riproduzione, diffusione o riutilizzazione, anche parziale, dei contenuti testuali, grafici e didattici senza preventiva autorizzazione dell'autore, salvo i limiti di legge.</p>
+  <div class="app">
+
+    <!-- HOME -->
+    <section id="homeScreen" class="screen active">
+      <div class="hero">
+        <h2>Benvenuto nel corso</h2>
+        <p>
+          Questo percorso è pensato per personale di segreteria, reception e amministrazione.
+          Include contenuti teorici organizzati in moduli, navigazione progressiva e un quiz finale
+          con estrazione casuale di 10 domande da un archivio predisposto per 50 quesiti.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showScreen('theoryScreen')">Vai alla teoria</button>
+          <button class="btn-accent" onclick="startQuiz(true)">Vai al quiz</button>
         </div>
       </div>
     </section>
 
-    <section class="section" id="teoria">
-      <div class="container">
-        <span class="section-tag">Teoria</span>
-        <h2>Lezione base: privacy operativa negli uffici</h2>
-        <p class="section-lead">
-          Contenuti semplificati per personale amministrativo, segreteria e reception. Ogni scheda riporta:
-          titolo, descrizione, soluzione pratica ed esempio realistico.
-        </p>
-
-        <div class="grid">
-          <article class="card">
-            <div class="num">1</div>
-            <h3>Cosa sono i dati personali</h3>
-            <p class="label">Descrizione</p>
-            <p>Nome, cognome, telefono, email, documenti, badge, immagini, appuntamenti, dati di clienti, fornitori e dipendenti: in ufficio i dati personali sono ovunque.</p>
-            <p class="label">Soluzione</p>
-            <p>Imparare a riconoscere quando si stanno trattando dati personali e usare sempre riservatezza, necessità e attenzione.</p>
-            <p class="label">Esempio pratico</p>
-            <p>La reception registra l’arrivo di un visitatore: deve raccogliere solo i dati strettamente necessari all’accesso.</p>
-          </
-                      <article class="card">
-            <div class="num">2</div>
-            <h3>Principio di minimizzazione</h3>
-            <p class="label">Descrizione</p>
-            <p>Devono essere raccolti e utilizzati solo i dati adeguati, pertinenti e limitati a quanto necessario rispetto alla finalità del trattamento.</p>
-            <p class="label">Soluzione</p>
-            <p>Non chiedere informazioni superflue. Prima di annotare o copiare un dato, chiedersi: “Serve davvero per questa attività?”</p>
-            <p class="label">Esempio pratico</p>
-            <p>Per consegnare un badge visitatore può bastare nome, azienda e persona da incontrare; non è sempre necessario acquisire ulteriori dati.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">3</div>
-            <h3>Ruoli e autorizzazioni</h3>
-            <p class="label">Descrizione</p>
-            <p>In ufficio non tutti possono vedere tutto. L’accesso ai dati deve essere coerente con mansione, incarico e necessità operative.</p>
-            <p class="label">Soluzione</p>
-            <p>Usare credenziali personali, non condividere password e consultare solo dati utili al proprio lavoro.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Un addetto reception può verificare un appuntamento, ma non deve aprire cartelle HR o documenti sanitari dei dipendenti.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">4</div>
-            <h3>Scrivania pulita e documenti cartacei</h3>
-            <p class="label">Descrizione</p>
-            <p>Fascicoli lasciati in vista, appunti con numeri di telefono, copie di documenti e moduli aperti sul banco reception possono esporre dati personali.</p>
-            <p class="label">Soluzione</p>
-            <p>Applicare la regola della “scrivania pulita”: a fine attività riporre documenti in cassetti, armadi o aree riservate.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Se arriva un visitatore al banco, il modulo del cliente precedente non deve restare visibile sul piano di lavoro.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">5</div>
-            <h3>Email e invii multipli</h3>
-            <p class="label">Descrizione</p>
-            <p>L’email è una delle fonti più comuni di errore: destinatario sbagliato, allegato errato, dati inseriti in chiaro o uso scorretto di CC e CCN.</p>
-            <p class="label">Soluzione</p>
-            <p>Controllare destinatari, oggetto e allegati prima dell’invio. Nei messaggi multipli esterni valutare l’uso del campo CCN.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Se invii una comunicazione a più clienti tra loro estranei, non mostrare a tutti gli indirizzi email degli altri destinatari.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">6</div>
-            <h3>Telefonate e comunicazioni verbali</h3>
-            <p class="label">Descrizione</p>
-            <p>Molte violazioni avvengono parlando troppo o con persone non identificate. In reception o segreteria serve prudenza nelle informazioni date al telefono.</p>
-            <p class="label">Soluzione</p>
-            <p>Verificare identità e titolo del richiedente prima di comunicare dati personali o dettagli su presenze, appuntamenti e recapiti.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Se una persona chiama chiedendo l’orario di uscita di un dipendente, non bisogna fornire l’informazione senza idonea verifica.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">7</div>
-            <h3>Reception e gestione visitatori</h3>
-            <p class="label">Descrizione</p>
-            <p>La reception tratta spesso dati di ospiti, fornitori, tecnici e candidati. È un punto delicato perché molti dati sono raccolti in area aperta al pubblico.</p>
-            <p class="label">Soluzione</p>
-            <p>Raccogliere solo i dati necessari, evitare registri esposti e non pronunciare ad alta voce informazioni riservate.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Meglio usare un sistema o un registro non visibile a chi è in coda, evitando che un visitatore legga i nominativi precedenti.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">8</div>
-            <h3>Password, schermo e postazione di lavoro</h3>
-            <p class="label">Descrizione</p>
-            <p>Una postazione lasciata aperta può esporre dati a colleghi non autorizzati, visitatori o personale esterno.</p>
-            <p class="label">Soluzione</p>
-            <p>Bloccare lo schermo quando ci si allontana, usare password robuste e non lasciarle annotate in modo visibile.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Se l’addetta alla segreteria si alza per accompagnare un visitatore, deve bloccare il PC prima di lasciare la scrivania.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">9</div>
-            <h3>Stampanti condivise e scanner</h3>
-            <p class="label">Descrizione</p>
-            <p>Documenti dimenticati sul vassoio di stampa o acquisiti da scanner condivisi possono essere letti da persone non autorizzate.</p>
-            <p class="label">Soluzione</p>
-            <p>Ritirare subito le stampe, evitare accumuli e prestare attenzione ai documenti con dati identificativi o sensibili.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Una copia del documento di identità lasciata sulla multifunzione è un errore organizzativo da evitare.</p>
-          </article>
-
-          <article class="card">
-            <div class="num">10</div>
-            <h3>Archivi, conservazione e distruzione</h3>
-            <p class="label">Descrizione</p>
-            <p>I dati non devono essere conservati più del necessario e non vanno eliminati in modo improvvisato o insicuro.</p>
-            <p class="label">Soluzione</p>
-            <p>Seguire procedure aziendali di conservazione e usare sistemi idonei per la distruzione sicura dei documenti.</p>
-            <p class="label">Esempio pratico</p>
-            <p>Moduli con dati personali non vanno buttati nel cestino comune senza distruzione controllata.</p>
-          </article>
-        </div>
+    <!-- THEORY -->
+    <section id="theoryScreen" class="screen">
+      <div class="top-actions">
+        <button class="btn-secondary" onclick="showScreen('homeScreen')">← Torna alla home</button>
+        <button class="btn-accent" onclick="startQuiz(true)">Vai al quiz finale</button>
       </div>
-    </section>
 
-    <section class="section alt" id="quiz">
-      <div class="container">
-        <span class="section-tag">Quiz</span>
-        <h2>Verifica finale</h2>
-        <p class="section-lead">
-          Il sistema estrae casualmente <strong>10 domande</strong> da un archivio di <strong>30</strong>.
-          Le opzioni vengono rimescolate a ogni nuova generazione. Livello: <strong>basso-medio</strong>.
-        </p>
+      <div class="layout">
+        <aside class="sidebar">
+          <h3>Indice del corso</h3>
 
-        <div class="quiz-toolbar">
-          <button id="startQuizBtn" class="btn btn-primary">Genera nuovo quiz</button>
-          <button id="repeatQuizBtn" class="btn btn-secondary">Ripeti stesso quiz</button>
-          <a href="#teoria" class="btn btn-ghost">Ritorna alla teoria</a>
-        </div>
-
-        <div id="quizContainer" class="quiz-container">
-          <div class="quiz-placeholder">
-            Clicca su <strong>“Genera nuovo quiz”</strong> per iniziare.
+          <div class="progress-wrap">
+            <div class="progress-label">
+              Avanzamento teoria: <span id="progressText">1 / 22</span>
+            </div>
+            <div class="progress-bar">
+              <div id="progressBarFill" class="progress-bar-fill"></div>
+            </div>
           </div>
-        </div>
 
-        <div id="quizResults" class="quiz-results hidden"></div>
+          <div id="lessonNav" class="lesson-nav"></div>
+        </aside>
+
+        <div class="content-area">
+          <div id="lessonContainer"></div>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="fonti">
-      <div class="container">
-        <span class="section-tag">Fonti</span>
-        <h2>Fonti ufficiali di riferimento</h2>
-        <p class="section-lead">
-          Contenuti didattici costruiti in coerenza con fonti istituzionali e ufficiali sul trattamento dei dati personali in ambito lavorativo e organizzativo.
+    <!-- QUIZ -->
+    <section id="quizScreen" class="screen">
+      <div class="top-actions">
+        <button class="btn-secondary" onclick="showScreen('theoryScreen')">← Torna alla teoria</button>
+        <button class="btn-secondary" onclick="showScreen('homeScreen')">Home</button>
+      </div>
+
+      <div class="quiz-header">
+        <h2>Quiz finale</h2>
+        <p class="muted">
+          Il sistema seleziona casualmente <strong>10 domande</strong> da un archivio predisposto per
+          <strong>50 quesiti</strong>. Le opzioni vengono mescolate a ogni nuova generazione del quiz.
         </p>
+      </div>
 
-        <div class="source-box">
-          <ul>
-            <li>Regolamento (UE) 2016/679 – GDPR</li>
-            <li>D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018</li>
-            <li>Garante per la protezione dei dati personali – guida e materiali divulgativi</li>
-            <li>Principi di minimizzazione, integrità, riservatezza, accountability e sicurezza</li>
-            <li>Regole organizzative per documenti, email, accessi, archivi, videosorveglianza e data breach</li>
-          </ul>
+      <div class="quiz-card">
+        <form id="quizForm"></form>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn-success" onclick="submitQuiz()">Concludi e correggi</button>
+          <button type="button" class="btn-secondary" onclick="repeatSameQuiz()">Ripeti stesso quiz</button>
+          <button type="button" class="btn-accent" onclick="startQuiz(true)">Genera nuovo quiz</button>
         </div>
+
+        <div id="resultsBox" class="results"></div>
       </div>
     </section>
-  </main>
+
+  </div>
 
   <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <h3>Privacy negli uffici</h3>
-          <p class="foot-note">
-            Corso base introduttivo per segreteria, reception e personale amministrativo.
-          </p>
-        </div>
-        <div>
-          <h4>Crediti</h4>
-          <p class="foot-note">Dott. Salvatore Trono - docente formatore esperto SSL</p>
-        </div>
-        <div>
-          <h4>Nota</h4>
-          <p class="foot-note">
-            Uso esclusivamente educativo. Vietata la riproduzione senza autorizzazione, salvo i limiti di legge.
-          </p>
-        </div>
-      </div>
-    </div>
+    Struttura corso online pronta per estensione del paniere a 50 domande.
   </footer>
 
   <script>
-    const questionBank = [
+    const lessons = [
       {
-        question: "In un ufficio, quale tra questi è un dato personale?",
-        options: [
-          "Solo il codice fiscale",
-          "Solo il numero di carta d’identità",
-          "Qualsiasi informazione riferibile a una persona identificata o identificabile",
-          "Solo i dati sanitari"
-        ],
-        correct: 2,
-        explanation: "È dato personale qualsiasi informazione che consente di identificare direttamente o indirettamente una persona."
+        title: "1. Introduzione alla protezione dei dati in ufficio",
+        content: `
+          <p>Nel lavoro d’ufficio, la protezione dei dati riguarda attività quotidiane come rispondere al telefono, inviare email, stampare documenti, ricevere visitatori e archiviare pratiche. Non è una questione solo informatica: è un comportamento professionale che coinvolge tutti.</p>
+          <p>Ogni disattenzione può esporre informazioni personali a persone non autorizzate. Per questo la tutela dei dati deve essere considerata parte integrante del lavoro ben fatto.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché i dati possono essere divulgati impropriamente anche con gesti semplici e apparentemente innocui.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Lasciare un elenco nominativi sulla scrivania della reception può consentire a terzi di leggere informazioni che non dovrebbero vedere.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Pensare che la protezione dei dati riguardi solo l’ufficio IT o la direzione.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Gestire ogni informazione come se potesse essere vista da altri, adottando ordine, riservatezza e prudenza.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La tutela dei dati dipende dalle abitudini quotidiane di chi lavora in ufficio.
+          </div>
+        `
       },
       {
-        question: "Qual è il comportamento più corretto alla reception?",
-        options: [
-          "Lasciare il registro visitatori aperto sul banco",
-          "Raccogliere solo i dati necessari e non renderli visibili agli altri",
-          "Chiedere sempre il maggior numero possibile di dati",
-          "Comunicare ad alta voce il motivo della visita"
-        ],
-        correct: 1,
-        explanation: "Alla reception bisogna limitare i dati raccolti e impedire che altri visitatori possano leggerli o ascoltarli."
+        title: "2. Cosa si intende per dato personale",
+        content: `
+          <p>Un dato personale è qualsiasi informazione riferita a una persona identificata o identificabile. Non si tratta solo di nome e cognome, ma anche di numero di telefono, email, codice cliente, fotografia, voce, targa, indirizzo o combinazioni di informazioni che permettono di risalire a una persona.</p>
+          <p>In ufficio si trattano dati personali molto più spesso di quanto si immagini. Anche un’agenda appuntamenti o una rubrica interna possono contenere informazioni da proteggere.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché solo riconoscendo correttamente i dati personali è possibile proteggerli in modo adeguato.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Un foglio con nominativi, numeri di cellulare e orari di appuntamento contiene dati personali e non deve essere lasciato esposto.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Ridurre il concetto di dato personale ai soli documenti ufficiali o ai dati “sensibili”.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Valutare sempre se un’informazione può essere collegata a una persona, direttamente o indirettamente.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Un dato personale è qualsiasi informazione che consente di identificare una persona.
+          </div>
+        `
       },
       {
-        question: "Se invii una email a molti destinatari esterni che non si conoscono tra loro, quale accorgimento è spesso opportuno?",
-        options: [
-          "Usare il campo CCN quando necessario",
-          "Mettere tutti in CC",
-          "Scrivere gli indirizzi nel testo del messaggio",
-          "Inviare senza controllare i destinatari"
-        ],
-        correct: 0,
-        explanation: "Il campo CCN evita la diffusione non necessaria degli indirizzi email tra destinatari esterni."
+        title: "3. Riservatezza nella gestione quotidiana",
+        content: `
+          <p>La riservatezza non consiste solo nel non divulgare dati all’esterno, ma anche nel limitare la conoscenza delle informazioni all’interno dell’organizzazione alle sole persone autorizzate.</p>
+          <p>Telefonate ad alta voce, monitor visibili, stampati abbandonati o email inoltrate senza attenzione possono compromettere la riservatezza in modo molto rapido.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché molte violazioni nascono da comportamenti ordinari e non da attacchi informatici complessi.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Comunicare al telefono dati personali in presenza di persone estranee può esporre informazioni riservate.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Parlare liberamente di pratiche, clienti o utenti in ambienti condivisi o facilmente accessibili.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Abbassare il tono di voce, schermare i monitor e custodire i documenti quando non servono.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La riservatezza si costruisce attraverso attenzione, discrezione e controllo dell’ambiente di lavoro.
+          </div>
+        `
       },
       {
-        question: "Quando ti allontani dalla postazione per alcuni minuti, cosa dovresti fare?",
-        options: [
-          "Lasciare il PC acceso e aperto",
-          "Chiedere a un collega di controllare lo schermo",
-          "Bloccare la sessione di lavoro",
-          "Spegnere sempre il computer"
-        ],
-        correct: 2,
-        explanation: "Bloccare lo schermo è una misura semplice ma fondamentale per impedire accessi non autorizzati."
+        title: "4. Uso corretto di email e comunicazioni",
+        content: `
+          <p>Le comunicazioni elettroniche sono una delle principali aree di rischio. Un destinatario errato, un allegato inviato per sbaglio o l’uso improprio del “rispondi a tutti” possono causare diffusione non autorizzata di dati.</p>
+          <p>Ogni invio dovrebbe essere preceduto da una verifica accurata di destinatari, contenuti e allegati.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché una comunicazione sbagliata può propagare rapidamente informazioni a soggetti non autorizzati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Inviare una lista utenti al gruppo sbagliato espone dati a persone che non devono riceverli.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Inviare email in fretta senza controllare con attenzione destinatari e allegati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Rileggere sempre il messaggio e verificare ogni allegato prima dell’invio.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Nelle email, la prudenza di pochi secondi evita errori con conseguenze importanti.
+          </div>
+        `
       },
       {
-        question: "Qual è un esempio di minimizzazione dei dati?",
-        options: [
-          "Chiedere informazioni extra nel dubbio",
-          "Raccogliere solo i dati strettamente necessari",
-          "Conservare tutti i moduli per sempre",
-          "Fotocopiare ogni documento per sicurezza"
-        ],
-        correct: 1,
-        explanation: "Il principio di minimizzazione richiede di trattare solo i dati pertinenti e necessari alla finalità."
+        title: "5. Archiviazione cartacea e digitale",
+        content: `
+          <p>I documenti cartacei e digitali devono essere organizzati in modo da garantirne reperibilità, protezione e accesso controllato. L’archiviazione disordinata aumenta il rischio di smarrimenti, consultazioni indebite e divulgazioni accidentali.</p>
+          <p>Ordine e criterio non servono solo all’efficienza, ma sono parte della protezione delle informazioni.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché la disorganizzazione documentale espone i dati a errori, perdite e accessi non autorizzati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Conservare fascicoli in armadi aperti o file in cartelle condivise senza criterio facilita accessi impropri.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Accumulare documenti su scrivanie, desktop o cartelle generiche senza classificazione.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Adottare criteri chiari di archiviazione, accesso e conservazione, sia per il cartaceo sia per il digitale.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Un archivio ordinato protegge meglio i dati e rende il lavoro più sicuro.
+          </div>
+        `
       },
       {
-        question: "Cosa non andrebbe fatto con le password?",
-        options: [
-          "Usare credenziali personali",
-          "Cambiarle secondo le regole aziendali",
-          "Conservarle in modo visibile sulla scrivania",
-          "Proteggere l’accesso al PC"
-        ],
-        correct: 2,
-        explanation: "Lasciare password visibili espone la postazione a rischi di accesso improprio."
+        title: "6. Password e accessi",
+        content: `
+          <p>Le credenziali di accesso rappresentano una difesa essenziale. Password deboli, condivise o annotate in modo visibile compromettono la sicurezza e rendono difficile attribuire correttamente le operazioni effettuate.</p>
+          <p>La protezione degli accessi è una responsabilità personale e non deve essere sottovalutata.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché chi accede con credenziali valide può vedere, modificare o cancellare dati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Lasciare la password scritta su un post-it attaccato al monitor annulla di fatto qualsiasi protezione.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Condividere le credenziali con colleghi per comodità o velocità.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Usare password robuste, custodirle con attenzione e bloccare la sessione quando ci si allontana.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Le credenziali sono personali: proteggerle significa proteggere i dati.
+          </div>
+        `
       },
       {
-        question: "Qual è il comportamento corretto con una stampa contenente dati personali?",
-        options: [
-          "Lasciarla sul vassoio finché qualcuno la ritira",
-          "Ritirarla il prima possibile",
-          "Appoggiarla sul banco reception",
-          "Buttarla nel cestino comune se non serve"
-        ],
-        correct: 1,
-        explanation: "Le stampe vanno ritirate subito per evitare accessi o letture da parte di non autorizzati."
+        title: "7. Gestione della postazione di lavoro",
+        content: `
+          <p>La postazione di lavoro può diventare un punto di esposizione dei dati se monitor, documenti e dispositivi sono lasciati accessibili o visibili. L’ordine visivo e documentale è parte integrante della sicurezza.</p>
+          <p>Una scrivania pulita e una sessione bloccata riducono molto il rischio di divulgazione accidentale.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché la postazione è il luogo in cui le informazioni diventano materialmente visibili.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Un visitatore o un collega non autorizzato può leggere documenti lasciati aperti sulla scrivania.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Allontanarsi lasciando lo schermo acceso e documenti esposti.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Applicare la regola della “scrivania pulita” e bloccare sempre il computer quando non lo si usa.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La sicurezza inizia dalla postazione: ciò che resta visibile può diventare esposto.
+          </div>
+        `
       },
       {
-        question: "Se ricevi una telefonata da una persona che chiede informazioni su un dipendente, cosa devi fare?",
-        options: [
-          "Fornire i dati se la persona sembra sicura",
-          "Comunicare subito l’informazione richiesta",
-          "Verificare identità e legittimazione prima di rispondere",
-          "Passare sempre il numero personale del dipendente"
-        ],
-        correct: 2,
-        explanation: "Le informazioni personali non vanno comunicate senza adeguata verifica del richiedente."
+        title: "8. Condivisione interna delle informazioni",
+        content: `
+          <p>Non tutte le informazioni devono circolare liberamente all’interno dell’ufficio. La condivisione deve essere proporzionata al ruolo e alla necessità operativa.</p>
+          <p>Diffondere dati oltre quanto necessario aumenta il rischio di errore, confusione e trattamento improprio.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché il fatto che una persona lavori nella stessa organizzazione non significa che possa accedere a tutto.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Inserire in copia persone non coinvolte in una pratica espone dati senza reale necessità.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Condividere documenti “per conoscenza” in modo automatico e non ragionato.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Trasmettere solo le informazioni strettamente necessarie a chi ne ha effettiva esigenza.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Condividere bene significa condividere solo ciò che serve, con chi serve.
+          </div>
+        `
       },
       {
-        question: "Quale pratica è coerente con la regola della scrivania pulita?",
-        options: [
-          "Lasciare i fascicoli più usati sempre in vista",
-          "Riporre i documenti quando non servono",
-          "Mettere i moduli sul banco per velocizzare il lavoro",
-          "Usare foglietti con dati sotto la tastiera"
-        ],
-        correct: 1,
-        explanation: "La scrivania pulita riduce il rischio che documenti e dati siano visti da chi non deve."
+        title: "9. Accoglienza del pubblico e front office",
+        content: `
+          <p>Le attività di front office richiedono particolare attenzione perché si svolgono in ambienti spesso aperti, con presenza contemporanea di utenti, visitatori e personale interno. In questi contesti la protezione dei dati si gioca molto sulla gestione degli spazi, della voce e dei documenti.</p>
+          <p>L’accoglienza deve essere efficiente ma anche rispettosa della riservatezza.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché il front office è una zona in cui i dati possono essere ascoltati, letti o osservati con facilità.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Lasciare registri presenze o elenchi prenotazioni in vista può consentire letture indebite da parte del pubblico.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Gestire comunicazioni personali davanti ad altri utenti in attesa.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Ridurre l’esposizione visiva e verbale dei dati durante l’accoglienza.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Nel front office la riservatezza va progettata e difesa in ogni interazione.
+          </div>
+        `
       },
       {
-        question: "Quale tra queste è una situazione a rischio in reception?",
-        options: [
-          "Parlare a bassa voce di dati personali",
-          "Usare un registro non visibile al pubblico",
-          "Lasciare leggere ai visitatori i dati dei precedenti accessi",
-          "Limitare le informazioni richieste"
-        ],
-        correct: 2,
-        explanation: "I dati di altri visitatori non devono essere accessibili o leggibili da terzi."
+        title: "10. Stampa, copia e distruzione documenti",
+        content: `
+          <p>Le stampanti condivise e le fotocopiatrici sono punti critici spesso trascurati. Un documento lasciato nel vassoio di uscita o gettato nei rifiuti ordinari può essere recuperato da persone non autorizzate.</p>
+          <p>La corretta gestione del ciclo fisico del documento è fondamentale.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché il documento cartaceo continua a esporre dati anche dopo la stampa o al termine del suo utilizzo.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Stampare dati personali e dimenticarli sulla stampante significa renderli accessibili a chiunque passi.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Buttare nei cestini normali documenti che contengono informazioni personali.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Ritirare subito i documenti stampati e distruggere quelli da eliminare con modalità adeguate.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Un documento stampato non protetto è un dato esposto.
+          </div>
+        `
       },
       {
-        question: "Un allegato email con dati personali va inviato:",
-        options: [
-          "Dopo aver controllato destinatario e file allegato",
-          "Senza oggetto per maggiore riservatezza",
-          "Sempre a tutti i colleghi",
-          "Solo da account personale"
-        ],
-        correct: 0,
-        explanation: "Prima dell’invio occorre controllare con attenzione destinatari, contenuto e allegati."
+        title: "11. Telefonate e comunicazioni verbali",
+        content: `
+          <p>Le informazioni personali possono essere divulgate anche senza lasciare tracce scritte. Le comunicazioni telefoniche e verbali richiedono attenzione, soprattutto in ambienti condivisi o aperti al pubblico.</p>
+          <p>Prima di fornire informazioni è necessario valutare chi sta ascoltando e se l’interlocutore è effettivamente autorizzato a riceverle.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché la voce può diffondere dati in modo immediato e incontrollabile.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Confermare al telefono dettagli di una pratica senza adeguata verifica può comportare una comunicazione indebita.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Rispondere in modo automatico a richieste di informazioni senza fare controlli minimi.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Verificare l’interlocutore e usare toni e contenuti misurati, soprattutto in presenza di terzi.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Anche una telefonata può trasformarsi in una violazione se manca prudenza.
+          </div>
+        `
       },
       {
-        question: "Qual è il comportamento migliore con documenti non più necessari?",
-        options: [
-          "Lasciarli in archivio senza criterio",
-          "Distruggerli secondo le procedure aziendali",
-          "Metterli in un cestino aperto",
-          "Portarli a casa per sicurezza"
-        ],
-        correct: 1,
-        explanation: "La distruzione deve essere gestita in modo sicuro e coerente con le procedure interne."
+        title: "12. Uso di dispositivi mobili",
+        content: `
+          <p>Smartphone, tablet e notebook rendono il lavoro più flessibile ma aumentano i rischi di perdita, furto, accesso non autorizzato e visualizzazione impropria dei dati.</p>
+          <p>La mobilità richiede più attenzione, non meno.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché i dispositivi mobili contengono spesso email, contatti, documenti e accessi a sistemi aziendali.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Lasciare un notebook aziendale in auto o incustodito in un luogo aperto espone dati e credenziali.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Usare dispositivi mobili senza blocco schermo o senza attenzione ai luoghi in cui vengono utilizzati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Proteggere i dispositivi con codici di accesso, custodirli con cura e limitarne l’uso in contesti non sicuri.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La mobilità aumenta la comodità ma richiede maggiore disciplina.
+          </div>
+        `
       },
       {
-        question: "Se un visitatore è in attesa al banco, l’operatore dovrebbe:",
-        options: [
-          "Lasciare aperto a video il gestionale con dati del cliente precedente",
-          "Mostrare il calendario appuntamenti completo",
-          "Fare attenzione a schermo e documenti visibili",
-          "Consegnare badge senza alcun controllo"
-        ],
-        correct: 2,
-        explanation: "In aree aperte al pubblico è essenziale evitare esposizioni accidentali di dati su schermo o carta."
+        title: "13. Attenzione agli errori involontari",
+        content: `
+          <p>Molte violazioni non dipendono da intenzioni scorrette ma da distrazione, fretta, automatismi o cattiva organizzazione. Gli errori involontari sono tra le cause più comuni di esposizione dei dati.</p>
+          <p>La prevenzione passa da controllo, metodo e rallentamento consapevole nei momenti critici.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché gli errori banali possono produrre effetti molto concreti e difficili da correggere.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Allegare il file sbagliato a una email può inviare dati di una persona a un destinatario estraneo.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Lavorare sempre in urgenza senza controlli finali prima di comunicare o inviare documenti.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Creare una piccola routine di verifica prima di ogni invio, stampa o condivisione.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La maggior parte degli errori si riduce con metodo, attenzione e controllo finale.
+          </div>
+        `
       },
       {
-        question: "Qual è un esempio corretto di uso limitato dei dati?",
-        options: [
-          "Consultare solo le informazioni necessarie al proprio compito",
-          "Aprire tutte le cartelle condivise per curiosità",
-          "Copiare dati su chiavette personali",
-          "Stampare tutto per comodità"
-        ],
-        correct: 0,
-        explanation: "L’accesso ai dati deve essere limitato alle sole esigenze di lavoro."
+        title: "14. Accessi di visitatori e fornitori",
+        content: `
+          <p>Persone esterne come manutentori, corrieri, consulenti o visitatori possono transitare in aree dove sono presenti dati, schermi e documenti. Anche in questi casi serve attenzione organizzativa.</p>
+          <p>Non basta che la visita sia legittima: occorre evitare esposizioni inutili di informazioni.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché un accesso legittimo ai locali non equivale a un’autorizzazione a vedere i dati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Far sostare un fornitore davanti a una postazione con pratiche aperte espone dati non necessari.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Trascurare la visibilità di monitor, stampati e fascicoli in presenza di esterni.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Accompagnare gli esterni, limitare l’accesso alle aree necessarie e mettere in sicurezza le informazioni visibili.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Gli esterni vanno gestiti con accoglienza e controllo, non con automatismo.
+          </div>
+        `
       },
       {
-        question: "In caso di invio email al destinatario sbagliato con dati personali, la situazione:",
-        options: [
-          "Non conta se il file era piccolo",
-          "Può costituire una violazione da gestire subito internamente",
-          "Si ignora se il destinatario è noto",
-          "Si risolve cancellando l’email dalla posta inviata"
-        ],
-        correct: 1,
-        explanation: "Un invio errato può integrare un data breach e va segnalato secondo le procedure aziendali."
+        title: "15. Ordine, metodo e responsabilità personale",
+        content: `
+          <p>La protezione dei dati non dipende solo da strumenti o regolamenti, ma anche da ordine mentale e operativo. Un ambiente disordinato favorisce errori, smarrimenti, duplicazioni inutili e trattamenti non controllati.</p>
+          <p>La responsabilità personale si vede soprattutto nelle piccole abitudini ripetute ogni giorno.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché la qualità del lavoro quotidiano incide direttamente sulla protezione delle informazioni.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Documenti accumulati senza criterio rendono difficile capire cosa deve essere custodito, archiviato o distrutto.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Considerare l’ordine solo come una scelta personale e non come un fattore di sicurezza.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Mantenere una routine ordinata di archiviazione, pulizia della scrivania e verifica finale delle attività.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Ordine e responsabilità personale sono strumenti concreti di protezione dei dati.
+          </div>
+        `
       },
       {
-        question: "Perché è importante non parlare ad alta voce di appuntamenti o dati personali al front office?",
-        options: [
-          "Perché rallenta il lavoro",
-          "Perché i dati possono essere ascoltati da persone non autorizzate",
-          "Perché è poco educato ma non rilevante",
-          "Perché lo chiede solo il regolamento interno"
-        ],
-        correct: 1,
-        explanation: "La riservatezza riguarda anche le comunicazioni verbali, non solo i documenti."
+        title: "16. Segnalazione di errori o anomalie",
+        content: `
+          <p>Quando si verifica un errore, un dubbio o un’anomalia, il comportamento corretto non è nascondere il problema ma segnalarlo tempestivamente ai riferimenti interni competenti. La rapidità di segnalazione può ridurre le conseguenze.</p>
+          <p>Una cultura organizzativa matura favorisce la comunicazione immediata degli incidenti.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché un problema non segnalato in tempo può aggravarsi e coinvolgere più dati o più persone.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Se una email è stata inviata al destinatario sbagliato, intervenire subito può permettere azioni correttive più efficaci.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Tacere un errore per paura di essere giudicati o richiamati.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Segnalare prontamente ogni evento anomalo seguendo i canali interni previsti.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Un errore gestito subito è quasi sempre meno grave di un errore nascosto.
+          </div>
+        `
       },
       {
-        question: "Qual è il comportamento corretto verso i badge visitatori?",
-        options: [
-          "Consegnarli senza registrazione quando c’è coda",
-          "Lasciarli a disposizione sul banco",
-          "Gestirli con procedura ordinata e dati essenziali",
-          "Annotare ogni dato possibile del visitatore"
-        ],
-        correct: 2,
-        explanation: "La gestione del badge deve essere controllata, proporzionata e non eccedente."
+        title: "17. Uso di supporti e file condivisi",
+        content: `
+          <p>Chiavette USB, cartelle condivise, allegati duplicati e file esportati fuori dai sistemi principali possono aumentare la dispersione dei dati e rendere meno controllabile il loro utilizzo.</p>
+          <p>Ogni copia in più è un punto di rischio in più.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché i dati replicati su più supporti diventano più difficili da proteggere e da gestire correttamente.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Salvare file con dati personali su una chiavetta non custodita espone le informazioni a smarrimento o accessi indebiti.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Creare copie locali o esterne dei documenti per comodità senza valutarne i rischi.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Usare solo i canali e gli spazi autorizzati, limitando copie e trasferimenti non necessari.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Meno copie inutili significano più controllo e meno rischio.
+          </div>
+        `
       },
       {
-        question: "Quale situazione è più corretta?",
-        options: [
-          "Password condivisa tra colleghi dello stesso ufficio",
-          "Credenziali personali e non cedute",
-          "Accesso al PC aperto per chiunque della reception",
-          "Uso dello stesso account per tutti i turni"
-        ],
-        correct: 1,
-        explanation: "Le credenziali personali permettono tracciabilità e riducono usi impropri."
+        title: "18. Lavoro condiviso e responsabilità di squadra",
+        content: `
+          <p>La protezione dei dati non è solo individuale ma anche collettiva. Un team che lavora bene condivide regole, attenzione e metodo; un team disallineato moltiplica i rischi.</p>
+          <p>La qualità complessiva dipende anche dalla coerenza dei comportamenti tra colleghi.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché anche chi è attento può essere esposto dagli errori o dalle abitudini scorrette altrui.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Se alcuni colleghi lasciano documenti ovunque, l’ambiente diventa insicuro per tutti.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Pensare che la protezione dei dati sia solo una responsabilità personale senza dimensione organizzativa.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Richiamare con correttezza le buone abitudini comuni e condividere pratiche di lavoro coerenti.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La sicurezza delle informazioni cresce quando il gruppo lavora con criteri condivisi.
+          </div>
+        `
       },
       {
-        question: "Se un collega ti chiede dati che non servono alla sua attività, dovresti:",
-        options: [
-          "Fornirli per spirito di collaborazione",
-          "Condividerli se è anziano di servizio",
-          "Valutare se ha effettiva necessità di accesso",
-          "Inviare comunque tutto via email"
-        ],
-        correct: 2,
-        explanation: "La condivisione dei dati tra colleghi non è libera: deve esserci necessità operativa."
+        title: "19. Attenzione ai dettagli operativi",
+        content: `
+          <p>Nella gestione dei dati, i dettagli contano molto: nome file, oggetto email, posizione di un fascicolo, visibilità di un monitor, scelta del destinatario, luogo in cui si conversa. Le violazioni nascono spesso da dettagli trascurati.</p>
+          <p>Chi lavora bene sviluppa l’abitudine a osservare questi aspetti prima che diventino problemi.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché i rischi concreti sono spesso nascosti nelle micro-attività del lavoro quotidiano.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Un oggetto email troppo dettagliato può anticipare contenuti riservati a chiunque lo visualizzi.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Sottovalutare i piccoli passaggi operativi considerandoli irrilevanti.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Controllare i dettagli prima di ogni azione che coinvolga dati o documenti.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            I dettagli sono spesso il punto in cui la sicurezza si rompe o si rafforza.
+          </div>
+        `
       },
       {
-        question: "Dove non dovrebbero essere lasciati documenti con dati personali?",
-        options: [
-          "In armadi o cassetti chiusi",
-          "In aree accessibili al pubblico o di passaggio",
-          "In archivi riservati",
-          "In cartelle protette"
-        ],
-        correct: 1,
-        explanation: "I documenti non devono essere esposti in spazi dove possano essere letti da persone non autorizzate."
+        title: "20. Comportamenti da evitare assolutamente",
+        content: `
+          <p>Alcuni comportamenti sono chiaramente incompatibili con una corretta gestione dei dati: condividere password, lasciare documenti visibili, inviare allegati senza controlli, parlare di pratiche davanti a terzi, usare dispositivi in modo incauto.</p>
+          <p>Riconoscere e prevenire questi errori è essenziale per lavorare in modo professionale.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché alcune condotte espongono i dati in modo diretto e immediato.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Lasciare aperto un fascicolo sul banco reception durante la pausa rende i dati accessibili a chiunque si avvicini.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Normalizzare comportamenti scorretti solo perché “si è sempre fatto così”.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Interrompere le cattive abitudini e sostituirle con comportamenti controllati e coerenti.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Le cattive abitudini ripetute sono tra i principali nemici della protezione dei dati.
+          </div>
+        `
       },
       {
-        question: "Qual è una buona pratica con le telefonate in reception?",
-        options: [
-          "Dare sempre conferma della presenza di una persona in sede",
-          "Condividere il numero diretto personale del dipendente",
-          "Limitare le informazioni e verificare chi chiama",
-          "Leggere ad alta voce il calendario appuntamenti"
-        ],
-        correct: 2,
-        explanation: "Le informazioni vanno comunicate con prudenza e solo se vi è adeguata legittimazione."
+        title: "21. Buone prassi quotidiane",
+        content: `
+          <p>Le buone prassi non sono azioni eccezionali, ma comportamenti semplici e ripetibili: controllare prima di inviare, archiviare subito, proteggere la postazione, usare con criterio i documenti, custodire dispositivi e segnalare anomalie.</p>
+          <p>È la costanza, più che il gesto occasionale, a costruire un ambiente affidabile.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché la continuità delle buone abitudini riduce drasticamente il rischio di errori.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Rileggere sempre destinatari e allegati prima dell’invio richiede pochi secondi ma previene molti incidenti.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Affidarsi solo alla memoria o all’improvvisazione senza routine operative.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Stabilire una checklist mentale o scritta per le attività più delicate.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            Le buone prassi valgono perché sono semplici, concrete e ripetute ogni giorno.
+          </div>
+        `
       },
       {
-        question: "Qual è il rischio di un documento dimenticato sulla stampante?",
-        options: [
-          "Nessuno se l’ufficio è tranquillo",
-          "Può essere letto da persone non autorizzate",
-          "Solo un disordine estetico",
-          "Un problema solo se è a colori"
-        ],
-        correct: 1,
-        explanation: "Una stampa non ritirata può esporre dati personali a terzi o colleghi non autorizzati."
-      },
-      {
-        question: "Se devi annotare un messaggio per un collega, quale approccio è preferibile?",
-        options: [
-          "Scrivere tutti i dettagli personali su un foglio lasciato in reception",
-          "Annotare solo le informazioni strettamente utili",
-          "Appuntare anche dati non richiesti per completezza",
-          "Lasciare il messaggio in vista a tutti"
-        ],
-        correct: 1,
-        explanation: "Anche nelle comunicazioni interne conviene limitare i dati al minimo necessario."
-      },
-      {
-        question: "Cosa significa usare i dati in modo riservato?",
-        options: [
-          "Parlarne solo con amici fidati",
-          "Trattarli evitando accessi, visioni o comunicazioni non autorizzate",
-          "Conservarli senza regole precise",
-          "Tenere copie personali di sicurezza"
-        ],
-        correct: 1,
-        explanation: "La riservatezza richiede protezione concreta dei dati da accessi o divulgazioni improprie."
-      },
-      {
-        question: "In un corso base per reception, quale errore è tipico?",
-        options: [
-          "Verificare il destinatario prima di inviare un file",
-          "Bloccare lo schermo quando ci si allontana",
-          "Parlare ad alta voce di dati dei visitatori",
-          "Ritirare subito le stampe"
-        ],
-        correct: 2,
-        explanation: "Pronunciare ad alta voce informazioni personali in aree aperte è un errore frequente."
-      },
-      {
-        question: "Quale comportamento è più corretto rispetto ai dati dei clienti?",
-        options: [
-          "Usarli solo per attività collegate al lavoro assegnato",
-          "Conservarne copie su dispositivi personali",
-          "Inviarli al proprio indirizzo privato per lavorare meglio",
-          "Stamparli sempre, anche se non serve"
-        ],
-        correct: 0,
-        explanation: "I dati dei clienti devono essere usati solo nei limiti delle finalità e delle istruzioni ricevute."
-      },
-      {
-        question: "Se noti un documento riservato lasciato in area comune, cosa dovresti fare?",
-        options: [
-          "Ignorarlo",
-          "Leggerlo per capire di chi è",
-          "Metterlo in sicurezza secondo le procedure interne",
-          "Fotografarlo e avvisare i colleghi"
-        ],
-        correct: 2,
-        explanation: "Il comportamento corretto è ridurre subito il rischio e seguire le regole organizzative interne."
-      },
-      {
-        question: "Quale frase descrive meglio un comportamento corretto in segreteria?",
-        options: [
-          "Più dati raccolgo, meglio è",
-          "I dati si possono lasciare in vista se il pubblico aspetta poco",
-          "Ogni dato va trattato con attenzione, necessità e discrezione",
-          "I dati cartacei sono meno delicati di quelli digitali"
-        ],
-        correct: 2,
-        explanation: "La regola pratica è trattare ogni dato con attenzione, proporzione e riservatezza."
-      },
-      {
-        question: "Quale tra queste azioni riduce il rischio privacy?",
-        options: [
-          "Usare registri e schermate non visibili ai visitatori",
-          "Condividere account tra turni",
-          "Lasciare i fascicoli sul bancone per comodità",
-          "Mandare documenti senza controlli finali"
-        ],
-        correct: 0,
-        explanation: "Limitare la visibilità di registri e schermi è una misura organizzativa molto efficace."
-      },
-      {
-        question: "Se non sei sicuro di poter comunicare un dato personale, la scelta più prudente è:",
-        options: [
-          "Comunicarlo lo stesso se hai poco tempo",
-          "Rifiutare sempre ogni informazione",
-          "Verificare la procedura o chiedere al referente interno",
-          "Consegnare copia del documento originale"
-        ],
-        correct: 2,
-        explanation: "Nel dubbio bisogna seguire le procedure aziendali e chiedere conferma al referente competente."
+        title: "22. Conclusione del percorso formativo",
+        content: `
+          <p>Proteggere i dati in ufficio significa lavorare con precisione, discrezione, metodo e responsabilità. Non serve creare allarmismo, ma costruire attenzione professionale stabile nel tempo.</p>
+          <p>Ogni persona che gestisce documenti, email, telefonate o accessi contribuisce in modo diretto alla sicurezza complessiva delle informazioni.</p>
+
+          <div class="box">
+            <h4>Perché è importante</h4>
+            <p>Perché la protezione dei dati è un risultato organizzativo che nasce dai comportamenti quotidiani.</p>
+          </div>
+
+          <div class="box">
+            <h4>Esempio pratico</h4>
+            <p>Un ufficio ordinato, discreto e attento previene molti problemi prima ancora che si manifestino.</p>
+          </div>
+
+          <div class="box">
+            <h4>Errore frequente da evitare</h4>
+            <p>Considerare il tema come secondario rispetto al lavoro operativo.</p>
+          </div>
+
+          <div class="box">
+            <h4>Buona prassi operativa</h4>
+            <p>Trasformare le regole in abitudini stabili, chiare e condivise.</p>
+          </div>
+
+          <div class="mini-sintesi">
+            La protezione dei dati non è un compito aggiuntivo: è parte del lavoro professionale.
+          </div>
+        `
       }
     ];
 
-    const startQuizBtn = document.getElementById("startQuizBtn");
-    const repeatQuizBtn = document.getElementById("repeatQuizBtn");
-    const quizContainer = document.getElementById("quizContainer");
-    const quizResults = document.getElementById("quizResults");
-
-    let currentQuiz = [];
-
-    function shuffleArray(array) {
-      const arr = [...array];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+    // DOMANDE DEMO
+    // Nel Blocco B sostituirai questo array con il paniere completo da 50 domande.
+    const questionBank = [
+      {
+        question: "Qual è uno degli errori più comuni nella gestione delle email?",
+        explanation: "L’invio senza controllo di destinatari e allegati è una delle cause più frequenti di divulgazione involontaria di dati.",
+        options: [
+          { text: "Controllare allegati e destinatari prima dell’invio", correct: false },
+          { text: "Rileggere il messaggio prima di inviarlo", correct: false },
+          { text: "Inviare email senza verificare bene destinatari e allegati", correct: true },
+          { text: "Usare formule chiare e sintetiche", correct: false }
+        ]
+      },
+      {
+        question: "Quale comportamento è corretto quando ci si allontana dalla postazione?",
+        explanation: "Bloccare il computer e mettere in sicurezza la postazione riduce il rischio di accessi o visualizzazioni indebite.",
+        options: [
+          { text: "Lasciare lo schermo acceso se ci si assenta per poco", correct: false },
+          { text: "Bloccare la sessione e non lasciare documenti esposti", correct: true },
+          { text: "Chiedere a un collega di controllare il monitor", correct: false },
+          { text: "Ridurre solo la luminosità dello schermo", correct: false }
+        ]
+      },
+      {
+        question: "Perché è importante non condividere le password?",
+        explanation: "Le credenziali sono personali e servono anche ad attribuire correttamente gli accessi e le operazioni eseguite.",
+        options: [
+          { text: "Perché le password devono restare personali", correct: true },
+          { text: "Perché allungano i tempi di lavoro", correct: false },
+          { text: "Perché servono solo al reparto IT", correct: false },
+          { text: "Perché sono utili solo per il lavoro da remoto", correct: false }
+        ]
+      },
+      {
+        question: "Quale situazione espone maggiormente i dati in front office?",
+        explanation: "Registri o documenti lasciati in vista al pubblico possono essere letti da persone non autorizzate.",
+        options: [
+          { text: "Usare una penna personale", correct: false },
+          { text: "Tenere monitor e registri non visibili al pubblico", correct: false },
+          { text: "Aggiornare l’agenda di servizio", correct: false },
+          { text: "Lasciare elenchi o registri in vista sul banco", correct: true }
+        ]
+      },
+      {
+        question: "Qual è una buona prassi nella stampa dei documenti?",
+        explanation: "I documenti vanno ritirati subito per evitare accessi indebiti da parte di colleghi o terzi.",
+        options: [
+          { text: "Lasciare i fogli nel vassoio finché si ha tempo", correct: false },
+          { text: "Ritirare subito i documenti stampati", correct: true },
+          { text: "Stampare più copie per sicurezza", correct: false },
+          { text: "Usare sempre il colore", correct: false }
+        ]
+      },
+      {
+        question: "Cosa si intende per dato personale?",
+        explanation: "È qualsiasi informazione riferita a una persona identificata o identificabile.",
+        options: [
+          { text: "Solo il codice fiscale", correct: false },
+          { text: "Solo i documenti ufficiali", correct: false },
+          { text: "Qualsiasi informazione riferita a una persona identificata o identificabile", correct: true },
+          { text: "Solo i dati sanitari", correct: false }
+        ]
       }
-      return arr;
-    }
+    ];
 
-    function buildQuizSet() {
-      const selected = shuffleArray(questionBank).slice(0, 10).map((q, index) => {
-        const mappedOptions = q.options.map((text, i) => ({
-          text,
-          isCorrect: i === q.correct
-        }));
-        const shuffledOptions = shuffleArray(mappedOptions);
-        return {
-          id: index + 1,
-          question: q.question,
-          options: shuffledOptions,
-          explanation: q.explanation
-        };
+    let currentLessonIndex = 0;
+    let currentQuizQuestions = [];
+    let lastQuizSeed = [];
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
       });
-
-      currentQuiz = selected;
-      renderQuiz(currentQuiz);
-      quizResults.classList.add("hidden");
-      quizResults.innerHTML = "";
+      document.getElementById(screenId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function renderQuiz(quizData) {
-      if (!quizData.length) {
-        quizContainer.innerHTML = '<div class="quiz-placeholder">Nessun quiz disponibile.</div>';
-        return;
-      }
+    function renderLessonNav() {
+      const nav = document.getElementById('lessonNav');
+      nav.innerHTML = '';
+      lessons.forEach((lesson, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'lesson-link' + (index === currentLessonIndex ? ' active' : '');
+        btn.textContent = lesson.title;
+        btn.onclick = () => {
+          currentLessonIndex = index;
+          renderCurrentLesson();
+        };
+        nav.appendChild(btn);
+      });
+    }
 
-      let html = '<div class="progress">Quiz generato: 10 domande casuali</div>';
-      html += '<form id="quizForm">';
+    function renderCurrentLesson() {
+      const container = document.getElementById('lessonContainer');
+      const lesson = lessons[currentLessonIndex];
 
-      quizData.forEach((q, qIndex) => {
-        html += `
-          <div class="question-card">
-            <h3>Domanda ${qIndex + 1}: ${escapeHtml(q.question)}</h3>
-            <div class="options">
-        `;
+      container.innerHTML = `
+        <article class="lesson-card active">
+          <h2>${lesson.title}</h2>
+          ${lesson.content}
 
-        q.options.forEach((opt, oIndex) => {
-          html += `
-            <label class="option">
-              <input type="radio" name="q_${qIndex}" value="${oIndex}" />
-              <span><strong>${String.fromCharCode(65 + oIndex)})</strong> ${escapeHtml(opt.text)}</span>
-            </label>
-          `;
-        });
-
-        html += `
+          <div class="lesson-actions">
+            <button class="btn-secondary" ${currentLessonIndex === 0 ? 'disabled style="opacity:.5;cursor:not-allowed"' : ''} onclick="prevLesson()">← Sezione precedente</button>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <button class="btn-accent" onclick="startQuiz(true)">Vai al quiz</button>
+              <button class="btn-primary" ${currentLessonIndex === lessons.length - 1 ? 'disabled style="opacity:.5;cursor:not-allowed"' : ''} onclick="nextLesson()">Sezione successiva →</button>
             </div>
           </div>
-        `;
-      });
-
-      html += `
-        <div class="submit-wrap">
-          <button type="submit" class="btn btn-primary">Consegna quiz</button>
-          <a href="#teoria" class="btn btn-secondary">Ritorna alla teoria</a>
-        </div>
-      </form>
+        </article>
       `;
 
-      quizContainer.innerHTML = html;
-
-      const quizForm = document.getElementById("quizForm");
-      quizForm.addEventListener("submit", handleSubmit);
+      renderLessonNav();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function handleSubmit(event) {
-      event.preventDefault();
+    function prevLesson() {
+      if (currentLessonIndex > 0) {
+        currentLessonIndex--;
+        renderCurrentLesson();
+      }
+    }
 
-      const form = event.target;
+    function nextLesson() {
+      if (currentLessonIndex < lessons.length - 1) {
+        currentLessonIndex++;
+        renderCurrentLesson();
+      }
+    }
+
+    function updateProgress() {
+      const progressText = document.getElementById('progressText');
+      const fill = document.getElementById('progressBarFill');
+      const current = currentLessonIndex + 1;
+      const total = lessons.length;
+      const percent = (current / total) * 100;
+
+      progressText.textContent = `${current} / ${total}`;
+      fill.style.width = `${percent}%`;
+    }
+
+    function shuffleArray(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startQuiz(generateNew = true) {
+      showScreen('quizScreen');
+
+      if (generateNew || !lastQuizSeed.length) {
+        const shuffledQuestions = shuffleArray(questionBank);
+        currentQuizQuestions = shuffledQuestions.slice(0, Math.min(10, shuffledQuestions.length)).map(q => {
+          return {
+            question: q.question,
+            explanation: q.explanation,
+            options: shuffleArray(q.options)
+          };
+        });
+
+        lastQuizSeed = JSON.parse(JSON.stringify(currentQuizQuestions));
+      } else {
+        currentQuizQuestions = JSON.parse(JSON.stringify(lastQuizSeed));
+      }
+
+      renderQuiz();
+    }
+
+    function repeatSameQuiz() {
+      if (!lastQuizSeed.length) return;
+      currentQuizQuestions = JSON.parse(JSON.stringify(lastQuizSeed));
+      renderQuiz(true);
+    }
+
+    function renderQuiz(resetScroll = false) {
+      const form = document.getElementById('quizForm');
+      const resultsBox = document.getElementById('resultsBox');
+      resultsBox.classList.remove('active');
+      resultsBox.innerHTML = '';
+
+      form.innerHTML = currentQuizQuestions.map((q, qIndex) => `
+        <div class="quiz-question">
+          <div class="question-title">Domanda ${qIndex + 1}: ${q.question}</div>
+          <div class="options">
+            ${q.options.map((opt, oIndex) => `
+              <label class="option">
+                <input type="radio" name="question_${qIndex}" value="${oIndex}">
+                <span><strong>${String.fromCharCode(65 + oIndex)})</strong> ${opt.text}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      if (resetScroll) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function submitQuiz() {
+      const resultsBox = document.getElementById('resultsBox');
       let score = 0;
-      let answered = 0;
       const review = [];
 
-      currentQuiz.forEach((q, qIndex) => {
-        const checked = form.querySelector(`input[name="q_${qIndex}"]:checked`);
-        const correctIndex = q.options.findIndex(o => o.isCorrect);
+      currentQuizQuestions.forEach((q, qIndex) => {
+        const selected = document.querySelector(`input[name="question_${qIndex}"]:checked`);
+        const selectedIndex = selected ? Number(selected.value) : null;
+        const correctIndex = q.options.findIndex(opt => opt.correct === true);
+        const isCorrect = selectedIndex === correctIndex;
 
-        let userIndex = null;
-        let isCorrect = false;
-
-        if (checked) {
-          answered++;
-          userIndex = Number(checked.value);
-          isCorrect = userIndex === correctIndex;
-          if (isCorrect) score++;
-        }
+        if (isCorrect) score++;
 
         review.push({
           question: q.question,
-          userAnswer: userIndex !== null ? q.options[userIndex].text : "Nessuna risposta",
-          correctAnswer: q.options[correctIndex].text,
+          selectedText: selectedIndex !== null ? q.options[selectedIndex].text : "Nessuna risposta selezionata",
+          correctText: q.options[correctIndex].text,
           isCorrect,
           explanation: q.explanation
         });
       });
 
-      renderResults(score, answered, review);
-    }
+      const total = currentQuizQuestions.length;
+      const percent = Math.round((score / total) * 100);
 
-    function renderResults(score, answered, review) {
-      const wrong = review.length - score;
-
-      let html = `
-        <h3 style="margin-top:0; color: var(--primary);">Risultato finale</h3>
-        <div class="summary">
-          <div class="sum-box">
-            <strong>Punteggio</strong>
-            <span>${score} / ${review.length}</span>
-          </div>
-          <div class="sum-box">
-            <strong>Corrette</strong>
-            <span>${score}</span>
-          </div>
-          <div class="sum-box">
-            <strong>Errate o mancanti</strong>
-            <span>${wrong}</span>
-          </div>
+      resultsBox.innerHTML = `
+        <div class="score-box">
+          Risultato finale: ${score} / ${total} — ${percent}%
         </div>
-        <p><strong>Domande con spiegazione:</strong></p>
-      `;
 
-      review.forEach((item, index) => {
-        html += `
+        ${review.map((item, index) => `
           <div class="review-item ${item.isCorrect ? 'correct' : 'wrong'}">
-            <p><strong>Domanda ${index + 1}:</strong> ${escapeHtml(item.question)}</p>
-            <p><strong>Tua risposta:</strong> ${escapeHtml(item.userAnswer)}</p>
-            <p><strong>Risposta corretta:</strong> ${escapeHtml(item.correctAnswer)}</p>
-            <p><strong>Spiegazione:</strong> ${escapeHtml(item.explanation)}</p>
+            <div class="review-label">
+              Domanda ${index + 1}: ${item.isCorrect
+                ? '<span class="correct-text">Corretta</span>'
+                : '<span class="wrong-text">Errata</span>'}
+            </div>
+            <p><strong>Quesito:</strong> ${item.question}</p>
+            <p><strong>La tua risposta:</strong> ${item.selectedText}</p>
+            <p><strong>Risposta corretta:</strong> ${item.correctText}</p>
+            <p><strong>Spiegazione:</strong> ${item.explanation}</p>
           </div>
-        `;
-      });
-
-      html += `
-        <div class="submit-wrap">
-          <a href="#teoria" class="btn btn-secondary">Ritorna alla teoria</a>
-          <button id="repeatBtnInside" class="btn btn-primary" type="button">Ripeti stesso quiz</button>
-          <button id="newQuizBtnInside" class="btn btn-ghost" type="button">Genera nuovo quiz</button>
-        </div>
+        `).join('')}
       `;
 
-      quizResults.innerHTML = html;
-      quizResults.classList.remove("hidden");
-      quizResults.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      document.getElementById("repeatBtnInside").addEventListener("click", () => {
-        renderQuiz(currentQuiz);
-        quizResults.classList.add("hidden");
-        quizResults.innerHTML = "";
-        document.getElementById("quiz").scrollIntoView({ behavior: "smooth" });
-      });
-
-      document.getElementById("newQuizBtnInside").addEventListener("click", () => {
-        buildQuizSet();
-        document.getElementById("quiz").scrollIntoView({ behavior: "smooth" });
-      });
+      resultsBox.classList.add('active');
+      resultsBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    startQuizBtn.addEventListener("click", buildQuizSet);
-
-    repeatQuizBtn.addEventListener("click", () => {
-      if (currentQuiz.length > 0) {
-        renderQuiz(currentQuiz);
-        quizResults.classList.add("hidden");
-        quizResults.innerHTML = "";
-        document.getElementById("quiz").scrollIntoView({ behavior: "smooth" });
-      } else {
-        buildQuizSet();
-        document.getElementById("quiz").scrollIntoView({ behavior: "smooth" });
-      }
-    });
+    // Avvio iniziale teoria
+    renderLessonNav();
+    renderCurrentLesson();
   </script>
 </body>
 </html>
-
