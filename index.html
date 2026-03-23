@@ -435,8 +435,8 @@
 
   <header>
     <div class="header-inner">
-      <h1>Corso Online — Protezione dei Dati in Ufficio</h1>
-      <p>Percorso formativo con teoria navigabile, avanzamento e quiz finale a estrazione casuale.</p>
+      <h1>Protezione dei Dati in Ufficio</h1>
+      <p>Percorso formativo </p>
     </div>
   </header>
 
@@ -1208,9 +1208,9 @@
       }
     ];
 
-    // DOMANDE DEMO
-    // Nel Blocco B sostituirai questo array con il paniere completo da 50 domande.
+    // DOMANDE 
     const questionBank = [
+      
       {
         question: "Qual è uno degli errori più comuni nella gestione delle email?",
         explanation: "L’invio senza controllo di destinatari e allegati è una delle cause più frequenti di divulgazione involontaria di dati.",
@@ -1261,17 +1261,547 @@
           { text: "Usare sempre il colore", correct: false }
         ]
       },
-      {
-        question: "Cosa si intende per dato personale?",
-        explanation: "È qualsiasi informazione riferita a una persona identificata o identificabile.",
-        options: [
-          { text: "Solo il codice fiscale", correct: false },
-          { text: "Solo i documenti ufficiali", correct: false },
-          { text: "Qualsiasi informazione riferita a una persona identificata o identificabile", correct: true },
-          { text: "Solo i dati sanitari", correct: false }
-        ]
-      }
-    ];
+    {
+    question: "Che cosa si intende per dato personale?",
+    explanation: "Un dato personale è qualsiasi informazione riferita a una persona identificata o identificabile, anche indirettamente.",
+    options: [
+      { text: "Solo i dati sanitari", correct: false },
+      { text: "Qualsiasi informazione riferita a una persona identificata o identificabile", correct: true },
+      { text: "Solo nome e cognome", correct: false },
+      { text: "Solo i dati contenuti nei documenti ufficiali", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona prassi quando si invia una email con allegati?",
+    explanation: "Prima dell’invio è essenziale verificare destinatari, oggetto e allegati per evitare divulgazioni involontarie.",
+    options: [
+      { text: "Controllare con attenzione destinatari e allegati", correct: true },
+      { text: "Inviare subito per guadagnare tempo", correct: false },
+      { text: "Scrivere solo l’oggetto e allegare dopo", correct: false },
+      { text: "Usare sempre il rispondi a tutti", correct: false }
+    ]
+  },
+  {
+    question: "Quale comportamento è corretto quando ci si allontana dalla postazione di lavoro?",
+    explanation: "Bloccare la sessione e non lasciare documenti esposti riduce il rischio di accessi non autorizzati.",
+    options: [
+      { text: "Lasciare il PC aperto se l’assenza dura pochi minuti", correct: false },
+      { text: "Bloccare la postazione e mettere in ordine i documenti", correct: true },
+      { text: "Chiedere a un collega di controllare la scrivania", correct: false },
+      { text: "Spegnere solo il monitor", correct: false }
+    ]
+  },
+  {
+    question: "Perché non si devono condividere le password?",
+    explanation: "Le password sono personali e permettono di attribuire correttamente gli accessi e le operazioni effettuate.",
+    options: [
+      { text: "Perché rallentano il lavoro di gruppo", correct: false },
+      { text: "Perché sono dati personali del collega", correct: false },
+      { text: "Perché devono restare strettamente personali", correct: true },
+      { text: "Perché valgono solo per l’accesso da remoto", correct: false }
+    ]
+  },
+  {
+    question: "Quale situazione è rischiosa in una reception o front office?",
+    explanation: "Documenti o registri in vista possono essere letti da utenti o visitatori non autorizzati.",
+    options: [
+      { text: "Tenere il banco ordinato", correct: false },
+      { text: "Conservare i documenti non visibili al pubblico", correct: false },
+      { text: "Lasciare registri o elenchi in vista sul banco", correct: true },
+      { text: "Usare un’agenda interna", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona prassi per i documenti stampati?",
+    explanation: "I documenti devono essere ritirati subito per evitare accessi indebiti da parte di colleghi o terzi.",
+    options: [
+      { text: "Ritirarli immediatamente dalla stampante", correct: true },
+      { text: "Lasciarli nel vassoio fino a fine giornata", correct: false },
+      { text: "Stampare sempre due copie", correct: false },
+      { text: "Farli ritirare da chi passa per primo", correct: false }
+    ]
+  },
+  {
+    question: "Cosa significa riservatezza nel lavoro d’ufficio?",
+    explanation: "Significa impedire che i dati siano conosciuti da soggetti non autorizzati, anche all’interno dell’organizzazione.",
+    options: [
+      { text: "Parlare solo con il proprio responsabile", correct: false },
+      { text: "Tenere i dati accessibili a tutti i colleghi", correct: false },
+      { text: "Limitare la conoscenza dei dati alle persone autorizzate", correct: true },
+      { text: "Evitare di usare il telefono", correct: false }
+    ]
+  },
+  {
+    question: "Quale comportamento al telefono può compromettere la riservatezza?",
+    explanation: "Fornire dati personali a voce alta o in presenza di estranei può comportare divulgazioni indebite.",
+    options: [
+      { text: "Prendere appunti durante la chiamata", correct: false },
+      { text: "Usare un tono chiaro e professionale", correct: false },
+      { text: "Comunicare dati personali in presenza di terzi", correct: true },
+      { text: "Richiamare in un secondo momento", correct: false }
+    ]
+  },
+  {
+    question: "Che cosa è opportuno fare prima di comunicare informazioni a un interlocutore?",
+    explanation: "È necessario verificare chi è l’interlocutore e se è autorizzato a ricevere quelle informazioni.",
+    options: [
+      { text: "Parlare velocemente per ridurre i tempi", correct: false },
+      { text: "Verificare l’identità e l’autorizzazione del richiedente", correct: true },
+      { text: "Fornire comunque solo una parte dei dati", correct: false },
+      { text: "Chiedere il numero di telefono e basta", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona regola per l’archiviazione cartacea?",
+    explanation: "I documenti devono essere ordinati e custoditi in modo da evitare smarrimenti e consultazioni improprie.",
+    options: [
+      { text: "Lasciare i fascicoli più usati sulla scrivania", correct: false },
+      { text: "Usare armadi, classificazione chiara e accessi controllati", correct: true },
+      { text: "Accorpare tutti i documenti in un unico raccoglitore", correct: false },
+      { text: "Archiviare senza criterio per velocizzare", correct: false }
+    ]
+  },
+  {
+    question: "Perché l’ordine nella gestione documentale è importante?",
+    explanation: "Un archivio ordinato riduce il rischio di errori, smarrimenti, divulgazioni e accessi impropri.",
+    options: [
+      { text: "Per motivi estetici", correct: false },
+      { text: "Perché aiuta solo chi fa audit", correct: false },
+      { text: "Perché migliora sicurezza e reperibilità delle informazioni", correct: true },
+      { text: "Perché evita di usare il computer", correct: false }
+    ]
+  },
+  {
+    question: "Quale di queste è una cattiva abitudine nella gestione dei documenti?",
+    explanation: "Lasciare documenti esposti sulla scrivania aumenta il rischio che siano visti da persone non autorizzate.",
+    options: [
+      { text: "Riporre i fascicoli dopo l’uso", correct: false },
+      { text: "Classificare i documenti per tipologia", correct: false },
+      { text: "Lasciare documenti riservati sulla scrivania", correct: true },
+      { text: "Conservare ciò che serve in modo ordinato", correct: false }
+    ]
+  },
+  {
+    question: "Cosa si dovrebbe evitare nell’uso delle email?",
+    explanation: "L’uso improprio del campo destinatari o l’invio affrettato può causare diffusione non autorizzata di dati.",
+    options: [
+      { text: "Controllare il testo prima dell’invio", correct: false },
+      { text: "Usare destinatari verificati", correct: false },
+      { text: "Inviare senza rileggere o controllare allegati", correct: true },
+      { text: "Scrivere in modo sintetico", correct: false }
+    ]
+  },
+  {
+    question: "Quando un monitor può costituire un rischio per la riservatezza?",
+    explanation: "Quando è visibile a persone non autorizzate, ad esempio utenti, clienti o visitatori.",
+    options: [
+      { text: "Quando è orientato verso aree accessibili al pubblico", correct: true },
+      { text: "Quando è troppo luminoso", correct: false },
+      { text: "Quando viene usato per lavorare", correct: false },
+      { text: "Quando è collegato a una stampante", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona pratica per la postazione di lavoro?",
+    explanation: "La postazione deve essere organizzata in modo da limitare l’esposizione di dati e documenti a terzi.",
+    options: [
+      { text: "Mantenere in vista tutto ciò che serve durante il giorno", correct: false },
+      { text: "Lasciare note con dati sul tavolo per comodità", correct: false },
+      { text: "Ridurre al minimo i documenti esposti e custodire i dati", correct: true },
+      { text: "Aprire più fascicoli contemporaneamente", correct: false }
+    ]
+  },
+  {
+    question: "Come vanno gestiti i visitatori in aree con documenti o dati visibili?",
+    explanation: "I visitatori devono essere accompagnati e non devono poter accedere o visualizzare liberamente informazioni riservate.",
+    options: [
+      { text: "Lasciarli attendere vicino alle postazioni operative", correct: false },
+      { text: "Consentire la permanenza purché non tocchino nulla", correct: false },
+      { text: "Accompagnarli evitando esposizione di dati e documenti", correct: true },
+      { text: "Fargli firmare un modulo e lasciarli liberi", correct: false }
+    ]
+  },
+  {
+    question: "Qual è il rischio di usare chiavette USB senza controllo?",
+    explanation: "I file possono essere copiati, persi o portati fuori dall’ambiente controllato, aumentando il rischio di dispersione dei dati.",
+    options: [
+      { text: "Rallentano il computer", correct: false },
+      { text: "Aumentano la dimensione dei file", correct: false },
+      { text: "Possono favorire perdita o diffusione incontrollata dei dati", correct: true },
+      { text: "Non permettono di rinominare i documenti", correct: false }
+    ]
+  },
+  {
+    question: "Perché è importante limitare le copie inutili dei documenti?",
+    explanation: "Ogni copia aggiuntiva rende più difficile controllare accessi, conservazione e distruzione del documento.",
+    options: [
+      { text: "Per risparmiare spazio soltanto", correct: false },
+      { text: "Perché più copie significano meno controllo", correct: true },
+      { text: "Perché le copie non si possono archiviare", correct: false },
+      { text: "Perché le stampanti si usurano", correct: false }
+    ]
+  },
+  {
+    question: "Quale comportamento è corretto nella condivisione di file interni?",
+    explanation: "I file vanno condivisi solo con chi ne ha effettiva necessità operativa.",
+    options: [
+      { text: "Condividere l’intera cartella a tutti per comodità", correct: false },
+      { text: "Inviare sempre i file via chat", correct: false },
+      { text: "Limitare la condivisione ai soggetti autorizzati", correct: true },
+      { text: "Creare copie multiple per ogni ufficio", correct: false }
+    ]
+  },
+  {
+    question: "Qual è il problema di annotare password su fogli visibili?",
+    explanation: "Le credenziali possono essere lette o fotografate da persone non autorizzate.",
+    options: [
+      { text: "Nessuno, se il foglio è vicino al monitor", correct: false },
+      { text: "Possono essere facilmente viste da altri", correct: true },
+      { text: "Serve solo a rallentare il lavoro", correct: false },
+      { text: "È ammesso se il foglio è piegato", correct: false }
+    ]
+  },
+  {
+    question: "Cosa si dovrebbe fare in caso di errore, ad esempio un invio al destinatario sbagliato?",
+    explanation: "È fondamentale segnalare subito l’errore secondo le procedure interne, per permettere un intervento rapido.",
+    options: [
+      { text: "Aspettare e vedere se qualcuno se ne accorge", correct: false },
+      { text: "Cancellare l’email inviata e non dire nulla", correct: false },
+      { text: "Segnalare immediatamente l’accaduto ai referenti interni", correct: true },
+      { text: "Stampare la mail per sicurezza", correct: false }
+    ]
+  },
+  {
+    question: "Perché è sbagliato nascondere un errore nella gestione dei dati?",
+    explanation: "La mancata segnalazione può aggravare il problema e ritardare le misure correttive.",
+    options: [
+      { text: "Perché può far peggiorare le conseguenze dell’evento", correct: true },
+      { text: "Perché è sempre impossibile correggerlo", correct: false },
+      { text: "Perché il collega lo scoprirà comunque", correct: false },
+      { text: "Perché obbliga a spegnere il computer", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona prassi per le conversazioni in ambienti condivisi?",
+    explanation: "Le informazioni personali o riservate non vanno discusse ad alta voce in luoghi accessibili ad altri.",
+    options: [
+      { text: "Parlare liberamente se si è tra colleghi", correct: false },
+      { text: "Evitare di discutere dati riservati in presenza di estranei", correct: true },
+      { text: "Ripetere i dati per conferma", correct: false },
+      { text: "Usare sempre il vivavoce", correct: false }
+    ]
+  },
+  {
+    question: "Cosa si intende per esposizione indebita dei dati?",
+    explanation: "È la possibilità che informazioni siano viste o conosciute da chi non è autorizzato.",
+    options: [
+      { text: "La perdita definitiva di tutti i file", correct: false },
+      { text: "La visualizzazione o conoscenza da parte di soggetti non autorizzati", correct: true },
+      { text: "La cancellazione automatica dei documenti", correct: false },
+      { text: "La sostituzione di una password", correct: false }
+    ]
+  },
+  {
+    question: "Qual è un comportamento corretto nell’uso del telefono in ufficio?",
+    explanation: "Bisogna evitare di fornire informazioni riservate senza aver verificato interlocutore e contesto.",
+    options: [
+      { text: "Fornire sempre i dati se il chiamante sembra sicuro", correct: false },
+      { text: "Verificare prima identità e autorizzazione del richiedente", correct: true },
+      { text: "Richiedere solo il nome e comunicare subito i dati", correct: false },
+      { text: "Parlare più forte per essere chiari", correct: false }
+    ]
+  },
+  {
+    question: "Quale atteggiamento aiuta a prevenire errori nella protezione dei dati?",
+    explanation: "L’attenzione ai dettagli e la verifica prima delle azioni riducono i rischi operativi.",
+    options: [
+      { text: "Agire rapidamente senza rilettura", correct: false },
+      { text: "Affidarsi esclusivamente alla memoria", correct: false },
+      { text: "Verificare sempre prima di inviare, stampare o comunicare", correct: true },
+      { text: "Delegare ogni controllo ai colleghi", correct: false }
+    ]
+  },
+  {
+    question: "Perché il front office richiede particolare attenzione?",
+    explanation: "È un’area esposta a utenti e visitatori, quindi aumenta il rischio di visibilità impropria di dati e documenti.",
+    options: [
+      { text: "Perché si usa più carta", correct: false },
+      { text: "Perché è spesso aperto a terzi e richiede maggiore discrezione", correct: true },
+      { text: "Perché il lavoro è più lento", correct: false },
+      { text: "Perché contiene sempre dati sanitari", correct: false }
+    ]
+  },
+  {
+    question: "Quale di questi comportamenti è corretto nella distruzione dei documenti non più necessari?",
+    explanation: "I documenti contenenti dati non devono essere eliminati in modo improprio o accessibile a terzi.",
+    options: [
+      { text: "Gettarli nei rifiuti comuni senza controllo", correct: false },
+      { text: "Lasciarli in una scatola in magazzino", correct: false },
+      { text: "Distruggerli con modalità idonee e controllate", correct: true },
+      { text: "Consegnarli a chiunque passi dall’ufficio", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona prassi per i file digitali?",
+    explanation: "Devono essere organizzati con criterio, custoditi in spazi autorizzati e accessibili solo a chi ne ha necessità.",
+    options: [
+      { text: "Salvarli sul desktop senza ordine", correct: false },
+      { text: "Archiviare in cartelle condivise aperte a tutti", correct: false },
+      { text: "Organizzarli in modo ordinato e con accessi controllati", correct: true },
+      { text: "Rinominare i file casualmente", correct: false }
+    ]
+  },
+  {
+    question: "Perché è utile una routine operativa nelle attività più delicate?",
+    explanation: "Una checklist o routine costante riduce la probabilità di dimenticanze ed errori.",
+    options: [
+      { text: "Perché sostituisce ogni responsabilità personale", correct: false },
+      { text: "Perché riduce errori e omissioni", correct: true },
+      { text: "Perché elimina il bisogno di formazione", correct: false },
+      { text: "Perché rende inutile il controllo finale", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una cattiva pratica nell’uso delle cartelle condivise?",
+    explanation: "Condividere file o cartelle senza criterio aumenta gli accessi indebiti e la dispersione delle informazioni.",
+    options: [
+      { text: "Attribuire accessi solo a chi ne ha bisogno", correct: false },
+      { text: "Mantenere ordine nelle cartelle", correct: false },
+      { text: "Consentire l’accesso a tutti per comodità", correct: true },
+      { text: "Archiviare in modo coerente", correct: false }
+    ]
+  },
+  {
+    question: "Che ruolo hanno i dettagli operativi nella protezione dei dati?",
+    explanation: "Molti errori nascono da piccoli dettagli trascurati, come destinatari errati, oggetti troppo espliciti o documenti lasciati in vista.",
+    options: [
+      { text: "Sono irrilevanti rispetto ai sistemi informatici", correct: false },
+      { text: "Contano molto e possono determinare errori o violazioni", correct: true },
+      { text: "Riguardano solo i responsabili", correct: false },
+      { text: "Servono solo durante gli audit", correct: false }
+    ]
+  },
+  {
+    question: "Quale comportamento è corretto in ambienti con accesso del pubblico?",
+    explanation: "Monitor, documenti e conversazioni devono essere gestiti in modo da non esporre informazioni a terzi.",
+    options: [
+      { text: "Tenere tutto a portata di mano anche se visibile", correct: false },
+      { text: "Lavorare senza modificare nulla", correct: false },
+      { text: "Ridurre la visibilità dei dati e mantenere discrezione", correct: true },
+      { text: "Lasciare registri aperti per velocizzare", correct: false }
+    ]
+  },
+  {
+    question: "Quale tra questi è un esempio di buona prassi quotidiana?",
+    explanation: "Controllare destinatari e allegati prima di inviare un’email è una misura semplice ma molto efficace.",
+    options: [
+      { text: "Rileggere email, destinatari e allegati prima dell’invio", correct: true },
+      { text: "Inviare rapidamente per non dimenticare", correct: false },
+      { text: "Usare sempre copie multiple", correct: false },
+      { text: "Condividere password con il collega di supporto", correct: false }
+    ]
+  },
+  {
+    question: "Perché la protezione dei dati non riguarda solo l’ufficio IT?",
+    explanation: "Perché molti rischi dipendono da comportamenti quotidiani di chiunque gestisca documenti, telefonate, email e archivi.",
+    options: [
+      { text: "Perché tutti i lavoratori possono incidere sulla sicurezza delle informazioni", correct: true },
+      { text: "Perché l’IT non usa i computer", correct: false },
+      { text: "Perché riguarda solo la direzione", correct: false },
+      { text: "Perché dipende solo dai fornitori", correct: false }
+    ]
+  },
+  {
+    question: "Quale rischio deriva dal lasciare un fascicolo aperto sul banco reception?",
+    explanation: "Chiunque si avvicini può leggere o fotografare dati che non dovrebbe conoscere.",
+    options: [
+      { text: "Nessuno, se il fascicolo serve spesso", correct: false },
+      { text: "Solo il rischio di piegare i fogli", correct: false },
+      { text: "La visione indebita di informazioni da parte di terzi", correct: true },
+      { text: "L’aumento dei tempi di attesa", correct: false }
+    ]
+  },
+  {
+    question: "Che cosa significa lavorare con discrezione?",
+    explanation: "Significa evitare esposizioni inutili di informazioni, parlare con prudenza e custodire ciò che si tratta.",
+    options: [
+      { text: "Non rispondere al telefono", correct: false },
+      { text: "Evitare qualsiasi comunicazione scritta", correct: false },
+      { text: "Gestire le informazioni con prudenza e riservatezza", correct: true },
+      { text: "Parlare solo con il proprio ufficio", correct: false }
+    ]
+  },
+  {
+    question: "Quale di questi comportamenti aumenta il rischio di errore?",
+    explanation: "La fretta porta spesso a dimenticare controlli essenziali su destinatari, contenuti e documenti.",
+    options: [
+      { text: "Seguire una routine prima dell’invio", correct: false },
+      { text: "Verificare chi può vedere il monitor", correct: false },
+      { text: "Agire in fretta senza controlli", correct: true },
+      { text: "Riporre subito i documenti", correct: false }
+    ]
+  },
+  {
+    question: "Perché è importante custodire correttamente smartphone e dispositivi portatili?",
+    explanation: "Possono contenere email, rubriche, documenti e dati accessibili da terzi in caso di smarrimento o uso improprio.",
+    options: [
+      { text: "Perché pesano poco", correct: false },
+      { text: "Perché contengono spesso dati e comunicazioni da proteggere", correct: true },
+      { text: "Perché servono solo per telefonare", correct: false },
+      { text: "Perché si scaricano facilmente", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona prassi quando si trattano dati davanti ad altri colleghi?",
+    explanation: "Le informazioni vanno condivise solo con chi è autorizzato e ne ha effettiva necessità lavorativa.",
+    options: [
+      { text: "Parlarne con chiunque lavori nello stesso piano", correct: false },
+      { text: "Condividerli solo con chi ne ha necessità operativa", correct: true },
+      { text: "Leggere sempre il documento ad alta voce", correct: false },
+      { text: "Inviare copie a tutto l’ufficio per trasparenza", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona regola per il banco di lavoro in reception?",
+    explanation: "Il piano di lavoro deve contenere solo ciò che serve e non esporre registri o documenti a chi è davanti.",
+    options: [
+      { text: "Tenere sempre i registri aperti per comodità", correct: false },
+      { text: "Mantenere il banco libero da dati visibili al pubblico", correct: true },
+      { text: "Appoggiare documenti temporaneamente in attesa", correct: false },
+      { text: "Usare il banco come archivio rapido", correct: false }
+    ]
+  },
+  {
+    question: "Quale tra questi è un esempio di esposizione involontaria dei dati?",
+    explanation: "Anche senza intenzione, un monitor visibile o un foglio lasciato aperto può rendere i dati accessibili a terzi.",
+    options: [
+      { text: "Un monitor orientato verso l’area di attesa", correct: true },
+      { text: "Un file archiviato in cartella corretta", correct: false },
+      { text: "Una password complessa", correct: false },
+      { text: "Un documento riposto in armadio", correct: false }
+    ]
+  },
+  {
+    question: "Che cosa aiuta a prevenire smarrimenti e confusione documentale?",
+    explanation: "Una classificazione ordinata e criteri chiari di archiviazione migliorano controllo e reperibilità.",
+    options: [
+      { text: "Avere fascicoli sparsi ma riconoscibili", correct: false },
+      { text: "Usare una classificazione ordinata e coerente", correct: true },
+      { text: "Lasciare i documenti recenti sempre fuori", correct: false },
+      { text: "Stampare copie di riserva", correct: false }
+    ]
+  },
+  {
+    question: "Quale comportamento è corretto quando si ricevono documenti contenenti dati personali?",
+    explanation: "I documenti vanno gestiti e riposti con cura, evitando abbandono in aree accessibili o disordinate.",
+    options: [
+      { text: "Lasciarli sulla scrivania fino a fine turno", correct: false },
+      { text: "Riporli o instradarli correttamente appena possibile", correct: true },
+      { text: "Fotocopiarli subito per sicurezza", correct: false },
+      { text: "Passarli verbalmente ai colleghi", correct: false }
+    ]
+  },
+  {
+    question: "Perché è utile segnalare subito una situazione anomala?",
+    explanation: "Una segnalazione tempestiva consente di limitare effetti, correggere l’errore e adottare misure adeguate.",
+    options: [
+      { text: "Perché così la responsabilità passa ad altri", correct: false },
+      { text: "Perché permette un intervento rapido e più efficace", correct: true },
+      { text: "Perché evita sempre qualsiasi conseguenza", correct: false },
+      { text: "Perché sostituisce le procedure", correct: false }
+    ]
+  },
+  {
+    question: "Qual è una buona pratica nella gestione degli appuntamenti o registri di accesso?",
+    explanation: "Anche tali strumenti contengono dati personali e vanno protetti da visualizzazioni indebite.",
+    options: [
+      { text: "Lasciarli a disposizione per semplificare il lavoro", correct: false },
+      { text: "Gestirli evitando che siano visibili a soggetti non autorizzati", correct: true },
+      { text: "Appenderli vicino all’ingresso", correct: false },
+      { text: "Fotocopiarli a fine giornata", correct: false }
+    ]
+  },
+  {
+    question: "Qual è l’effetto delle buone abitudini quotidiane sulla protezione dei dati?",
+    explanation: "La costanza nei comportamenti corretti riduce sensibilmente il rischio di errori e incidenti.",
+    options: [
+      { text: "Hanno un ruolo marginale", correct: false },
+      { text: "Sono utili solo ai nuovi assunti", correct: false },
+      { text: "Contribuiscono in modo decisivo alla sicurezza delle informazioni", correct: true },
+      { text: "Servono solo se manca un software adeguato", correct: false }
+    ]
+  },
+  {
+    question: "Quale tra questi comportamenti è da evitare assolutamente?",
+    explanation: "Condividere password è una delle pratiche più scorrette perché compromette accessi, responsabilità e sicurezza.",
+    options: [
+      { text: "Bloccare il PC quando ci si allontana", correct: false },
+      { text: "Controllare i destinatari delle email", correct: false },
+      { text: "Condividere le credenziali di accesso con un collega", correct: true },
+      { text: "Riporre i documenti dopo l’uso", correct: false }
+    ]
+  },
+  {
+    question: "Perché parlare di pratiche o utenti in luoghi comuni può essere un problema?",
+    explanation: "Persone estranee o non autorizzate possono ascoltare informazioni che non dovrebbero conoscere.",
+    options: [
+      { text: "Perché rallenta la conversazione", correct: false },
+      { text: "Perché può rendere udibili dati riservati a terzi", correct: true },
+      { text: "Perché disturba i colleghi", correct: false },
+      { text: "Perché è vietato parlare in ufficio", correct: false }
+    ]
+  },
+  {
+    question: "Qual è il criterio corretto nella condivisione delle informazioni?",
+    explanation: "Le informazioni vanno condivise solo nella misura necessaria e con soggetti autorizzati.",
+    options: [
+      { text: "Condividerle con tutto il team per trasparenza", correct: false },
+      { text: "Diffonderle se potrebbero essere utili", correct: false },
+      { text: "Condividerle solo con chi è autorizzato e ne ha bisogno", correct: true },
+      { text: "Parlarne liberamente se non sono dati sanitari", correct: false }
+    ]
+  },
+  {
+    question: "Quale affermazione descrive meglio la protezione dei dati in ufficio?",
+    explanation: "Non è un compito separato, ma parte integrante del lavoro professionale quotidiano.",
+    options: [
+      { text: "Riguarda solo i casi eccezionali", correct: false },
+      { text: "È un’attività che spetta solo ai responsabili", correct: false },
+      { text: "È parte del lavoro quotidiano di chi gestisce informazioni", correct: true },
+      { text: "Serve solo quando si usano software complessi", correct: false }
+    ]
+  },
+  {
+    question: "Qual è un buon comportamento finale prima di lasciare la postazione a fine giornata?",
+    explanation: "È opportuno verificare di non lasciare documenti, dati visibili o accessi aperti.",
+    options: [
+      { text: "Lasciare tutto come si trova per riprendere più velocemente", correct: false },
+      { text: "Chiudere, riporre e mettere in sicurezza documenti e accessi", correct: true },
+      { text: "Lasciare i fascicoli pronti sul tavolo", correct: false },
+      { text: "Spegnere solo la luce", correct: false }
+    ]
+  },
+  {
+    question: "Quale idea è sbagliata sulla protezione dei dati?",
+    explanation: "È errato pensare che riguardi solo strumenti informatici: coinvolge anche carta, voce, spazi e comportamenti.",
+    options: [
+      { text: "Riguarda anche documenti cartacei e conversazioni", correct: false },
+      { text: "Coinvolge le abitudini quotidiane", correct: false },
+      { text: "Riguarda solo i computer e i sistemi informatici", correct: true },
+      { text: "Richiede attenzione di tutto il personale", correct: false }
+    ]
+  },
+  {
+    question: "Qual è il vantaggio di lavorare con metodo nella gestione dei dati?",
+    explanation: "Metodo e costanza rendono il lavoro più sicuro, ordinato e meno esposto a errori evitabili.",
+    options: [
+      { text: "Permettono di improvvisare meglio", correct: false },
+      { text: "Riducono la necessità di comunicare", correct: false },
+      { text: "Migliorano controllo, ordine e sicurezza delle informazioni", correct: true },
+      { text: "Servono solo a chi archivia documenti cartacei", correct: false }
+    ]
+  }
+];
 
     let currentLessonIndex = 0;
     let currentQuizQuestions = [];
